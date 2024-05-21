@@ -1,0 +1,5 @@
+{
+    "abs" : {"parameters" : 1},
+    "add" : {"parameters" : 2},
+    "max" : {"parameters" : 2}
+}
