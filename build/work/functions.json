@@ -1,8 +1,48 @@
 {
     "abs": {
-        "instr": []
+        "instr": [
+            "movdqa",
+            "pxor",
+            "psubb",
+            "pminub"
+        ]
     },
     "add": {
-        "instr": []
+        "instr": [
+            "paddb"
+        ]
+    },
+    "max": {
+        "instr": [
+            "movdqa",
+            "pcmpgtb",
+            "movdqa",
+            "pand",
+            "pandn",
+            "por",
+            "movdqa"
+        ]
+    },
+    "div": {
+        "instr": [
+            "sub",
+            "pshufd",
+            "pshufd",
+            "mov",
+            "mov",
+            "xor",
+            "call",
+            "movdqa",
+            "movdqa",
+            "movdqa",
+            "call",
+            "movaps",
+            "movlhps",
+            "mov",
+            "sub",
+            "jne",
+            "movaps",
+            "add"
+        ]
     }
 }
