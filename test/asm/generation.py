@@ -1,9 +1,10 @@
 import json
 import extract_assembly
+import datetime
 
 
-CONFIG_FILE = "build/work/config.json"
-STORE_FILE = "build/work/functions.json"
+CONFIG_FILE = "test/asm/config.json"
+STORE_FILE = "test/asm/functions.json"
 
 
 def load_json():
@@ -61,19 +62,19 @@ def save_json(new_conf:str):
 
 
 
-def update(deep=False):
+def update(deep=False, keep_tmp=False):
     """Update functions in `STORE_FILE` using conguration saved in `CONFIG FILE`
 
     Args:
         deep (bool, optional): If `True` each function is update, even though it was already saved.
-         If `False` only unsaved functions are append. Defaults to False.
+         If `False` only unsaved functions are append, the other ones don't change. Defaults to False.
     """
     conf = load_config()
     confDict = json.loads(conf)
 
-    functions = [(k, confDict[k]['parameters']) for k in dict.keys(confDict)]
+    functions = [(k, confDict[k]) for k in dict.keys(confDict)]
 
-    functions_assembly = extract_assembly.get_functions_instructions(functions, keep_tmp=False)
+    functions_assembly = extract_assembly.get_functions_instructions(functions, keep_tmp=keep_tmp)
 
     file = load_json()
     jsonDict = json.loads(file)
@@ -82,11 +83,12 @@ def update(deep=False):
     new_f = 0
     for f in dict.keys(functions_assembly):
         if deep or f not in k:
-            jsonDict[f] = {'instr' : functions_assembly[f]}
+            jsonDict[f] = {'date' : str(datetime.datetime.today()), 'instr' : functions_assembly[f]}
             new_f += 1
 
-    update_json = json.dumps(jsonDict, indent=4)
+    update_json = json.dumps(jsonDict, indent=4, sort_keys=True)
     save_json(update_json)
     print(f"Operation finished : {new_f} functions saved")
 
-update(deep=True)
+if __name__ == '__main__':
+    update(deep=False)

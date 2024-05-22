@@ -1,9 +1,9 @@
 import re
 import os
 
-TMP_CPP_FILE_NAME = "build/work/tmp.cpp"
-TMP_O_FILE_NAME = "build/work/tmp.o"
-TMP_ASM_FILE_NAME = "build/work/tmp.txt"
+TMP_CPP_FILE_NAME = "test/asm/tmp.cpp"
+TMP_O_FILE_NAME = "test/asm/tmp.o"
+TMP_ASM_FILE_NAME = "test/asm/tmp.txt"
 
 
 def generate_function(funcName:str, values:int):

@@ -39,7 +39,7 @@
 compile_commands.json
 
 # Potential local build repository
-#*build*/
+*build*/
 Testing/*
 *.vscode/*
 doc/docs/*
