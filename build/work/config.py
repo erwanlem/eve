@@ -73,7 +73,7 @@ def update(deep=False):
 
     functions = [(k, confDict[k]['parameters']) for k in dict.keys(confDict)]
 
-    functions_assembly = extract_assembly.get_functions_instructions(functions)
+    functions_assembly = extract_assembly.get_functions_instructions(functions, keep_tmp=False)
 
     file = load_json()
     jsonDict = json.loads(file)

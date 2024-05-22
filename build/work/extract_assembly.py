@@ -1,5 +1,6 @@
 import re
 import os
+import unittest
 
 TMP_CPP_FILE_NAME = "build/work/tmp.cpp"
 TMP_O_FILE_NAME = "build/work/tmp.o"
@@ -51,7 +52,6 @@ def generate_function(funcName:str, parameters:int):
 
 
 
-
 def clear_tmp():
     """
     Remove all temporary files
@@ -82,6 +82,9 @@ def extract_instructions(functionName:str, asm:str):
     # extracts each instruction line (full line)
     asm = re.split('\n\n', asm)
     asm = [i for i in asm if f"func_{functionName}" in i]
+
+    if asm == []:
+        raise Exception(f"Function {functionName} not found in assembly")
  
     x = re.findall("[0-9a-f]+:\t[^\n\t]+\t[^\n]+", asm[0])
 
@@ -107,6 +110,10 @@ def extract_instructions(functionName:str, asm:str):
         i += 1
 
     return result
+
+
+
+
 
 
 
