@@ -1,5 +1,0 @@
-g++ toto.cpp -O3 -NDEBUG -std=c++20 -I ../include/ -S -o toto.s
-c++filt
-cat toto.s | c++filt
-g++ toto.cpp -O3 -NDEBUG -std=c++20 -I ../include/ -c -o toto.o
-objdump -d -C toto.o
