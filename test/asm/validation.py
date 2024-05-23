@@ -9,12 +9,13 @@ class AssemblyMismatch(Exception):
     Args:
         Exception (str): Expected instructions (with date of the last update) and actual instructions
     """
-    def __init__(self, f, expected, actual, last_update, *args: object) -> None:
+    def __init__(self, f, expected, actual, last_update, difference, *args: object) -> None:
         super().__init__(*args)
         self.function = f
         self.expected = expected
         self.actual = actual
         self.last_update = last_update
+        self.difference = difference
 
     def format_instructions(self, instr):
         s = ""
@@ -23,12 +24,23 @@ class AssemblyMismatch(Exception):
         return s
 
     def __str__(self) -> str:
-        s1 = f'Assembly mismatch with function : {self.function}\n\n'
-        s2 = f'Expecting (saved {self.last_update}):\n' + self.format_instructions(self.expected) + '\n'
-        s3 = 'Got:\n' + self.format_instructions(self.actual)
+        s1 = f'-------------------------------------------------\nAssembly mismatch with function : {self.function}\n\n'
+
+        if len(self.expected) < 10:
+            s2 = f'Expecting (saved {self.last_update}):\n' + self.format_instructions(self.expected) + '\n'
+            s3 = 'Got:\n' + self.format_instructions(self.actual)
+        else:
+            s2 = f'Instruction {self.difference + 1}\nExpecting {self.expected[self.difference]}\n\n'
+            s3 = f'Got {self.actual[self.difference]}'
 
         return s1 + s2 + s3
 
+
+def find_difference(l1, l2):
+    for i in range(0, min(len(l1), len(l2))):
+        if l1[i] != l2[i]:
+            return i
+    return -1
 
 
 def get_saved_functions():
@@ -67,15 +79,18 @@ def validate(select='all', raise_exception=False):
 
     validationSet = get_saved_functions()
 
+    ret = True
+
     for k in dict.keys(functions_assembly):
         if functions_assembly[k] != validationSet[k]['instr']:
+            diff = find_difference(functions_assembly[k], validationSet[k]['instr'])
             if raise_exception:
-                raise AssemblyMismatch(k, validationSet[k]['instr'], functions_assembly[k], last_update=validationSet[k]['date'])
+                raise AssemblyMismatch(k, validationSet[k]['instr'], functions_assembly[k], validationSet[k]['date'], diff)
             else:
-                e = AssemblyMismatch(k, validationSet[k]['instr'], functions_assembly[k], last_update=validationSet[k]['date'])
+                e = AssemblyMismatch(k, validationSet[k]['instr'], functions_assembly[k], validationSet[k]['date'], diff)
                 print(e.__str__())
-                return False
-    return True
+                ret = False
+    return ret
 
 
 if __name__ == '__main__':
