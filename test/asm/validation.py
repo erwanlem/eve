@@ -89,9 +89,9 @@ def log_string(f:str, expected:list, actual:list, save_date:str):
     s += f'Previous save : {save_date}\n\n\n\tExpected\tActual\n\n'
     for i in range(0, max(len(expected), len(actual))):
         if len(expected) <= i:
-            s += f'\t--> ____ \t--> {actual[i]}\n'
+            s += f'--> ____ \t--> {actual[i]}\n'
         elif len(actual) <= i:
-            s += f'\t--> {expected[i]} \t--> ____\n'
+            s += f'--> {expected[i]} \t--> ____\n'
         else:
             if expected[i] != actual[i]:
                 s += f'--> {expected[i]}\t--> {actual[i]}\n'
