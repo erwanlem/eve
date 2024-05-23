@@ -1,0 +1,501 @@
+-----------------------------
+Function agm
+Previous save : 2024-05-22 15:40:41.127889
+
+
+	Expected	Actual
+
+--> movaps	--> movss
+	movaps	movaps
+	movaps	movaps
+	pxor	pxor
+--> movaps	--> movss
+	movaps	movaps
+	movdqa	movdqa
+--> movdqa	--> shufps
+	mulps	mulps
+--> addps	--> cmpeqps
+	mulps	mulps
+--> addps	--> shufps
+--> movaps	--> movdqa
+	movaps	movaps
+--> subps	--> pand
+--> cmpneqps	--> addps
+--> andps	--> movaps
+--> psrad	--> movaps
+--> cmpneqps	--> subps
+--> movdqa	--> cmpneqps
+--> pandn	--> andps
+--> paddd	--> psrad
+--> pand	--> cmpneqps
+	movdqa	movdqa
+--> pand	--> pandn
+--> por	--> paddd
+--> movaps	--> pand
+--> pand	--> movaps
+	cmpeqps	cmpeqps
+--> cmpeqps	--> por
+	pandn	pandn
+--> movaps	--> pcmpeqd
+--> cmpeqps	--> por
+--> cmpeqps	--> andnps
+	movdqa	movdqa
+--> orps	--> movdqa
+--> movaps	--> pand
+--> por	--> pand
+--> andnps	--> cmpeqps
+--> movaps	--> cmpeqps
+--> pand	--> movaps
+	cmpunordps	cmpunordps
+--> andnps	--> orps
+	movaps	movaps
+--> pand	--> andnps
+--> por	--> movaps
+--> movdqa	--> addps
+--> movdqa	--> pand
+--> pand	--> por
+--> pand	--> movdqa
+--> por	--> movdqa
+--> por	--> pand
+--> andnps	--> pand
+--> movaps	--> por
+--> andnps	--> por
+--> movdqa	--> andnps
+--> por	--> movaps
+--> movdqa	--> andnps
+--> pand	--> movdqa
+	por	por
+--> mulps	--> pand
+--> movaps	--> por
+--> cmpleps	--> mulps
+--> orps	--> movss
+--> movaps	--> shufps
+--> por	--> cmpleps
+--> movaps	--> movss
+--> movaps	--> shufps
+--> andnps	--> orps
+--> movaps	--> movdqa
+--> andnps	--> por
+--> movdqa	--> movss
+--> psubd	--> movaps
+--> pslld	--> movaps
+--> mulps	--> andnps
+--> mulps	--> movdqa
+--> movaps	--> andnps
+--> xorps	--> shufps
+--> movaps	--> psubd
+--> mulps	--> pslld
+	mulps	mulps
+--> addps	--> mulps
+--> andps	--> movaps
+--> jmp	--> xorps
+--> xchg	--> movaps
+--> movaps	--> mulps
+--> movaps	--> mulps
+--> movaps	--> addps
+--> mulps	--> andps
+--> xorps	--> jmp
+--> movaps	--> nopw
+--> mulps	--> movaps
+--> mulps	--> movaps
+--> mulps	--> movaps
+--> sqrtps	--> mulps
+--> addps	--> xorps
+--> addps	--> movaps
+--> andps	--> mulps
+--> movaps	--> mulps
+--> cmpltps	--> mulps
+--> movmskps	--> sqrtps
+--> test	--> addps
+--> jne	--> addps
+--> paddd	--> andps
+	movaps	movaps
+--> pand	--> cmpltps
+--> pslld	--> movmskps
+--> mulps	--> test
+--> andnps	--> jne
+--> movdqa	--> paddd
+--> por	--> movaps
+	--> ____ 	--> pand
+	--> ____ 	--> pslld
+	--> ____ 	--> mulps
+	--> ____ 	--> andnps
+	--> ____ 	--> por
+
+
+
+-----------------------------
+Function ceil
+Previous save : 2024-05-22 16:00:50.267696
+
+
+	Expected	Actual
+
+--> movaps	--> movss
+	movdqa	movdqa
+--> xorps	--> movss
+--> pand	--> shufps
+--> cvttps2dq	--> xorps
+--> cvtdq2ps	--> pand
+--> cmpnleps	--> shufps
+--> movaps	--> cvttps2dq
+--> pand	--> cvtdq2ps
+--> andnps	--> cmpnleps
+	movaps	movaps
+--> movaps	--> pand
+--> por	--> andnps
+--> cmpltps	--> movaps
+--> addps	--> movss
+--> movaps	--> por
+--> andps	--> cmpltps
+--> andnps	--> shufps
+--> por	--> addps
+--> xorps	--> movaps
+	--> ____ 	--> andps
+	--> ____ 	--> andnps
+	--> ____ 	--> por
+	--> ____ 	--> xorps
+
+
+
+-----------------------------
+Function copysign
+Previous save : 2024-05-23 15:01:59.929547
+
+
+	Expected	Actual
+
+--> andps	--> movss
+--> andps	--> shufps
+--> por	--> andps
+	--> ____ 	--> movss
+	--> ____ 	--> shufps
+	--> ____ 	--> andps
+	--> ____ 	--> por
+
+
+
+-----------------------------
+Function floor
+Previous save : 2024-05-23 15:10:07.799780
+
+
+	Expected	Actual
+
+	movdqa	movdqa
+	movaps	movaps
+	mov	mov
+--> movaps	--> movss
+	movaps	movaps
+	movdqa	movdqa
+	cvttps2dq	cvttps2dq
+	cvtdq2ps	cvtdq2ps
+	pand	pand
+--> pand	--> shufps
+--> cmpnleps	--> pand
+	cmpnleps	cmpnleps
+--> movaps	--> cmpnleps
+--> pand	--> movaps
+--> movaps	--> pand
+--> andnps	--> movaps
+--> movaps	--> andnps
+--> pand	--> movaps
+--> cvttps2dq	--> pand
+--> por	--> cvttps2dq
+--> cvtdq2ps	--> por
+--> andnps	--> cvtdq2ps
+--> movaps	--> andnps
+--> cmpltps	--> movss
+--> por	--> cmpltps
+--> cmpltps	--> por
+--> movaps	--> cmpltps
+--> andnps	--> shufps
+--> addps	--> movaps
+--> addps	--> andnps
+--> movaps	--> addps
+--> andnps	--> addps
+--> andps	--> movaps
+--> andps	--> andnps
+--> por	--> andps
+--> por	--> andps
+--> movaps	--> por
+--> movaps	--> por
+	--> ____ 	--> movaps
+	--> ____ 	--> movaps
+
+
+
+-----------------------------
+Function frac
+Previous save : 2024-05-23 15:10:07.799802
+
+
+	Expected	Actual
+
+	movdqa	movdqa
+	movaps	movaps
+	mov	mov
+--> movaps	--> movss
+	movaps	movaps
+	movdqa	movdqa
+	movaps	movaps
+	cvttps2dq	cvttps2dq
+	cvtdq2ps	cvtdq2ps
+	pand	pand
+--> pand	--> shufps
+--> movaps	--> pand
+--> cmpnleps	--> movaps
+	cmpnleps	cmpnleps
+--> movaps	--> cmpnleps
+--> pand	--> movaps
+--> movaps	--> pand
+--> andnps	--> movaps
+--> pxor	--> andnps
+--> pand	--> pxor
+--> cmpeqps	--> pand
+	cmpeqps	cmpeqps
+--> por	--> cmpeqps
+--> subps	--> por
+--> cvttps2dq	--> subps
+--> cvtdq2ps	--> cvttps2dq
+--> andnps	--> cvtdq2ps
+--> por	--> andnps
+--> movaps	--> por
+	movaps	movaps
+	movaps	movaps
+--> subps	--> movaps
+--> movaps	--> subps
+--> andnps	--> movaps
+--> pand	--> andnps
+	pand	pand
+--> por	--> pand
+--> andnps	--> por
+--> movaps	--> andnps
+--> por	--> movaps
+--> movaps	--> por
+	--> ____ 	--> movaps
+
+
+
+-----------------------------
+Function div
+Previous save : 2024-05-22 13:44:29.660312
+
+
+	Expected	Actual
+
+	sub	sub
+	pshufd	pshufd
+	pshufd	pshufd
+	mov	mov
+	mov	mov
+	xor	xor
+--> movaps	--> call
+--> movaps	--> movdqa
+--> call	--> movdqa
+	movdqa	movdqa
+--> movdqa	--> call
+	movaps	movaps
+--> movdqa	--> movlhps
+--> movdqa	--> mov
+--> call	--> sub
+--> movdqa	--> jne
+--> movdqa	--> movaps
+--> movaps	--> add
+	--> movlhps 	--> ____
+	--> mov 	--> ____
+	--> sub 	--> ____
+	--> jne 	--> ____
+	--> add 	--> ____
+
+
+
+-----------------------------
+Function rem
+Previous save : 2024-05-22 15:14:54.111372
+
+
+	Expected	Actual
+
+	movabs	movabs
+	push	push
+	movd	movd
+	movabs	movabs
+	movabs	movabs
+	push	push
+	movsbl	movsbl
+	movabs	movabs
+	push	push
+	movq	movq
+	sub	sub
+	movaps	movaps
+	mov	mov
+	mov	mov
+	movaps	movaps
+	movsbl	movsbl
+	movaps	movaps
+	cltd	cltd
+	movaps	movaps
+	idiv	idiv
+	movsbl	movsbl
+	movaps	movaps
+	movaps	movaps
+	movaps	movaps
+	movaps	movaps
+	movaps	movaps
+	movsbl	movsbl
+	movaps	movaps
+	movaps	movaps
+	movaps	movaps
+	movaps	movaps
+	movaps	movaps
+--> mov	--> movaps
+--> mov	--> movaps
+--> sar	--> mov
+	movsbl	movsbl
+	cltd	cltd
+	idiv	idiv
+	movsbl	movsbl
+	mov	mov
+	mov	mov
+	and	and
+	shl	shl
+	mov	mov
+	movabs	movabs
+	sar	sar
+	cltd	cltd
+	idiv	idiv
+	movsbl	movsbl
+	movzbl	movzbl
+	shl	shl
+	or	or
+	mov	mov
+	and	and
+	sar	sar
+	cltd	cltd
+	idiv	idiv
+	movsbl	movsbl
+	movzbl	movzbl
+	shl	shl
+	or	or
+	mov	mov
+	and	and
+	shl	shl
+	sar	sar
+	cltd	cltd
+	idiv	idiv
+	movsbl	movsbl
+	movzbl	movzbl
+	shl	shl
+	or	or
+	mov	mov
+	and	and
+	shl	shl
+	sar	sar
+	cltd	cltd
+	idiv	idiv
+	movsbl	movsbl
+	movzbl	movzbl
+	shl	shl
+	or	or
+	mov	mov
+--> and	--> shl
+--> shl	--> and
+	sar	sar
+	cltd	cltd
+	idiv	idiv
+	movsbl	movsbl
+	movzbl	movzbl
+	shl	shl
+	or	or
+	mov	mov
+	and	and
+	sar	sar
+	cltd	cltd
+	idiv	idiv
+	movsbl	movsbl
+	mov	mov
+	mov	mov
+	cltd	cltd
+	idiv	idiv
+	movsbl	movsbl
+	shl	shl
+	mov	mov
+--> mov	--> movsbl
+--> sar	--> cltd
+--> movsbl	--> idiv
+--> cltd	--> movsbl
+--> idiv	--> mov
+--> movsbl	--> mov
+--> mov	--> shl
+--> mov	--> sar
+--> shl	--> cltd
+--> sar	--> idiv
+--> cltd	--> mov
+--> idiv	--> movsbl
+--> mov	--> and
+--> movsbl	--> movzbl
+--> and	--> shl
+--> movzbl	--> or
+--> shl	--> mov
+--> or	--> and
+--> mov	--> sar
+--> and	--> cltd
+--> sar	--> idiv
+--> cltd	--> movsbl
+--> idiv	--> movzbl
+--> movsbl	--> shl
+--> movzbl	--> or
+--> shl	--> mov
+--> or	--> shl
+--> mov	--> sar
+--> shl	--> cltd
+--> sar	--> idiv
+--> and	--> movsbl
+--> or	--> and
+--> cltd	--> or
+--> idiv	--> mov
+--> movsbl	--> movzbl
+--> movaps	--> shl
+--> movaps	--> or
+	mov	mov
+--> movzbl	--> and
+	shl	shl
+--> or	--> sar
+--> mov	--> cltd
+--> and	--> idiv
+--> shl	--> mov
+--> sar	--> movsbl
+--> cltd	--> movzbl
+--> idiv	--> shl
+--> mov	--> or
+--> movsbl	--> mov
+--> movzbl	--> and
+	shl	shl
+--> or	--> sar
+--> mov	--> cltd
+--> and	--> idiv
+--> shl	--> movsbl
+--> sar	--> movzbl
+--> cltd	--> shl
+--> idiv	--> or
+--> movsbl	--> mov
+--> movzbl	--> and
+--> shl	--> sar
+--> or	--> cltd
+--> mov	--> idiv
+--> and	--> shl
+--> sar	--> or
+--> cltd	--> mov
+--> idiv	--> movdqa
+--> shl	--> add
+--> or	--> pop
+--> mov	--> pop
+--> movdqa	--> pop
+	--> add 	--> ____
+	--> pop 	--> ____
+	--> pop 	--> ____
+	--> pop 	--> ____
+
+
+
