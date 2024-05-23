@@ -253,6 +253,26 @@
             "minps"
         ]
     },
+    "conj": {
+        "date": "2024-05-23 15:01:59.929451",
+        "instr": []
+    },
+    "copysign": {
+        "date": "2024-05-23 15:01:59.929547",
+        "instr": [
+            "andps",
+            "andps",
+            "por"
+        ]
+    },
+    "dec": {
+        "date": "2024-05-23 15:01:59.929549",
+        "instr": [
+            "movdqa",
+            "pcmpeqd",
+            "paddb"
+        ]
+    },
     "dist": {
         "date": "2024-05-22 15:04:05.102218",
         "instr": [
@@ -298,6 +318,111 @@
             "sub",
             "jne",
             "add"
+        ]
+    },
+    "dot": {
+        "date": "2024-05-23 15:05:34.988735",
+        "instr": [
+            "pmullw"
+        ]
+    },
+    "fdim": {
+        "date": "2024-05-23 15:07:08.397729",
+        "instr": [
+            "movdqa",
+            "pcmpgtb",
+            "psubb",
+            "pandn",
+            "movdqa"
+        ]
+    },
+    "floor": {
+        "date": "2024-05-23 15:10:07.799780",
+        "instr": [
+            "movdqa",
+            "movaps",
+            "mov",
+            "movaps",
+            "movaps",
+            "movdqa",
+            "cvttps2dq",
+            "cvtdq2ps",
+            "pand",
+            "pand",
+            "cmpnleps",
+            "cmpnleps",
+            "movaps",
+            "pand",
+            "movaps",
+            "andnps",
+            "movaps",
+            "pand",
+            "cvttps2dq",
+            "por",
+            "cvtdq2ps",
+            "andnps",
+            "movaps",
+            "cmpltps",
+            "por",
+            "cmpltps",
+            "movaps",
+            "andnps",
+            "addps",
+            "addps",
+            "movaps",
+            "andnps",
+            "andps",
+            "andps",
+            "por",
+            "por",
+            "movaps",
+            "movaps"
+        ]
+    },
+    "frac": {
+        "date": "2024-05-23 15:10:07.799802",
+        "instr": [
+            "movdqa",
+            "movaps",
+            "mov",
+            "movaps",
+            "movaps",
+            "movdqa",
+            "movaps",
+            "cvttps2dq",
+            "cvtdq2ps",
+            "pand",
+            "pand",
+            "movaps",
+            "cmpnleps",
+            "cmpnleps",
+            "movaps",
+            "pand",
+            "movaps",
+            "andnps",
+            "pxor",
+            "pand",
+            "cmpeqps",
+            "cmpeqps",
+            "por",
+            "subps",
+            "cvttps2dq",
+            "cvtdq2ps",
+            "andnps",
+            "por",
+            "movaps",
+            "movaps",
+            "movaps",
+            "subps",
+            "movaps",
+            "andnps",
+            "pand",
+            "pand",
+            "por",
+            "andnps",
+            "movaps",
+            "por",
+            "movaps"
         ]
     },
     "is_nan": {

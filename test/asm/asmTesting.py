@@ -18,7 +18,29 @@ Options are:
     - `-g` : Generate functions assembly. Functions that are not stored in functions.json are append.
     - `-d` : Deep update -- Functions are replaced in functions.json even though they were already in.
     - `-t` : Keep temporary files after processing
+    - `-l` : Validation log file
+    - `-s` : Select validation target. By default all functions are validated
 """
+
+
+def custom_selection():
+    """Handle -s parameter.
+
+    Returns:
+        list: List of entry with -s or if -s isn't used returns 'all'
+    """
+    argv = sys.argv
+
+    if '-s' in argv:
+        l = []
+        b = argv.index('-s')
+        b+=1
+        while b < len(argv) and argv[b][0] != '-':
+            l.append(argv[b])
+            b+=1
+        return l
+    else:
+        return 'all'
 
 
 if __name__ == '__main__':
@@ -28,4 +50,5 @@ if __name__ == '__main__':
         tmp = '-t' in argv
         generation.update(deep=deep, keep_tmp=tmp)
     else:
-        validation.validate()
+        log = '-l' in argv
+        validation.validate(log_file=log, select=custom_selection())

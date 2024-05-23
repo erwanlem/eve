@@ -21,11 +21,6 @@ def generate_function(funcName:str, values:int):
         None
     """
 
-    if os.path.exists(TMP_CPP_FILE_NAME):
-        tmp = open(TMP_CPP_FILE_NAME, 'a')
-    else:
-        tmp = open(TMP_CPP_FILE_NAME, 'x')
-
     # Parameters type of the generated function
     param_type = "signed char"
 
@@ -49,8 +44,7 @@ def generate_function(funcName:str, values:int):
     return eve::""" + funcName + "(" + real_param + """);
 }\n"""
 
-    tmp.write(code) # write code in TMP_FILE_NAME
-    tmp.close()
+    return code
 
 
 
@@ -133,19 +127,24 @@ def get_functions_instructions(functions : list, keep_tmp=False):
     """
 
     clear_tmp()
-    tmp = open(TMP_CPP_FILE_NAME, 'x')
-    tmp.write("#include <eve/module/core.hpp>\n\n")
-    tmp.close()
 
+    full_code = "#include <eve/module/core.hpp>\n\n"
     res_dict = {}
 
     for f, p in functions:
-        generate_function(f, p)
-        os.system(f"g++ {TMP_CPP_FILE_NAME} -O3 -std=c++20 -I include/ -c -o {TMP_O_FILE_NAME}")
-        os.system(f"objdump -d -j .text -C {TMP_O_FILE_NAME} > {TMP_ASM_FILE_NAME}")
+        full_code += generate_function(f, p)
 
-        file_asm = open(TMP_ASM_FILE_NAME)
-        asm = file_asm.read()
+    # Write code in tmp.cpp
+    tmp = open(TMP_CPP_FILE_NAME, 'x')
+    tmp.write(full_code)
+    tmp.close()
+    
+    # Compile and desassemble
+    os.system(f"g++ {TMP_CPP_FILE_NAME} -O3 -std=c++20 -I include/ -c -o {TMP_O_FILE_NAME}")
+    os.system(f"objdump -d -j .text -C {TMP_O_FILE_NAME} > {TMP_ASM_FILE_NAME}")
+
+    file_asm = open(TMP_ASM_FILE_NAME)
+    asm = file_asm.read()
 
     for f, p in functions:
         res_dict[f] = extract_instructions(f, asm)
