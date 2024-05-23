@@ -91,4 +91,4 @@ def update(deep=False, keep_tmp=False):
     print(f"Operation finished : {new_f} functions saved")
 
 if __name__ == '__main__':
-    update(deep=False, keep_tmp=True)
+    update(deep=False, keep_tmp=False)
