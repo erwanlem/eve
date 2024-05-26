@@ -2,6 +2,8 @@ import json
 import extract_assembly
 import const
 import reader
+import time
+import os
 
 
 CONFIG_FILE = "test/asm/config.json"
@@ -76,22 +78,24 @@ def update(input="all", deep=False, keep_tmp=False):
         for typ in conf[k]:
             functions.append((k, typ))
 
-    print(functions)
-
-    functions_assembly = extract_assembly.get_functions_instructions(functions, keep_tmp=keep_tmp)
+    functions_assembly = extract_assembly.get_functions_instructions(functions, keep_tmp=keep_tmp, debug=True)
 
     for comp in functions_assembly.keys():
         for arch in functions_assembly[comp].keys():
             for f in functions_assembly[comp][arch].keys():
-                file = load_json(f"{const.ref_path}{comp}/{arch}/{f}.json")
-                
-                update_json = json.dumps(functions_assembly[comp][arch][f], indent=4, sort_keys=True)
-                save_json(f"{const.ref_path}{comp}/{arch}/{f}.json", update_json)
+                if not os.path.exists(f"{const.ref_path}{comp}/{arch}/{f}.json"):
+                    load_json(f"{const.ref_path}{comp}/{arch}/{f}.json")
 
-    new_f = 0
+                dict_json = { "function" : f, "asm" : functions_assembly[comp][arch][f] }
+                
+                update_json = json.dumps(dict_json, indent=4)
+                save_json(f"{const.ref_path}{comp}/{arch}/{f}.json", update_json)
 
     print(f"Operation finished : functions saved")
     
 
 if __name__ == '__main__':
-    update(input='abs.json', deep=True, keep_tmp=True)
+    t1 = time.time()
+    update(input='all', deep=True, keep_tmp=False)
+    t2 = time.time()
+    print("Timer = ", t2 - t1, " s")

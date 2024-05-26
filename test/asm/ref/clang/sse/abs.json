@@ -1,9 +1,21 @@
 {
-    "function" : "abs",
-    "content" : [
-        {"types" : [], "asm" : []},
-        {"types" : [], "asm" : []},
-        {"types" : [], "asm" : []},
-        {"types" : [], "asm" : []}
+    "function": "abs",
+    "asm": [
+        {
+            "type": [
+                "float"
+            ],
+            "instr": [
+                "andps"
+            ]
+        },
+        {
+            "type": [
+                "signed char"
+            ],
+            "instr": [
+                "andps"
+            ]
+        }
     ]
 }

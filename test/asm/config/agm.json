@@ -1,0 +1,6 @@
+{
+    "function" : "agm",
+    "parameters" : [
+        ["float", "float"]
+    ]
+}

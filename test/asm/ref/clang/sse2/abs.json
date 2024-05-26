@@ -1,3 +1,21 @@
-[
-    "andps"
-]
+{
+    "function": "abs",
+    "asm": [
+        {
+            "type": [
+                "float"
+            ],
+            "instr": [
+                "andps"
+            ]
+        },
+        {
+            "type": [
+                "signed char"
+            ],
+            "instr": [
+                "andps"
+            ]
+        }
+    ]
+}

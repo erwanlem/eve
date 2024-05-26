@@ -1,3 +1,25 @@
-[
-    "andps"
-]
+{
+    "function": "abs",
+    "asm": [
+        {
+            "type": [
+                "float"
+            ],
+            "instr": [
+                "movss",
+                "shufps $0x0,%xmm1,%xmm1",
+                "andps"
+            ]
+        },
+        {
+            "type": [
+                "signed char"
+            ],
+            "instr": [
+                "movss",
+                "shufps $0x0,%xmm1,%xmm1",
+                "andps"
+            ]
+        }
+    ]
+}

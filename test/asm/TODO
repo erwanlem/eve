@@ -4,3 +4,5 @@ Il faut un unique fichier de config par fonction.
 
 
 [ ] Refaire les documentations
+[ ] Faire les tests
+[ ] Check gcc and clang installations

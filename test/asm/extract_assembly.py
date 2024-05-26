@@ -1,6 +1,7 @@
 import re
 import os
 import const
+import time
 
 TMP_CPP_FILE_NAME = "test/asm/tmp.cpp"
 TMP_O_FILE_NAME = "test/asm/tmp.o"
@@ -113,7 +114,7 @@ def get_assembler(input_path, output_path, arch, compiler='g++'):
 
 
 
-def get_functions_instructions(functions : list, keep_tmp=False):
+def get_functions_instructions(functions : list, keep_tmp=False, debug=False):
     """ Returns assembly instructions of the given functions
 
     Args:
@@ -137,24 +138,38 @@ def get_functions_instructions(functions : list, keep_tmp=False):
     tmp.write(full_code)
     tmp.close()
 
+    nb_iter = len( const.COMPILER.keys() ) * len( const.ARCH.keys() )
+    it = 0
+
     for comp in const.COMPILER.keys():
         res_dict[comp] = {}
         for a in const.ARCH.keys():
             res_dict[comp][a] = {}
 
+            if debug:
+                os.system(const.clear_command)
+                print(f'Generating assembly : {int(100 * it / nb_iter)}% done')
+
             get_assembler(TMP_CPP_FILE_NAME, TMP_ASM_FILE_NAME, const.ARCH[a], compiler=const.COMPILER[comp])
+
+            it += 1
 
             file_asm = open(TMP_ASM_FILE_NAME)
             asm = file_asm.read()
 
             for f, p in functions:
+
                 if f not in res_dict[comp][a].keys():
-                    res_dict[comp][a][f] = [extract_instructions(f, asm)]
+                    res_dict[comp][a][f] = [{"type" : p, "instr" : extract_instructions(f, asm)}]
                 else:
-                    res_dict[comp][a][f].append(extract_instructions(f, asm))
+                    res_dict[comp][a][f].append({"type" : p, "instr" : extract_instructions(f, asm)})
             
-            if not keep_tmp:
-                clear_tmp()
+    if not keep_tmp:
+        clear_tmp()
+    
+    if debug:
+        os.system(const.clear_command)
+        print(f'Generating assembly : {int(100 * it / nb_iter)}% done')
 
     #print(res_dict)
     return res_dict
