@@ -1,0 +1,7 @@
+{
+    "function" : "abs",
+    "parameters" : [
+        ["float"],
+        ["signed char"]
+    ]
+}

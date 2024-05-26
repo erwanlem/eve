@@ -1,0 +1,6 @@
+Par défaut le programme réalise une validation de tous les fichiers avec gcc.
+
+Il faut un unique fichier de config par fonction.
+
+
+[ ] Refaire les documentations

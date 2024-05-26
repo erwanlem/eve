@@ -58,14 +58,25 @@ def first_difference(l1 : list, l2 : list):
 
 
 
-def get_saved_functions():
-    """Returns saved functions as dictionary
+def get_reference_functions(select='all'):
 
-    Returns:
-        dict: a dictionary that corresponds to json file containing the functions
-    """
-    f = load_json()
-    funcDict = json.loads(f)
+    funcDict = {}
+
+    for c in os.listdir(f"{const.ref_path}"):
+        funcDict[c] = {}
+        for a in os.listdir(f"{const.ref_path}/{c}"):
+            
+            if select == 'all':
+                funcDict[c][a] = {}
+                for f in os.listdir(f"{const.ref_path}/{c}/{a}"):
+                    file = load_json(f"{const.ref_path}/{c}/{a}/{f}")
+                    funcInstr = json.loads(file)
+                    funcDict[c][a][f] = funcInstr
+            else:
+                funcDict[c][a] = {}
+                f = load_json(f"{const.ref_path}/{c}/{a}/{select}.json")
+                funcInstr = json.loads(f)
+                funcDict[c][a][select] = funcInstr
 
     return funcDict
 
@@ -124,9 +135,9 @@ def validate(select='all', raise_exception=False, log_file=False):
     functions = [(k, confDict[k]) for k in dict.keys(confDict)]
     functions_assembly = extract_assembly.get_functions_instructions(functions, keep_tmp=False)
 
-    validationSet = get_saved_functions()
+    validationSet = get_reference_functions(select=select)
 
-    ret = True
+    ret = 0
 
     log = "" # log file str
 
@@ -150,7 +161,7 @@ def validate(select='all', raise_exception=False, log_file=False):
             else:
                 e = AssemblyMismatch(k, validationSet[k]['instr'], functions_assembly[k], validationSet[k]['date'], diff)
                 print(e.__str__())
-                ret = False
+                ret = -1
             if log_file:
                 log += log_string(k,  validationSet[k]['instr'], functions_assembly[k], validationSet[k]['date'])
     
@@ -167,4 +178,5 @@ def validate(select='all', raise_exception=False, log_file=False):
 
 
 if __name__ == '__main__':
-    validate(log_file=True)
+    #validate(log_file=True)
+    print(get_reference_functions(select='abs'))

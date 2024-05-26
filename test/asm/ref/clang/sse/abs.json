@@ -1,0 +1,9 @@
+{
+    "function" : "abs",
+    "content" : [
+        {"types" : [], "asm" : []},
+        {"types" : [], "asm" : []},
+        {"types" : [], "asm" : []},
+        {"types" : [], "asm" : []}
+    ]
+}

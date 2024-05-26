@@ -1,33 +1,34 @@
 import json
 import extract_assembly
-import datetime
+import const
+import reader
 
 
 CONFIG_FILE = "test/asm/config.json"
 STORE_FILE = "test/asm/functions.json"
 
 
-def load_json():
+def load_json(file_name:str):
     """Load json string from `STORE_FILE`
 
     Returns:
         str: Json file as string
     """
     try:
-        f = open(STORE_FILE)
+        f = open(file_name)
         t = f.read()
         f.close()
         return t
     except FileNotFoundError:
-        f = open(STORE_FILE, 'x')
+        f = open(file_name, 'x')
         f.close()
         return "{}"
     except Exception as e:
-        raise (f"Error while loading {STORE_FILE} : {e}")
+        raise (f"Error while loading {file_name} : {e}")
 
 
 
-def load_config():
+def load_config(file_name):
     """Load json string from `CONFIG_FILE`
 
     Returns:
@@ -47,48 +48,50 @@ def load_config():
 
 
 
-def save_json(new_conf:str):
+def save_json(destination_path, text:str):
     """Save json string in `STORE_FILE`
 
     Args:
-        new_conf (str): The string to save
+        text (str): The string to save
     """
     try:
-        f = open(STORE_FILE, 'w')
-        f.write(new_conf)
+        f = open(destination_path, 'w')
+        f.write(text)
         f.close()
     except Exception as e:
-        raise (f"Error while writing {STORE_FILE} : {e}")
+        raise Exception(f"Error while writing {destination_path} : {e}")
 
 
-
-def update(deep=False, keep_tmp=False):
-    """Update functions in `STORE_FILE` using conguration saved in `CONFIG FILE`
+def update(input="all", deep=False, keep_tmp=False):
+    """Update functions in `STORE_FILE` using confuration saved in `CONFIG FILE`
 
     Args:
         deep (bool, optional): If `True` each function is update, even though it was already saved.
          If `False` only unsaved functions are append, the other ones don't change. Defaults to False.
     """
-    conf = load_config()
-    confDict = json.loads(conf)
+    conf = reader.read_config_file(input)
 
-    functions = [(k, confDict[k]) for k in dict.keys(confDict)]
+    functions = []
+    for k in conf.keys():
+        for typ in conf[k]:
+            functions.append((k, typ))
+
+    print(functions)
 
     functions_assembly = extract_assembly.get_functions_instructions(functions, keep_tmp=keep_tmp)
 
-    file = load_json()
-    jsonDict = json.loads(file)
-    k = dict.keys(jsonDict)
+    for comp in functions_assembly.keys():
+        for arch in functions_assembly[comp].keys():
+            for f in functions_assembly[comp][arch].keys():
+                file = load_json(f"{const.ref_path}{comp}/{arch}/{f}.json")
+                
+                update_json = json.dumps(functions_assembly[comp][arch][f], indent=4, sort_keys=True)
+                save_json(f"{const.ref_path}{comp}/{arch}/{f}.json", update_json)
 
     new_f = 0
-    for f in dict.keys(functions_assembly):
-        if deep or f not in k:
-            jsonDict[f] = {'date' : str(datetime.datetime.today()), 'instr' : functions_assembly[f]}
-            new_f += 1
 
-    update_json = json.dumps(jsonDict, indent=4, sort_keys=True)
-    save_json(update_json)
-    print(f"Operation finished : {new_f} functions saved")
+    print(f"Operation finished : functions saved")
+    
 
 if __name__ == '__main__':
-    update(deep=False, keep_tmp=False)
+    update(input='abs.json', deep=True, keep_tmp=True)
