@@ -13,9 +13,6 @@ import platform
         avx2
         avx512
     
-
-"""
-
 ARCH = {
     'sse' : '-msse', 
     'sse2' : '-msse2', 
@@ -24,6 +21,18 @@ ARCH = {
     'ssse3' : '-mssse3',
     'avx' : '-mavx',
     'avx2' : '-mavx2'}
+"""
+
+
+ARCH = {
+    'sse' : '-msse', 
+    'sse2' : '-msse2',
+    'sse3' : '-msse3',
+    'sse4.2' : '-msse4.2', 
+    'ssse3' : '-mssse3',
+    'avx' : '-mavx',
+    'avx2' : '-mavx2',
+    'avx512' : '-march=skylake-avx512'}
 
 COMPILER = {
     'clang' : 'clang',

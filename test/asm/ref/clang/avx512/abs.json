@@ -1,0 +1,37 @@
+{
+    "function": "abs",
+    "asm": [
+        {
+            "type": [
+                "float"
+            ],
+            "instr": [
+                "vandpd 0x0(%rip){1to8},%zmm0,%zmm0"
+            ]
+        },
+        {
+            "type": [
+                "signed char"
+            ],
+            "instr": [
+                "vandpd 0x0(%rip){1to8},%zmm0,%zmm0"
+            ]
+        },
+        {
+            "type": [
+                "int"
+            ],
+            "instr": [
+                "vandpd 0x0(%rip){1to8},%zmm0,%zmm0"
+            ]
+        },
+        {
+            "type": [
+                "int16_t, eve::fixed<2>"
+            ],
+            "instr": [
+                "vandpd 0x0(%rip){1to8},%zmm0,%zmm0"
+            ]
+        }
+    ]
+}

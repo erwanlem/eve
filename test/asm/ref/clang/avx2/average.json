@@ -1,0 +1,65 @@
+{
+    "function": "average",
+    "asm": [
+        {
+            "type": [
+                "float",
+                "float"
+            ],
+            "instr": [
+                "vbroadcastss 0x0(%rip),%ymm2",
+                "vmulps %ymm2,%ymm1,%ymm1",
+                "vmulps %ymm2,%ymm0,%ymm0",
+                "vaddps %ymm1,%ymm0,%ymm0"
+            ]
+        },
+        {
+            "type": [
+                "signed char",
+                "signed char"
+            ],
+            "instr": [
+                "vbroadcastss 0x0(%rip),%ymm2",
+                "vmulps %ymm2,%ymm1,%ymm1",
+                "vmulps %ymm2,%ymm0,%ymm0",
+                "vaddps %ymm1,%ymm0,%ymm0"
+            ]
+        },
+        {
+            "type": [
+                "char",
+                "char"
+            ],
+            "instr": [
+                "vbroadcastss 0x0(%rip),%ymm2",
+                "vmulps %ymm2,%ymm1,%ymm1",
+                "vmulps %ymm2,%ymm0,%ymm0",
+                "vaddps %ymm1,%ymm0,%ymm0"
+            ]
+        },
+        {
+            "type": [
+                "double",
+                "double"
+            ],
+            "instr": [
+                "vbroadcastss 0x0(%rip),%ymm2",
+                "vmulps %ymm2,%ymm1,%ymm1",
+                "vmulps %ymm2,%ymm0,%ymm0",
+                "vaddps %ymm1,%ymm0,%ymm0"
+            ]
+        },
+        {
+            "type": [
+                "int",
+                "int"
+            ],
+            "instr": [
+                "vbroadcastss 0x0(%rip),%ymm2",
+                "vmulps %ymm2,%ymm1,%ymm1",
+                "vmulps %ymm2,%ymm0,%ymm0",
+                "vaddps %ymm1,%ymm0,%ymm0"
+            ]
+        }
+    ]
+}

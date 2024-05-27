@@ -1,0 +1,10 @@
+{
+    "function" : "average",
+    "parameters" : [
+        ["float", "float"],
+        ["signed char", "signed char"],
+        ["char", "char"],
+        ["double", "double"],
+        ["int", "int"]
+    ]
+}

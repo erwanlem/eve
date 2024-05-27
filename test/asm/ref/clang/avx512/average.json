@@ -1,0 +1,60 @@
+{
+    "function": "average",
+    "asm": [
+        {
+            "type": [
+                "float",
+                "float"
+            ],
+            "instr": [
+                "vbroadcastss 0x0(%rip),%zmm2",
+                "vmulps %zmm2,%zmm1,%zmm1",
+                "vfmadd213ps %zmm1,%zmm2,%zmm0"
+            ]
+        },
+        {
+            "type": [
+                "signed char",
+                "signed char"
+            ],
+            "instr": [
+                "vbroadcastss 0x0(%rip),%zmm2",
+                "vmulps %zmm2,%zmm1,%zmm1",
+                "vfmadd213ps %zmm1,%zmm2,%zmm0"
+            ]
+        },
+        {
+            "type": [
+                "char",
+                "char"
+            ],
+            "instr": [
+                "vbroadcastss 0x0(%rip),%zmm2",
+                "vmulps %zmm2,%zmm1,%zmm1",
+                "vfmadd213ps %zmm1,%zmm2,%zmm0"
+            ]
+        },
+        {
+            "type": [
+                "double",
+                "double"
+            ],
+            "instr": [
+                "vbroadcastss 0x0(%rip),%zmm2",
+                "vmulps %zmm2,%zmm1,%zmm1",
+                "vfmadd213ps %zmm1,%zmm2,%zmm0"
+            ]
+        },
+        {
+            "type": [
+                "int",
+                "int"
+            ],
+            "instr": [
+                "vbroadcastss 0x0(%rip),%zmm2",
+                "vmulps %zmm2,%zmm1,%zmm1",
+                "vfmadd213ps %zmm1,%zmm2,%zmm0"
+            ]
+        }
+    ]
+}

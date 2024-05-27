@@ -2,6 +2,8 @@
     "function" : "abs",
     "parameters" : [
         ["float"],
-        ["signed char"]
+        ["signed char"],
+        ["int"],
+        ["int16_t, eve::fixed<2>"]
     ]
 }

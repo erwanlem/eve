@@ -108,7 +108,7 @@ def extract_instructions(functionName:str, asm:str):
 
 def get_assembler(input_path, output_path, arch, compiler='g++'):
     # Compile and desassemble
-    os.system(f"{compiler} {input_path} -O3 {arch} -std=c++20 -I include/ -c -o tmp.o")
+    os.system(f"{compiler} {input_path} -O3 {arch} -DNDEBUG -std=c++20 -I include/ -c -o tmp.o")
     os.system(f"objdump -d -j .text -C tmp.o > {output_path}")
 
 

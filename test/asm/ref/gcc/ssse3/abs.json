@@ -6,8 +6,6 @@
                 "float"
             ],
             "instr": [
-                "movss",
-                "shufps $0x0,%xmm1,%xmm1",
                 "andps"
             ]
         },
@@ -16,8 +14,22 @@
                 "signed char"
             ],
             "instr": [
-                "movss",
-                "shufps $0x0,%xmm1,%xmm1",
+                "andps"
+            ]
+        },
+        {
+            "type": [
+                "int"
+            ],
+            "instr": [
+                "andps"
+            ]
+        },
+        {
+            "type": [
+                "int16_t, eve::fixed<2>"
+            ],
+            "instr": [
                 "andps"
             ]
         }

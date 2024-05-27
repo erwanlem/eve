@@ -1,0 +1,14 @@
+{
+    "function": "add",
+    "asm": [
+        {
+            "type": [
+                "float",
+                "float"
+            ],
+            "instr": [
+                "vaddps %zmm1,%zmm0,%zmm0"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,41 @@
+{
+    "function": "abs",
+    "asm": [
+        {
+            "type": [
+                "float"
+            ],
+            "instr": [
+                "vbroadcastss 0x0(%rip),%zmm1",
+                "vandps %zmm1,%zmm0,%zmm0"
+            ]
+        },
+        {
+            "type": [
+                "signed char"
+            ],
+            "instr": [
+                "vbroadcastss 0x0(%rip),%zmm1",
+                "vandps %zmm1,%zmm0,%zmm0"
+            ]
+        },
+        {
+            "type": [
+                "int"
+            ],
+            "instr": [
+                "vbroadcastss 0x0(%rip),%zmm1",
+                "vandps %zmm1,%zmm0,%zmm0"
+            ]
+        },
+        {
+            "type": [
+                "int16_t, eve::fixed<2>"
+            ],
+            "instr": [
+                "vbroadcastss 0x0(%rip),%zmm1",
+                "vandps %zmm1,%zmm0,%zmm0"
+            ]
+        }
+    ]
+}
