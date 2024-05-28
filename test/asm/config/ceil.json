@@ -1,0 +1,9 @@
+{
+    "function" : "ceil",
+    "parameters" : [
+        ["float"],
+        ["char"],
+        ["double"],
+        ["int"]
+    ]
+}

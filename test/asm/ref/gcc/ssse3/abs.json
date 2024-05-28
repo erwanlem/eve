@@ -6,7 +6,7 @@
                 "float"
             ],
             "instr": [
-                "andps"
+                "andps 0x0(%rip),%xmm0"
             ]
         },
         {
@@ -14,7 +14,7 @@
                 "signed char"
             ],
             "instr": [
-                "andps"
+                "pabsb %xmm0,%xmm0"
             ]
         },
         {
@@ -22,7 +22,7 @@
                 "int"
             ],
             "instr": [
-                "andps"
+                "pabsd %xmm0,%xmm0"
             ]
         },
         {
@@ -30,7 +30,7 @@
                 "int16_t, eve::fixed<2>"
             ],
             "instr": [
-                "andps"
+                "pabsw %xmm0,%xmm0"
             ]
         }
     ]

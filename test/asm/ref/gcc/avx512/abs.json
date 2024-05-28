@@ -15,8 +15,7 @@
                 "signed char"
             ],
             "instr": [
-                "vbroadcastss 0x0(%rip),%zmm1",
-                "vandps %zmm1,%zmm0,%zmm0"
+                "vpabsb %zmm0,%zmm0"
             ]
         },
         {
@@ -24,8 +23,7 @@
                 "int"
             ],
             "instr": [
-                "vbroadcastss 0x0(%rip),%zmm1",
-                "vandps %zmm1,%zmm0,%zmm0"
+                "vpabsd %zmm0,%zmm0"
             ]
         },
         {
@@ -33,8 +31,7 @@
                 "int16_t, eve::fixed<2>"
             ],
             "instr": [
-                "vbroadcastss 0x0(%rip),%zmm1",
-                "vandps %zmm1,%zmm0,%zmm0"
+                "vpabsw %xmm0,%xmm0"
             ]
         }
     ]

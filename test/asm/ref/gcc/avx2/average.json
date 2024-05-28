@@ -19,10 +19,14 @@
                 "signed char"
             ],
             "instr": [
-                "vmovaps 0x0(%rip),%ymm2",
-                "vmulps %ymm2,%ymm1,%ymm1",
-                "vmulps %ymm2,%ymm0,%ymm0",
-                "vaddps %ymm0,%ymm1,%ymm0"
+                "vpxor %ymm1,%ymm0,%ymm2",
+                "vmovdqa 0x0(%rip),%ymm3",
+                "vpand %ymm1,%ymm0,%ymm0",
+                "vpsraw $0x1,%ymm2,%ymm2",
+                "vpand 0x0(%rip),%ymm2,%ymm2",
+                "vpxor %ymm3,%ymm2,%ymm2",
+                "vpsubb %ymm3,%ymm2,%ymm2",
+                "vpaddb %ymm0,%ymm2,%ymm0"
             ]
         },
         {
@@ -31,10 +35,14 @@
                 "char"
             ],
             "instr": [
-                "vmovaps 0x0(%rip),%ymm2",
-                "vmulps %ymm2,%ymm1,%ymm1",
-                "vmulps %ymm2,%ymm0,%ymm0",
-                "vaddps %ymm0,%ymm1,%ymm0"
+                "vpxor %ymm1,%ymm0,%ymm2",
+                "vmovdqa 0x0(%rip),%ymm3",
+                "vpand %ymm1,%ymm0,%ymm0",
+                "vpsraw $0x1,%ymm2,%ymm2",
+                "vpand 0x0(%rip),%ymm2,%ymm2",
+                "vpxor %ymm3,%ymm2,%ymm2",
+                "vpsubb %ymm3,%ymm2,%ymm2",
+                "vpaddb %ymm0,%ymm2,%ymm0"
             ]
         },
         {
@@ -43,10 +51,10 @@
                 "double"
             ],
             "instr": [
-                "vmovaps 0x0(%rip),%ymm2",
-                "vmulps %ymm2,%ymm1,%ymm1",
-                "vmulps %ymm2,%ymm0,%ymm0",
-                "vaddps %ymm0,%ymm1,%ymm0"
+                "vmovapd 0x0(%rip),%ymm2",
+                "vmulpd %ymm2,%ymm1,%ymm1",
+                "vmulpd %ymm2,%ymm0,%ymm0",
+                "vaddpd %ymm0,%ymm1,%ymm0"
             ]
         },
         {
@@ -55,10 +63,10 @@
                 "int"
             ],
             "instr": [
-                "vmovaps 0x0(%rip),%ymm2",
-                "vmulps %ymm2,%ymm1,%ymm1",
-                "vmulps %ymm2,%ymm0,%ymm0",
-                "vaddps %ymm0,%ymm1,%ymm0"
+                "vpxor %ymm1,%ymm0,%ymm2",
+                "vpand %ymm1,%ymm0,%ymm0",
+                "vpsrad $0x1,%ymm2,%ymm2",
+                "vpaddd %ymm0,%ymm2,%ymm0"
             ]
         }
     ]

@@ -1,0 +1,72 @@
+{
+    "function": "ceil",
+    "asm": [
+        {
+            "type": [
+                "float"
+            ],
+            "instr": [
+                "movaps 0x0(%rip),%xmm1",
+                "movaps %xmm0,%xmm2",
+                "xorps %xmm1,%xmm2",
+                "cvttps2dq %xmm2,%xmm3",
+                "andps 0x0(%rip),%xmm0",
+                "cmpnleps 0x0(%rip),%xmm0",
+                "cvtdq2ps %xmm3,%xmm3",
+                "movaps %xmm2,%xmm4",
+                "andps %xmm0,%xmm4",
+                "andnps %xmm3,%xmm0",
+                "orps %xmm4,%xmm0",
+                "cmpltps %xmm0,%xmm2",
+                "movaps %xmm2,%xmm3",
+                "andnps %xmm0,%xmm3",
+                "addps 0x0(%rip),%xmm0",
+                "andps %xmm2,%xmm0",
+                "orps %xmm3,%xmm0",
+                "xorps %xmm1,%xmm0"
+            ]
+        },
+        {
+            "type": [
+                "char"
+            ],
+            "instr": []
+        },
+        {
+            "type": [
+                "double"
+            ],
+            "instr": [
+                "movapd 0x0(%rip),%xmm1",
+                "movapd %xmm0,%xmm2",
+                "xorpd %xmm1,%xmm2",
+                "cvttsd2si %xmm2,%rax",
+                "pshufd $0xee,%xmm2,%xmm3",
+                "cvttsd2si %xmm3,%rcx",
+                "xorps %xmm3,%xmm3",
+                "cvtsi2sd %rax,%xmm3",
+                "cvtsi2sd %rcx,%xmm4",
+                "andpd 0x0(%rip),%xmm0",
+                "cmpnlepd 0x0(%rip),%xmm0",
+                "unpcklpd %xmm4,%xmm3",
+                "movapd %xmm2,%xmm4",
+                "andpd %xmm0,%xmm4",
+                "andnpd %xmm3,%xmm0",
+                "orpd %xmm4,%xmm0",
+                "cmpltpd %xmm0,%xmm2",
+                "movapd %xmm2,%xmm3",
+                "andnpd %xmm0,%xmm3",
+                "addpd 0x0(%rip),%xmm0",
+                "andpd %xmm2,%xmm0",
+                "orpd %xmm3,%xmm0",
+                "xorpd %xmm1,%xmm0"
+            ]
+        },
+        {
+            "type": [
+                "int"
+            ],
+            "instr": []
+        }
+    ]
+}

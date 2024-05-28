@@ -17,10 +17,11 @@
                 "signed char"
             ],
             "instr": [
-                "vmovaps %ymm0,%ymm1",
-                "vmovaps 0x0(%rip),%ymm0",
-                "vxorps 0x0(%rip),%ymm0,%ymm0",
-                "vandps %ymm1,%ymm0,%ymm0"
+                "vmovdqa %xmm0,%xmm1",
+                "vextractf128 $0x1,%ymm0,%xmm0",
+                "vpabsb %xmm1,%xmm1",
+                "vpabsb %xmm0,%xmm0",
+                "vinsertf128 $0x1,%xmm0,%ymm1,%ymm0"
             ]
         },
         {
@@ -28,10 +29,11 @@
                 "int"
             ],
             "instr": [
-                "vmovaps %ymm0,%ymm1",
-                "vmovaps 0x0(%rip),%ymm0",
-                "vxorps 0x0(%rip),%ymm0,%ymm0",
-                "vandps %ymm1,%ymm0,%ymm0"
+                "vmovdqa %xmm0,%xmm1",
+                "vextractf128 $0x1,%ymm0,%xmm0",
+                "vpabsd %xmm1,%xmm1",
+                "vpabsd %xmm0,%xmm0",
+                "vinsertf128 $0x1,%xmm0,%ymm1,%ymm0"
             ]
         },
         {
@@ -39,10 +41,7 @@
                 "int16_t, eve::fixed<2>"
             ],
             "instr": [
-                "vmovaps %ymm0,%ymm1",
-                "vmovaps 0x0(%rip),%ymm0",
-                "vxorps 0x0(%rip),%ymm0,%ymm0",
-                "vandps %ymm1,%ymm0,%ymm0"
+                "vpabsw %xmm0,%xmm0"
             ]
         }
     ]

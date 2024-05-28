@@ -1,0 +1,31 @@
+{
+    "function": "dist",
+    "asm": [
+        {
+            "type": [
+                "float",
+                "float"
+            ],
+            "instr": [
+                "movaps %xmm0,%xmm2",
+                "maxps %xmm1,%xmm2",
+                "minps %xmm1,%xmm0",
+                "subps %xmm0,%xmm2",
+                "movaps %xmm2,%xmm0"
+            ]
+        },
+        {
+            "type": [
+                "int",
+                "int"
+            ],
+            "instr": [
+                "movdqa %xmm0,%xmm2",
+                "pmaxsd %xmm1,%xmm2",
+                "pminsd %xmm1,%xmm0",
+                "psubd %xmm0,%xmm2",
+                "movdqa %xmm2,%xmm0"
+            ]
+        }
+    ]
+}

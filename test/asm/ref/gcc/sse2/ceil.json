@@ -1,0 +1,78 @@
+{
+    "function": "ceil",
+    "asm": [
+        {
+            "type": [
+                "float"
+            ],
+            "instr": [
+                "movaps 0x0(%rip),%xmm3",
+                "movdqa 0x0(%rip),%xmm1",
+                "xorps %xmm3,%xmm0",
+                "pand %xmm0,%xmm1",
+                "cvttps2dq %xmm0,%xmm2",
+                "cvtdq2ps %xmm2,%xmm2",
+                "cmpnleps 0x0(%rip),%xmm1",
+                "movaps %xmm1,%xmm4",
+                "pand %xmm0,%xmm1",
+                "andnps %xmm2,%xmm4",
+                "movaps %xmm0,%xmm2",
+                "movaps 0x0(%rip),%xmm0",
+                "por %xmm4,%xmm1",
+                "cmpltps %xmm1,%xmm2",
+                "addps %xmm1,%xmm0",
+                "movaps %xmm2,%xmm4",
+                "andps %xmm2,%xmm0",
+                "andnps %xmm1,%xmm4",
+                "por %xmm4,%xmm0",
+                "xorps %xmm3,%xmm0"
+            ]
+        },
+        {
+            "type": [
+                "char"
+            ],
+            "instr": []
+        },
+        {
+            "type": [
+                "double"
+            ],
+            "instr": [
+                "movapd 0x0(%rip),%xmm3",
+                "pxor %xmm2,%xmm2",
+                "movdqa 0x0(%rip),%xmm1",
+                "pxor %xmm4,%xmm4",
+                "xorpd %xmm3,%xmm0",
+                "cvttsd2si %xmm0,%rax",
+                "movapd %xmm0,%xmm5",
+                "pandn %xmm0,%xmm1",
+                "cmpnlepd 0x0(%rip),%xmm1",
+                "unpckhpd %xmm5,%xmm5",
+                "cvtsi2sd %rax,%xmm2",
+                "cvttsd2si %xmm5,%rax",
+                "cvtsi2sd %rax,%xmm4",
+                "unpcklpd %xmm4,%xmm2",
+                "movapd %xmm1,%xmm4",
+                "pand %xmm0,%xmm1",
+                "andnpd %xmm2,%xmm4",
+                "movapd %xmm0,%xmm2",
+                "movapd 0x0(%rip),%xmm0",
+                "por %xmm4,%xmm1",
+                "cmpltpd %xmm1,%xmm2",
+                "addpd %xmm1,%xmm0",
+                "movapd %xmm2,%xmm4",
+                "andpd %xmm2,%xmm0",
+                "andnpd %xmm1,%xmm4",
+                "por %xmm4,%xmm0",
+                "xorpd %xmm3,%xmm0"
+            ]
+        },
+        {
+            "type": [
+                "int"
+            ],
+            "instr": []
+        }
+    ]
+}

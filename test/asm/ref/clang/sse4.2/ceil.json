@@ -1,0 +1,33 @@
+{
+    "function": "ceil",
+    "asm": [
+        {
+            "type": [
+                "float"
+            ],
+            "instr": [
+                "roundps $0x2,%xmm0,%xmm0"
+            ]
+        },
+        {
+            "type": [
+                "char"
+            ],
+            "instr": []
+        },
+        {
+            "type": [
+                "double"
+            ],
+            "instr": [
+                "roundpd $0x2,%xmm0,%xmm0"
+            ]
+        },
+        {
+            "type": [
+                "int"
+            ],
+            "instr": []
+        }
+    ]
+}

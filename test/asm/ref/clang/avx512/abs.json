@@ -14,7 +14,7 @@
                 "signed char"
             ],
             "instr": [
-                "vandpd 0x0(%rip){1to8},%zmm0,%zmm0"
+                "vpabsb %zmm0,%zmm0"
             ]
         },
         {
@@ -22,7 +22,7 @@
                 "int"
             ],
             "instr": [
-                "vandpd 0x0(%rip){1to8},%zmm0,%zmm0"
+                "vpabsd %zmm0,%zmm0"
             ]
         },
         {
@@ -30,7 +30,7 @@
                 "int16_t, eve::fixed<2>"
             ],
             "instr": [
-                "vandpd 0x0(%rip){1to8},%zmm0,%zmm0"
+                "vpabsw %xmm0,%xmm0"
             ]
         }
     ]

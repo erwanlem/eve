@@ -1,0 +1,7 @@
+{
+    "function" : "dist",
+    "parameters" : [
+        ["float", "float"],
+        ["int", "int"]
+    ]
+}

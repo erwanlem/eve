@@ -6,7 +6,7 @@
                 "float"
             ],
             "instr": [
-                "andps"
+                "andps 0x0(%rip),%xmm0"
             ]
         },
         {
@@ -14,7 +14,10 @@
                 "signed char"
             ],
             "instr": [
-                "andps"
+                "movdqa %xmm0,%xmm1",
+                "pxor %xmm0,%xmm0",
+                "psubb %xmm1,%xmm0",
+                "pminub %xmm1,%xmm0"
             ]
         },
         {
@@ -22,7 +25,10 @@
                 "int"
             ],
             "instr": [
-                "andps"
+                "movdqa %xmm0,%xmm1",
+                "psrad $0x1f,%xmm1",
+                "pxor %xmm1,%xmm0",
+                "psubd %xmm1,%xmm0"
             ]
         },
         {
@@ -30,7 +36,10 @@
                 "int16_t, eve::fixed<2>"
             ],
             "instr": [
-                "andps"
+                "movdqa %xmm0,%xmm1",
+                "pxor %xmm0,%xmm0",
+                "psubw %xmm1,%xmm0",
+                "pmaxsw %xmm1,%xmm0"
             ]
         }
     ]

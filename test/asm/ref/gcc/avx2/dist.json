@@ -1,0 +1,27 @@
+{
+    "function": "dist",
+    "asm": [
+        {
+            "type": [
+                "float",
+                "float"
+            ],
+            "instr": [
+                "vminps %ymm1,%ymm0,%ymm2",
+                "vmaxps %ymm1,%ymm0,%ymm0",
+                "vsubps %ymm2,%ymm0,%ymm0"
+            ]
+        },
+        {
+            "type": [
+                "int",
+                "int"
+            ],
+            "instr": [
+                "vpminsd %ymm1,%ymm0,%ymm2",
+                "vpmaxsd %ymm1,%ymm0,%ymm0",
+                "vpsubd %ymm2,%ymm0,%ymm0"
+            ]
+        }
+    ]
+}

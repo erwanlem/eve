@@ -7,7 +7,7 @@
                 "float"
             ],
             "instr": [
-                "addps"
+                "addps %xmm1,%xmm0"
             ]
         }
     ]

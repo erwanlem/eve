@@ -12,6 +12,8 @@ def load_json(file_name:str, create_if_not_found=False):
     try:
         f = open(file_name)
         t = f.read()
+        if t == '':
+            t = '{}'
         f.close()
         return t
     except FileNotFoundError:

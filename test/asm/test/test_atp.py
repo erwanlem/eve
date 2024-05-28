@@ -1,4 +1,6 @@
 import unittest
+import sys
+sys.path.append("test/asm/test/..")
 import atp
 
 class TestOptionToDict(unittest.TestCase):
@@ -15,7 +17,8 @@ class TestOptionToDict(unittest.TestCase):
             "input" : 'all',
             "keep_tmp" : False,
             "generate" : False,
-            "compiler" : "g++"
+            "compiler" : "g++",
+            "exception" : False
         }
         self.assertEqual(command1, d)
 

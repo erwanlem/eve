@@ -1,0 +1,43 @@
+{
+    "function": "dist",
+    "asm": [
+        {
+            "type": [
+                "float",
+                "float"
+            ],
+            "instr": [
+                "lea 0x8(%rsp),%r10",
+                "and $0xffffffffffffffc0,%rsp",
+                "push -0x8(%r10)",
+                "push %rbp",
+                "mov %rsp,%rbp",
+                "push %r10",
+                "sub $0x28,%rsp",
+                "call 20",
+                "mov -0x8(%rbp),%r10",
+                "leave",
+                "lea -0x8(%r10),%rsp"
+            ]
+        },
+        {
+            "type": [
+                "int",
+                "int"
+            ],
+            "instr": [
+                "lea 0x8(%rsp),%r10",
+                "and $0xffffffffffffffc0,%rsp",
+                "push -0x8(%r10)",
+                "push %rbp",
+                "mov %rsp,%rbp",
+                "push %r10",
+                "sub $0x28,%rsp",
+                "call 0",
+                "mov -0x8(%rbp),%r10",
+                "leave",
+                "lea -0x8(%r10),%rsp"
+            ]
+        }
+    ]
+}

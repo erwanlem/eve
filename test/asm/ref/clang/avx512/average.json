@@ -18,9 +18,26 @@
                 "signed char"
             ],
             "instr": [
-                "vbroadcastss 0x0(%rip),%zmm2",
-                "vmulps %zmm2,%zmm1,%zmm1",
-                "vfmadd213ps %zmm1,%zmm2,%zmm0"
+                "push %rbp",
+                "mov %rsp,%rbp",
+                "and $0xffffffffffffffc0,%rsp",
+                "sub $0x100,%rsp",
+                "vpandq %zmm0,%zmm1,%zmm2",
+                "vmovdqa64 %zmm2,0x40(%rsp)",
+                "vpxorq %zmm0,%zmm1,%zmm0",
+                "vmovdqa64 %zmm0,0x80(%rsp)",
+                "movl $0x1,0x24(%rsp)",
+                "lea 0x20(%rsp),%rax",
+                "mov %rax,0x28(%rsp)",
+                "lea 0x80(%rsp),%rax",
+                "mov %rax,0x30(%rsp)",
+                "lea 0x24(%rsp),%rax",
+                "mov %rax,0x38(%rsp)",
+                "lea 0x28(%rsp),%rdi",
+                "call 14e",
+                "vpaddb 0x40(%rsp),%zmm0,%zmm0",
+                "mov %rbp,%rsp",
+                "pop %rbp"
             ]
         },
         {
@@ -29,9 +46,26 @@
                 "char"
             ],
             "instr": [
-                "vbroadcastss 0x0(%rip),%zmm2",
-                "vmulps %zmm2,%zmm1,%zmm1",
-                "vfmadd213ps %zmm1,%zmm2,%zmm0"
+                "push %rbp",
+                "mov %rsp,%rbp",
+                "and $0xffffffffffffffc0,%rsp",
+                "sub $0x100,%rsp",
+                "vpandq %zmm0,%zmm1,%zmm2",
+                "vmovdqa64 %zmm2,0x40(%rsp)",
+                "vpxorq %zmm0,%zmm1,%zmm0",
+                "vmovdqa64 %zmm0,0x80(%rsp)",
+                "movl $0x1,0x24(%rsp)",
+                "lea 0x20(%rsp),%rax",
+                "mov %rax,0x28(%rsp)",
+                "lea 0x80(%rsp),%rax",
+                "mov %rax,0x30(%rsp)",
+                "lea 0x24(%rsp),%rax",
+                "mov %rax,0x38(%rsp)",
+                "lea 0x28(%rsp),%rdi",
+                "call 1be",
+                "vpaddb 0x40(%rsp),%zmm0,%zmm0",
+                "mov %rbp,%rsp",
+                "pop %rbp"
             ]
         },
         {
@@ -40,9 +74,9 @@
                 "double"
             ],
             "instr": [
-                "vbroadcastss 0x0(%rip),%zmm2",
-                "vmulps %zmm2,%zmm1,%zmm1",
-                "vfmadd213ps %zmm1,%zmm2,%zmm0"
+                "vbroadcastsd 0x0(%rip),%zmm2",
+                "vmulpd %zmm2,%zmm1,%zmm1",
+                "vfmadd213pd %zmm1,%zmm2,%zmm0"
             ]
         },
         {
@@ -51,9 +85,10 @@
                 "int"
             ],
             "instr": [
-                "vbroadcastss 0x0(%rip),%zmm2",
-                "vmulps %zmm2,%zmm1,%zmm1",
-                "vfmadd213ps %zmm1,%zmm2,%zmm0"
+                "vpandq %zmm0,%zmm1,%zmm2",
+                "vpxorq %zmm0,%zmm1,%zmm0",
+                "vpsrad $0x1,%zmm0,%zmm0",
+                "vpaddd %zmm2,%zmm0,%zmm0"
             ]
         }
     ]

@@ -39,6 +39,19 @@ Options are:
 
 
 def options_to_dict(options:list):
+    """Get dictionary from args list
+
+    Args:
+        options (list): List of options given by os.argv. The first element of the list should be the name of the file.
+
+    Raises:
+        Exception: If option `-input` is not followed by files names
+        Exception: If the option doesn't exist
+
+    Returns:
+        : _description_
+    """
+
     # Default values
     d = {
         "log" : False,
@@ -89,7 +102,6 @@ def options_to_dict(options:list):
 
 if __name__ == '__main__':
     argv = sys.argv
-    print(argv)
     
     options = options_to_dict(argv)
 

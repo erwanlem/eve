@@ -2,17 +2,17 @@ import os
 import const
 
 
-def build_reference_directories():
-    if not os.path.exists("test/asm/ref"):
-        os.mkdir("test/asm/ref")
+def build_reference_directories(folder='ref'):
+    if not os.path.exists(f"test/asm/{folder}"):
+        os.mkdir(f"test/asm/{folder}")
 
     for c in const.COMPILER:
-        if not os.path.exists(f"test/asm/ref/{c}"):
-            os.mkdir(f"test/asm/ref/{c}")
+        if not os.path.exists(f"test/asm/{folder}/{c}"):
+            os.mkdir(f"test/asm/{folder}/{c}")
 
         for a in const.ARCH:
-            if not os.path.exists(f"test/asm/ref/{c}/{a}"):
-                os.mkdir(f"test/asm/ref/{c}/{a}")
+            if not os.path.exists(f"test/asm/{folder}/{c}/{a}"):
+                os.mkdir(f"test/asm/{folder}/{c}/{a}")
 
 
 
