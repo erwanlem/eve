@@ -1,0 +1,61 @@
+{
+    "function": "clamp",
+    "asm": [
+        {
+            "type": [
+                "float",
+                "float",
+                "float"
+            ],
+            "instr": [
+                "vcmpgt_oqps %ymm2,%ymm1,%ymm3",
+                "vblendvps %ymm3,%ymm2,%ymm1,%ymm4",
+                "vblendvps %ymm3,%ymm1,%ymm2,%ymm2",
+                "vmaxps %ymm4,%ymm0,%ymm0",
+                "vminps %ymm2,%ymm0,%ymm0"
+            ]
+        },
+        {
+            "type": [
+                "double",
+                "double",
+                "double"
+            ],
+            "instr": [
+                "vcmpgt_oqpd %ymm2,%ymm1,%ymm3",
+                "vblendvpd %ymm3,%ymm2,%ymm1,%ymm4",
+                "vblendvpd %ymm3,%ymm1,%ymm2,%ymm2",
+                "vmaxpd %ymm4,%ymm0,%ymm0",
+                "vminpd %ymm2,%ymm0,%ymm0"
+            ]
+        },
+        {
+            "type": [
+                "int",
+                "int",
+                "int"
+            ],
+            "instr": [
+                "vextractf128 $0x1,%ymm2,%xmm5",
+                "vextractf128 $0x1,%ymm1,%xmm4",
+                "vmovdqa %ymm0,%ymm3",
+                "vpcmpgtd %xmm5,%xmm4,%xmm4",
+                "vpcmpgtd %xmm2,%xmm1,%xmm0",
+                "vinsertf128 $0x1,%xmm4,%ymm0,%ymm0",
+                "vblendvps %ymm0,%ymm2,%ymm1,%ymm4",
+                "vblendvps %ymm0,%ymm1,%ymm2,%ymm2",
+                "vmovdqa %xmm3,%xmm0",
+                "vmovdqa %xmm4,%xmm5",
+                "vextractf128 $0x1,%ymm3,%xmm3",
+                "vextractf128 $0x1,%ymm4,%xmm4",
+                "vmovdqa %xmm2,%xmm1",
+                "vpmaxsd %xmm5,%xmm0,%xmm0",
+                "vextractf128 $0x1,%ymm2,%xmm2",
+                "vpmaxsd %xmm4,%xmm3,%xmm3",
+                "vpminsd %xmm1,%xmm0,%xmm0",
+                "vpminsd %xmm2,%xmm3,%xmm3",
+                "vinsertf128 $0x1,%xmm3,%ymm0,%ymm0"
+            ]
+        }
+    ]
+}

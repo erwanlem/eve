@@ -1,0 +1,44 @@
+{
+    "function": "clamp",
+    "asm": [
+        {
+            "type": [
+                "float",
+                "float",
+                "float"
+            ],
+            "instr": [
+                "vminps %ymm1,%ymm2,%ymm3",
+                "vmaxps %ymm2,%ymm1,%ymm1",
+                "vmaxps %ymm3,%ymm0,%ymm0",
+                "vminps %ymm1,%ymm0,%ymm0"
+            ]
+        },
+        {
+            "type": [
+                "double",
+                "double",
+                "double"
+            ],
+            "instr": [
+                "vminpd %ymm1,%ymm2,%ymm3",
+                "vmaxpd %ymm2,%ymm1,%ymm1",
+                "vmaxpd %ymm3,%ymm0,%ymm0",
+                "vminpd %ymm1,%ymm0,%ymm0"
+            ]
+        },
+        {
+            "type": [
+                "int",
+                "int",
+                "int"
+            ],
+            "instr": [
+                "vpminsd %ymm2,%ymm1,%ymm3",
+                "vpmaxsd %ymm2,%ymm1,%ymm1",
+                "vpmaxsd %ymm3,%ymm0,%ymm0",
+                "vpminsd %ymm1,%ymm0,%ymm0"
+            ]
+        }
+    ]
+}

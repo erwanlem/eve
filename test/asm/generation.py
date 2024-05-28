@@ -61,8 +61,12 @@ def update(input="all", output_directory=None, deep=False, keep_tmp=False, archi
         for arch in functions_assembly[comp].keys():
             for f in functions_assembly[comp][arch].keys():
                 if not os.path.exists(f"{output_directory}{comp}/{arch}/{f}.json"):
-                    load_json(f"{output_directory}{comp}/{arch}/{f}.json")
-                elif load_json(f"{output_directory}{comp}/{arch}/{f}.json") == '{}' or deep:
+                    f = open(f"{output_directory}{comp}/{arch}/{f}.json", 'x')
+                    f.close()
+                    dict_json = { "function" : f, "asm" : functions_assembly[comp][arch][f] }
+                    update_json = json.dumps(dict_json, indent=4)
+                    save_json(f"{output_directory}{comp}/{arch}/{f}.json", update_json)
+                elif load_json(f"{output_directory}{comp}/{arch}/{f}.json") == '' or load_json(f"{output_directory}{comp}/{arch}/{f}.json") == '{}' or deep:
                     dict_json = { "function" : f, "asm" : functions_assembly[comp][arch][f] }
                     
                     update_json = json.dumps(dict_json, indent=4)

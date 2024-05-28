@@ -1,0 +1,20 @@
+{
+    "function": "copysign",
+    "asm": [
+        {
+            "type": [
+                "float",
+                "float"
+            ],
+            "instr": [
+                "vbroadcastss 0x0(%rip),%ymm2",
+                "vmovaps %ymm0,%ymm3",
+                "vbroadcastss 0x0(%rip),%ymm0",
+                "vxorps %ymm0,%ymm2,%ymm0",
+                "vandps %ymm2,%ymm1,%ymm1",
+                "vandps %ymm3,%ymm0,%ymm0",
+                "vorps %ymm0,%ymm1,%ymm0"
+            ]
+        }
+    ]
+}

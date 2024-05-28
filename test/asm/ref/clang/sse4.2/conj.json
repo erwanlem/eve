@@ -1,0 +1,17 @@
+{
+    "function": "conj",
+    "asm": [
+        {
+            "type": [
+                "float"
+            ],
+            "instr": []
+        },
+        {
+            "type": [
+                "double"
+            ],
+            "instr": []
+        }
+    ]
+}

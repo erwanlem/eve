@@ -1,0 +1,47 @@
+{
+    "function": "clamp",
+    "asm": [
+        {
+            "type": [
+                "float",
+                "float",
+                "float"
+            ],
+            "instr": [
+                "movaps %xmm2,%xmm3",
+                "minps %xmm1,%xmm3",
+                "maxps %xmm2,%xmm1",
+                "maxps %xmm3,%xmm0",
+                "minps %xmm1,%xmm0"
+            ]
+        },
+        {
+            "type": [
+                "double",
+                "double",
+                "double"
+            ],
+            "instr": [
+                "movapd %xmm2,%xmm3",
+                "minpd %xmm1,%xmm3",
+                "maxpd %xmm2,%xmm1",
+                "maxpd %xmm3,%xmm0",
+                "minpd %xmm1,%xmm0"
+            ]
+        },
+        {
+            "type": [
+                "int",
+                "int",
+                "int"
+            ],
+            "instr": [
+                "movdqa %xmm1,%xmm3",
+                "pminsd %xmm2,%xmm3",
+                "pmaxsd %xmm2,%xmm1",
+                "pmaxsd %xmm3,%xmm0",
+                "pminsd %xmm1,%xmm0"
+            ]
+        }
+    ]
+}

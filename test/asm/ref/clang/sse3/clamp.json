@@ -1,0 +1,74 @@
+{
+    "function": "clamp",
+    "asm": [
+        {
+            "type": [
+                "float",
+                "float",
+                "float"
+            ],
+            "instr": [
+                "movaps %xmm2,%xmm3",
+                "cmpltps %xmm1,%xmm3",
+                "movaps %xmm2,%xmm4",
+                "minps %xmm1,%xmm4",
+                "andps %xmm3,%xmm1",
+                "andnps %xmm2,%xmm3",
+                "orps %xmm1,%xmm3",
+                "maxps %xmm4,%xmm0",
+                "minps %xmm3,%xmm0"
+            ]
+        },
+        {
+            "type": [
+                "double",
+                "double",
+                "double"
+            ],
+            "instr": [
+                "movapd %xmm2,%xmm3",
+                "cmpltpd %xmm1,%xmm3",
+                "movapd %xmm3,%xmm4",
+                "andpd %xmm2,%xmm4",
+                "movapd %xmm3,%xmm5",
+                "andnpd %xmm1,%xmm5",
+                "orpd %xmm4,%xmm5",
+                "andpd %xmm3,%xmm1",
+                "andnpd %xmm2,%xmm3",
+                "orpd %xmm1,%xmm3",
+                "maxpd %xmm5,%xmm0",
+                "minpd %xmm3,%xmm0"
+            ]
+        },
+        {
+            "type": [
+                "int",
+                "int",
+                "int"
+            ],
+            "instr": [
+                "movdqa %xmm2,%xmm3",
+                "pcmpgtd %xmm1,%xmm3",
+                "movdqa %xmm1,%xmm4",
+                "pand %xmm3,%xmm4",
+                "pandn %xmm2,%xmm3",
+                "por %xmm4,%xmm3",
+                "movdqa %xmm1,%xmm4",
+                "pcmpgtd %xmm2,%xmm4",
+                "pand %xmm4,%xmm1",
+                "pandn %xmm2,%xmm4",
+                "por %xmm1,%xmm4",
+                "movdqa %xmm3,%xmm1",
+                "pcmpgtd %xmm0,%xmm1",
+                "pand %xmm1,%xmm3",
+                "pandn %xmm0,%xmm1",
+                "por %xmm3,%xmm1",
+                "movdqa %xmm4,%xmm0",
+                "pcmpgtd %xmm1,%xmm0",
+                "pand %xmm0,%xmm1",
+                "pandn %xmm4,%xmm0",
+                "por %xmm1,%xmm0"
+            ]
+        }
+    ]
+}

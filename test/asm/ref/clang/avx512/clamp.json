@@ -1,0 +1,44 @@
+{
+    "function": "clamp",
+    "asm": [
+        {
+            "type": [
+                "float",
+                "float",
+                "float"
+            ],
+            "instr": [
+                "vminps %zmm1,%zmm2,%zmm3",
+                "vmaxps %zmm2,%zmm1,%zmm1",
+                "vmaxps %zmm3,%zmm0,%zmm0",
+                "vminps %zmm1,%zmm0,%zmm0"
+            ]
+        },
+        {
+            "type": [
+                "double",
+                "double",
+                "double"
+            ],
+            "instr": [
+                "vminpd %zmm1,%zmm2,%zmm3",
+                "vmaxpd %zmm2,%zmm1,%zmm1",
+                "vmaxpd %zmm3,%zmm0,%zmm0",
+                "vminpd %zmm1,%zmm0,%zmm0"
+            ]
+        },
+        {
+            "type": [
+                "int",
+                "int",
+                "int"
+            ],
+            "instr": [
+                "vpminsd %zmm2,%zmm1,%zmm3",
+                "vpmaxsd %zmm2,%zmm1,%zmm1",
+                "vpmaxsd %zmm3,%zmm0,%zmm0",
+                "vpminsd %zmm1,%zmm0,%zmm0"
+            ]
+        }
+    ]
+}
