@@ -1,0 +1,6 @@
+{
+    "function" : "copysign",
+    "parameters" : [
+        ["float", "float"]
+    ]
+}

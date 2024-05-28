@@ -43,7 +43,7 @@ def save_json(destination_path, text:str):
         raise Exception(f"Error while writing {destination_path} : {e}")
 
 
-def update(input="all", output_directory=None, deep=False, keep_tmp=False, architecture=None, compiler=None, silent=True):
+def update(input="all", output_directory=None, deep=False, keep_tmp=False, architecture=None, compiler=None, verbose=True):
 
     conf = reader.read_config_file(input)
 
@@ -55,7 +55,7 @@ def update(input="all", output_directory=None, deep=False, keep_tmp=False, archi
         for typ in conf[k]:
             functions.append((k, typ))
 
-    functions_assembly = extract_assembly.get_functions_instructions(functions, keep_tmp=keep_tmp, silent=silent, architeture=architecture, compiler=compiler)
+    functions_assembly = extract_assembly.get_functions_instructions(functions, keep_tmp=keep_tmp, verbose=verbose, architecture=architecture, compiler=compiler)
 
     for comp in functions_assembly.keys():
         for arch in functions_assembly[comp].keys():
@@ -68,9 +68,9 @@ def update(input="all", output_directory=None, deep=False, keep_tmp=False, archi
                     update_json = json.dumps(dict_json, indent=4)
                     save_json(f"{output_directory}{comp}/{arch}/{f}.json", update_json)
 
-    if not silent:
+    if not verbose:
         print(f"Operation finished : functions saved")
     
 
 if __name__ == '__main__':
-    update(input='all', deep=True, keep_tmp=True, compiler=['gcc'], silent=False)
+    update(input='all', deep=True, keep_tmp=True, compiler=['gcc'], architecture=['sse'], verbose=False)

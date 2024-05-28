@@ -5,7 +5,12 @@ Il faut un unique fichier de config par fonction.
 
 [ ] Refaire les documentations
 [ ] Faire les tests
-[ ] Check gcc and clang installations
 [ ] check folders are created
 [ ] Update validation process
 [ ] Add option for all types
+
+
+Types:
+- `arithmetic`
+- `real`
+- `signed`

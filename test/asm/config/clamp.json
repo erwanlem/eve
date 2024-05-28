@@ -1,0 +1,8 @@
+{
+    "function" : "clamp",
+    "parameters" : [
+        ["float", "float", "float"],
+        ["double", "double", "double"],
+        ["int", "int", "int"]
+    ]
+}

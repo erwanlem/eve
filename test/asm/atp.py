@@ -61,7 +61,8 @@ def options_to_dict(options:list):
         "keep_tmp" : False,
         "generate" : False,
         "compiler" : "g++",
-        "exception" : False
+        "exception" : False,
+        "verbose" : False
     }
 
 
@@ -81,6 +82,8 @@ def options_to_dict(options:list):
         elif options[i] == '-c':
             d['compiler'] = options[i+1]
             i+=1
+        elif options[i] == '-v':
+            d['verbose'] = True
         elif options[i] == '-r':
             d['exception'] = True
         elif options[i] == '-input':
@@ -107,6 +110,6 @@ if __name__ == '__main__':
 
 
     if options['generate']:
-        generation.update(deep=options['deep'], keep_tmp=options['keep_tmp'])
+        generation.update(deep=options['deep'], keep_tmp=options['keep_tmp'], verbose=options['verbose'])
     else:
         validation.validate(log_file=options['log'], input=options['input'], raise_exception=options['exception'], keep_tmp=options['keep_tmp'])

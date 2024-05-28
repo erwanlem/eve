@@ -130,7 +130,7 @@ def get_assembler(input_path, output_path, arch, compiler='g++'):
 
 
 
-def get_functions_instructions(functions : list, keep_tmp=False, architecture:list=None, compiler:list=None, silent=True):
+def get_functions_instructions(functions : list, keep_tmp=False, architecture:list=None, compiler:list=None, verbose=False):
     # Doc
 
     clear_tmp()
@@ -161,7 +161,7 @@ def get_functions_instructions(functions : list, keep_tmp=False, architecture:li
         for a in architectures:
             res_dict[comp][a] = {}
 
-            if not silent:
+            if verbose:
                 os.system(const.clear_command)
                 print(f'Generating assembly : {int(100 * it / nb_iter)}% done')
 
@@ -186,7 +186,7 @@ def get_functions_instructions(functions : list, keep_tmp=False, architecture:li
     if not keep_tmp:
         clear_tmp()
     
-    if not silent:
+    if verbose:
         os.system(const.clear_command)
         print(f'Generating assembly : {int(100 * it / nb_iter)}% done')
 

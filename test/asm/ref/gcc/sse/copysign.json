@@ -1,0 +1,16 @@
+{
+    "function": "copysign",
+    "asm": [
+        {
+            "type": [
+                "float",
+                "float"
+            ],
+            "instr": [
+                "andps 0x0(%rip),%xmm0",
+                "andps 0x0(%rip),%xmm1",
+                "por %xmm1,%xmm0"
+            ]
+        }
+    ]
+}

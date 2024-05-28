@@ -1,0 +1,7 @@
+{
+    "function" : "conj",
+    "parameters" : [
+        ["float"],
+        ["double"]
+    ]
+}
