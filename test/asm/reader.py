@@ -47,16 +47,17 @@ def read_config_file(file_name='all'):
             d[function['function']] = function['parameters']
         return d
     else:
-        if not os.path.exists(f"test/asm/config/{file_name}"):
-            # TODO error
-            print(f"Path test/asm/config/{file_name} does not exist")
-            pass
-        else:
-            d = {}
-            txt = load_json(f"test/asm/config/{file_name}")
-            function = json.loads(txt)
-            d[function['function']] = function['parameters']
-            return d
+        if type(file_name) == str:
+            file_name = [file_name]
+        d = {}
+        for n in file_name:
+            if not os.path.exists(f"test/asm/config/{n}"):
+                raise Exception(f"In read_config_file : Path test/asm/config/{n} does not exist")
+            else:
+                txt = load_json(f"test/asm/config/{n}")
+                function = json.loads(txt)
+                d[function['function']] = function['parameters']
+        return d
 
 
 

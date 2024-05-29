@@ -34,7 +34,10 @@ Options are:
     - `-t` keep temporary files
     - `-r` raises exceptions
     - `-g` generate assembly
-    - `-c compiler` clang/g++ 
+    - `-c compiler` clang/g++
+    - `-v` verbose
+    - `-ref` reference path
+    - `-reset` remove reference files
 """
 
 
@@ -100,9 +103,8 @@ def options_to_dict(options:list):
                 files.reset()
         elif options[i] == '-input':
             lst = []
-            i += 1
-            while i < len(options) and options[i][0] != '-':
-                lst.append(options[i])
+            while i+1 < len(options) and options[i+1][0] != '-':
+                lst.append(options[i+1])
                 i+=1
             if len(lst) == 0:
                 raise Exception("Parameter missing for option -input")

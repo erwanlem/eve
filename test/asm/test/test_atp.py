@@ -130,6 +130,28 @@ class TestOptionToDict(unittest.TestCase):
         d['input'] = ['abs.json', 'agm.json', 'average.json', 'add.json']
         self.assertEqual(command5, d)
 
+    def test_input(self):
+        d = {
+        "validate" : True,
+        "log" : False,
+        "arch" : "all",
+        "deep" : False,
+        "input" : 'all',
+        "keep_tmp" : False,
+        "generate" : False,
+        "compiler" : "all",
+        "exception" : False,
+        "verbose" : False,
+        "ref_path" : "test/asm/ref"
+    }
+        
+        command1 = atp.options_to_dict(["..", '-input', 'abs.json', 'max.json', 'add.json', '-l', '-v'])
+        d['log'] = True
+        d['verbose'] = True
+        d['input'] = ['abs.json', 'max.json', 'add.json']
+
+        self.assertEqual(command1, d)
+
     def test_error_invalid_option(self):
         with self.assertRaises(Exception):
             atp.options_to_dict(['..', 'm', 'm'])
