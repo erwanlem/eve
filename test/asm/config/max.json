@@ -1,0 +1,8 @@
+{
+    "function" : "max",
+    "parameters" : [
+        ["float", "float"],
+        ["double", "double"],
+        ["int", "int"]
+    ]
+}

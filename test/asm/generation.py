@@ -3,6 +3,7 @@ import extract_assembly
 import const
 import reader
 import os
+import files
 
 
 CONFIG_FILE = "test/asm/config.json"
@@ -43,12 +44,13 @@ def save_json(destination_path, text:str):
         raise Exception(f"Error while writing {destination_path} : {e}")
 
 
-def update(input="all", output_directory=None, deep=False, keep_tmp=False, architecture=None, compiler=None, verbose=True):
+def update(input="all", output_directory=None, deep=False, keep_tmp=False, architecture='all', compiler='all', verbose=False):
+    files.build_reference_directories(folder=output_directory)
 
     conf = reader.read_config_file(input)
 
     if output_directory == None:
-        output_directory = f"{const.ref_path}/"
+        output_directory = f"{const.ref_path}"
 
     functions = []
     for k in conf.keys():
@@ -60,19 +62,19 @@ def update(input="all", output_directory=None, deep=False, keep_tmp=False, archi
     for comp in functions_assembly.keys():
         for arch in functions_assembly[comp].keys():
             for f in functions_assembly[comp][arch].keys():
-                if not os.path.exists(f"{output_directory}{comp}/{arch}/{f}.json"):
-                    f = open(f"{output_directory}{comp}/{arch}/{f}.json", 'x')
-                    f.close()
+                if not os.path.exists(f"{output_directory}/{comp}/{arch}/{f}.json"):
+                    file = open(f"{output_directory}/{comp}/{arch}/{f}.json", 'x')
+                    file.close()
                     dict_json = { "function" : f, "asm" : functions_assembly[comp][arch][f] }
                     update_json = json.dumps(dict_json, indent=4)
-                    save_json(f"{output_directory}{comp}/{arch}/{f}.json", update_json)
-                elif load_json(f"{output_directory}{comp}/{arch}/{f}.json") == '' or load_json(f"{output_directory}{comp}/{arch}/{f}.json") == '{}' or deep:
+                    save_json(f"{output_directory}/{comp}/{arch}/{f}.json", update_json)
+                elif load_json(f"{output_directory}/{comp}/{arch}/{f}.json") == '' or load_json(f"{output_directory}/{comp}/{arch}/{f}.json") == '{}' or deep:
                     dict_json = { "function" : f, "asm" : functions_assembly[comp][arch][f] }
                     
                     update_json = json.dumps(dict_json, indent=4)
-                    save_json(f"{output_directory}{comp}/{arch}/{f}.json", update_json)
+                    save_json(f"{output_directory}/{comp}/{arch}/{f}.json", update_json)
 
-    if not verbose:
+    if verbose:
         print(f"Operation finished : functions saved")
     
 

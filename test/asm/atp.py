@@ -1,5 +1,6 @@
 import sys
 import generation
+import files
 import validation
 
 """
@@ -54,15 +55,17 @@ def options_to_dict(options:list):
 
     # Default values
     d = {
+        "validate" : True,
         "log" : False,
-        "arch" : "",
+        "arch" : "all",
         "deep" : False,
         "input" : 'all',
         "keep_tmp" : False,
         "generate" : False,
-        "compiler" : "g++",
+        "compiler" : "all",
         "exception" : False,
-        "verbose" : False
+        "verbose" : False,
+        "ref_path" : "test/asm/ref"
     }
 
 
@@ -79,6 +82,7 @@ def options_to_dict(options:list):
             d['keep_tmp'] = True
         elif options[i] == '-g':
             d['generate'] = True
+            d['validate'] = False
         elif options[i] == '-c':
             d['compiler'] = options[i+1]
             i+=1
@@ -86,6 +90,14 @@ def options_to_dict(options:list):
             d['verbose'] = True
         elif options[i] == '-r':
             d['exception'] = True
+        elif options[i] == '-ref':
+            d['ref_path'] = options[i+1]
+            i+=1
+        elif options[i] == '-reset':
+            d['validate'] = False
+            e = input("Every reference file will be deleted, is this what you want ? (Y/n)")
+            if e == 'Y':
+                files.reset()
         elif options[i] == '-input':
             lst = []
             i += 1
@@ -102,14 +114,17 @@ def options_to_dict(options:list):
     return d
 
 
+def main(options:dict):
+    if options['generate']:
+        generation.update(deep=options['deep'], keep_tmp=options['keep_tmp'], verbose=options['verbose'],architecture=options['arch'],compiler=options['compiler'], input=options['input'], output_directory=options['ref_path'])
+    elif options['validate']:
+        return validation.validate(log_file=options['log'], input=options['input'], verbose=options['verbose'], raise_exception=options['exception'], keep_tmp=options['keep_tmp'], references_path=options['ref_path'], compiler=options['compiler'], architecture=options['arch'])
+
 
 if __name__ == '__main__':
     argv = sys.argv
     
     options = options_to_dict(argv)
+    main(options)
 
-
-    if options['generate']:
-        generation.update(deep=options['deep'], keep_tmp=options['keep_tmp'], verbose=options['verbose'])
-    else:
-        validation.validate(log_file=options['log'], input=options['input'], raise_exception=options['exception'], keep_tmp=options['keep_tmp'])
+    

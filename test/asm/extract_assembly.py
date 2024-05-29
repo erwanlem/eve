@@ -124,13 +124,13 @@ def extract_instructions(functionName:str, parameters:str, func_code_name:str, a
 
 def get_assembler(input_path, output_path, arch, compiler='g++'):
     # Compile and desassemble
-    os.system(f"{compiler} {input_path} -O3 {arch} -DNDEBUG -std=c++20 -I include/ -c -o tmp.o")
-    os.system(f"objdump -d -j .text -C tmp.o > {output_path}")
+    os.system(f"{compiler} {input_path} -O3 {arch} -DNDEBUG -std=c++20 -I include/ -c -o {TMP_O_FILE_NAME}")
+    os.system(f"objdump -d -j .text -C {TMP_O_FILE_NAME} > {output_path}")
 
 
 
 
-def get_functions_instructions(functions : list, keep_tmp=False, architecture:list=None, compiler:list=None, verbose=False):
+def get_functions_instructions(functions : list, keep_tmp=False, architecture:list='all', compiler:list='all', verbose=False):
     # Doc
 
     clear_tmp()
@@ -150,8 +150,8 @@ def get_functions_instructions(functions : list, keep_tmp=False, architecture:li
     tmp.write(full_code)
     tmp.close()
 
-    compilers = const.COMPILER.keys() if compiler == None else compiler
-    architectures = const.ARCH.keys() if architecture == None else architecture
+    compilers = const.COMPILER.keys() if compiler == 'all' else compiler
+    architectures = const.ARCH.keys() if architecture == 'all' else architecture
 
     nb_iter = len( compilers ) * len( architectures )
     it = 0
@@ -164,7 +164,6 @@ def get_functions_instructions(functions : list, keep_tmp=False, architecture:li
             if verbose:
                 os.system(const.clear_command)
                 print(f'Generating assembly : {int(100 * it / nb_iter)}% done')
-
 
             get_assembler(TMP_CPP_FILE_NAME, TMP_ASM_FILE_NAME, const.ARCH[a], compiler=const.COMPILER[comp])
 

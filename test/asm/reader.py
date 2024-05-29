@@ -60,18 +60,18 @@ def read_config_file(file_name='all'):
 
 
 
-def read_reference_files(file_name):
+def read_reference_files(file_name, path="test/asm/ref"):
     references = {}
-    for i in os.listdir("test/asm/ref"):
+    for i in os.listdir(path):
         references[i] = {}
-        for j in os.listdir(f"test/asm/ref/{i}"):
+        for j in os.listdir(f"{path}/{i}"):
             references[i][j] = {}
             if file_name == 'all':
-                for k in os.listdir(f"test/asm/ref/{i}/{j}"):
-                    d = json.loads(load_json(f"test/asm/ref/{i}/{j}/{k}"))
+                for k in os.listdir(f"{path}/{i}/{j}"):
+                    d = json.loads(load_json(f"{path}/{i}/{j}/{k}"))
                     references[i][j][d['function']] = d['asm']
-            elif os.path.exists(f"test/asm/ref/{i}/{j}/{file_name}"):
-                d = json.loads(load_json(f"test/asm/ref/{i}/{j}/{file_name}"))
+            elif os.path.exists(f"{path}/{i}/{j}/{file_name}"):
+                d = json.loads(load_json(f"{path}/{i}/{j}/{file_name}"))
                 references[i][j][d['function']] = d['asm']
     return references
 
