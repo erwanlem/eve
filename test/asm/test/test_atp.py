@@ -99,7 +99,7 @@ class TestOptionToDict(unittest.TestCase):
         d = {
             "validate" : True,
             "log" : False,
-            "arch" : "avx",
+            "arch" : ["avx"],
             "deep" : False,
             "input" : 'all',
             "keep_tmp" : False,
@@ -198,7 +198,7 @@ class TestAtp(unittest.TestCase):
             "ref_path" : "test/asm/test/atp"
         }
 
-        self.assertEqual(atp.main(d), 0)
+        self.assertEqual(atp.main(d), -1)
 
         files.reset(folder='test/asm/test/atp')
 

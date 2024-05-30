@@ -10,31 +10,17 @@ CONFIG_FILE = "test/asm/config.json"
 STORE_FILE = "test/asm/functions.json"
 
 
-def load_json(file_name:str):
-    """Load json string from `STORE_FILE`
-
-    Returns:
-        str: Json file as string
-    """
-    try:
-        f = open(file_name)
-        t = f.read()
-        f.close()
-        return t
-    except FileNotFoundError:
-        f = open(file_name, 'x')
-        f.close()
-        return "{}"
-    except Exception as e:
-        raise (f"Error while loading {file_name} : {e}")
 
 
-
-def save_json(destination_path, text:str):
-    """Save json string in `STORE_FILE`
+def save_json(destination_path:str, text:str):
+    """Save string in a file.
 
     Args:
-        text (str): The string to save
+        destination_path (str): Path to save file.
+        text (str): File content.
+
+    Raises:
+        Exception: Raised when error occured while writing the file.
     """
     try:
         f = open(destination_path, 'w')
@@ -44,7 +30,26 @@ def save_json(destination_path, text:str):
         raise Exception(f"Error while writing {destination_path} : {e}")
 
 
+
+
+
+
 def update(input="all", output_directory=None, deep=False, keep_tmp=False, architecture='all', compiler='all', verbose=False):
+    """Function to generate and store assembly code
+
+    Args:
+        input (str | list, optional): List of config file names used for the generation. If `all` it gets all the files in `config`. Defaults to "all".
+        output_directory (str, optional): The path of the directory where we store references. Defaults to None.
+        deep (bool, optional): If True it replaces files even though they already exist. Otherwise it only creates files that doesn't already exist. Defaults to False.
+        keep_tmp (bool, optional): If True it keeps temporary files. Otherwise they are deleted after the process. Defaults to False.
+        architecture (str | list, optional): Architectures used for the generation. If `all` it generates for all architectures stored in `const.py`. Defaults to 'all'.
+        compiler (str | list, optional): Compilers used for the generation. If `all` it generates for all compilers stored in `const.py`. Defaults to 'all'.
+        verbose (bool, optional): Command line output activated (True/False). Defaults to False.
+
+    Returns:
+        int: 0 if the process finished successfully, -1 if an error occured.
+    """
+
     files.build_reference_directories(folder=output_directory)
 
     conf = reader.read_config_file(input)
@@ -68,7 +73,7 @@ def update(input="all", output_directory=None, deep=False, keep_tmp=False, archi
                     dict_json = { "function" : f, "asm" : functions_assembly[comp][arch][f] }
                     update_json = json.dumps(dict_json, indent=4)
                     save_json(f"{output_directory}/{comp}/{arch}/{f}.json", update_json)
-                elif load_json(f"{output_directory}/{comp}/{arch}/{f}.json") == '' or load_json(f"{output_directory}/{comp}/{arch}/{f}.json") == '{}' or deep:
+                elif reader.load_json(f"{output_directory}/{comp}/{arch}/{f}.json") == '' or reader.load_json(f"{output_directory}/{comp}/{arch}/{f}.json") == '{}' or deep:
                     dict_json = { "function" : f, "asm" : functions_assembly[comp][arch][f] }
                     
                     update_json = json.dumps(dict_json, indent=4)
@@ -76,6 +81,8 @@ def update(input="all", output_directory=None, deep=False, keep_tmp=False, archi
 
     if verbose:
         print(f"Operation finished : functions saved")
+
+    return 0
     
 
 if __name__ == '__main__':

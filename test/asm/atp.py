@@ -20,13 +20,6 @@ Until now, this tool can:
 
 Calling asmTesting without any option starts the validation process.
 Options are:
-    - `-g` : Generate functions assembly. Functions that are not stored in functions.json are append.
-    - `-d` : Deep update -- Functions are replaced in functions.json even though they were already in.
-    - `-t` : Keep temporary files after processing
-    - `-l` : Validation log file
-    - `-s` : Select validation target. By default all functions are validated
-
-    New options
     - `-m archName`
     - `-l` log file
     - `-input file` select file
@@ -53,7 +46,7 @@ def options_to_dict(options:list):
         Exception: If the option doesn't exist
 
     Returns:
-        : _description_
+       dict : dictionary with each option value
     """
 
     # Default values
@@ -75,8 +68,13 @@ def options_to_dict(options:list):
     i = 1
     while i < len(options):
         if options[i] == '-m':
-            d['arch'] = options[i+1]
-            i+=1
+            lst = []
+            while i+1 < len(options) and options[i+1][0] != '-':
+                lst.append(options[i+1])
+                i+=1
+            if len(lst) == 0:
+                raise Exception("Parameter missing for option -m")
+            d['arch'] = lst
         elif options[i] == '-l':
             d['log'] = True
         elif options[i] == "-d":
@@ -87,8 +85,13 @@ def options_to_dict(options:list):
             d['generate'] = True
             d['validate'] = False
         elif options[i] == '-c':
-            d['compiler'] = options[i+1]
-            i+=1
+            lst = []
+            while i+1 < len(options) and options[i+1][0] != '-':
+                lst.append(options[i+1])
+                i+=1
+            if len(lst) == 0:
+                raise Exception("Parameter missing for option -c")
+            d['compiler'] = lst
         elif options[i] == '-v':
             d['verbose'] = True
         elif options[i] == '-r':
@@ -98,7 +101,7 @@ def options_to_dict(options:list):
             i+=1
         elif options[i] == '-reset':
             d['validate'] = False
-            e = input("Every reference file will be deleted, is this what you want ? (Y/n)")
+            e = input("All reference files will be deleted, do you confirm ? (Y/n)")
             if e == 'Y':
                 files.reset()
         elif options[i] == '-input':
@@ -114,6 +117,8 @@ def options_to_dict(options:list):
         i+=1
 
     return d
+
+
 
 
 def main(options:dict):

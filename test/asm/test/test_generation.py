@@ -21,6 +21,8 @@ class TestUpdateGeneration(unittest.TestCase):
             for a in const.ARCH.keys():
                 for f in os.listdir("test/asm/config"):
                     self.assertTrue( os.path.exists( f"test/asm/test/generation/{c}/{a}/{f}" ) )
+        
+        files.reset("test/asm/test/generation")
                                         
 
 

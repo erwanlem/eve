@@ -1,9 +1,6 @@
 {
     "function" : "abs",
     "parameters" : [
-        ["float"],
-        ["signed char"],
-        ["int"],
-        ["int16_t, eve::fixed<2>"]
+        ["arithmetic"]
     ]
 }

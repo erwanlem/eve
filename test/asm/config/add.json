@@ -1,6 +1,6 @@
 {
     "function" : "add",
     "parameters" : [
-        ["float", "float"]
+        ["real", "real"]
     ]
 }

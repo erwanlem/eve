@@ -1,28 +1,6 @@
 import platform
 
 
-"""
-    x86 
-        sse
-        sse2
-        sse3
-        ssse3
-        sse4.1
-        sse4.2
-        avx
-        avx2
-        avx512
-    
-ARCH = {
-    'sse' : '-msse', 
-    'sse2' : '-msse2', 
-    'sse3' : '-msse3', 
-    'sse4' : '-msse4', 
-    'ssse3' : '-mssse3',
-    'avx' : '-mavx',
-    'avx2' : '-mavx2'}
-"""
-
 
 ARCH = {
     'sse' : '-msse', 
@@ -34,10 +12,21 @@ ARCH = {
     'avx2' : '-mavx2',
     'avx512' : '-march=skylake-avx512'}
 
+
 COMPILER = {
     'clang' : 'clang',
     'gcc' : 'g++'
 }
+
+
+REAL = ['float', 'double']
+INTEGER = ['std::int64_t', 'std::int32_t', 'std::int16_t', 'std::int8_t']
+UNSIGNED_INTEGER = ["std::uint64_t" , "std::uint32_t" , "std::uint16_t" , "std::uint8_t"]
+
+ARITHMETIC = REAL + INTEGER + UNSIGNED_INTEGER
+
+
+
 
 clear_command = 'cls' if platform.system() == 'Windows' else 'clear'
 

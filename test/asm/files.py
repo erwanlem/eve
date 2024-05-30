@@ -3,6 +3,12 @@ import const
 
 
 def build_reference_directories(folder='test/asm/ref'):
+    """Builds directories for reference.
+
+    Args:
+        folder (str, optional): Path of the reference directory to build subdirectories. Defaults to 'test/asm/ref'.
+    """
+
     if not os.path.exists(folder):
         os.mkdir(f"{folder}")
 
@@ -15,11 +21,12 @@ def build_reference_directories(folder='test/asm/ref'):
                 os.mkdir(f"{folder}/{c}/{a}")
 
 
-def remove_reference_directories(folder='test/asm/ref'):
-    os.system(f"rm -rf {folder}/*")
-
-
 def reset(folder='test/asm/ref'):
+    """Clear directory
+
+    Args:
+        folder (str, optional): Path of the directory. Defaults to 'test/asm/ref'.
+    """
     os.system(f"rm -rf {folder}/*")
 
 
