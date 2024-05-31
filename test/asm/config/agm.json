@@ -1,6 +1,6 @@
 {
     "function" : "agm",
     "parameters" : [
-        ["float", "float"]
+        ["real", "real"]
     ]
 }

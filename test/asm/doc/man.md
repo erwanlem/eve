@@ -6,7 +6,7 @@ atp - Assembly Testing Program
 
 ## Description
 
-`ATP` is a testing tool made for checking assembly code efficency. This tool offers two main actions: **generation** and **validation**.
+**ATP** is a testing tool made for checking assembly code efficency. This tool offers two main actions: **generation** and **validation**.
 The generation phase will generate assembly code for every compilers and architectures. Then this code is stored in a reference folder.
 The validation phase will compare the assembly code generate by the current library version with the assembly code previouly saved (in the reference folder). 
 

@@ -1,5 +1,5 @@
 {
-    "function" : "average",
+    "function" : "absmin",
     "parameters" : [
         ["arithmetic", "arithmetic"]
     ]

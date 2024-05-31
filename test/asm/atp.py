@@ -1,6 +1,7 @@
 import sys
 import generation
 import files
+import const
 import validation
 
 """
@@ -74,6 +75,9 @@ def options_to_dict(options:list):
                 i+=1
             if len(lst) == 0:
                 raise Exception("Parameter missing for option -m")
+            for j in lst:
+                if j not in const.ARCH:
+                    raise Exception(f"Invalid architecture name '{j}'")
             d['arch'] = lst
         elif options[i] == '-l':
             d['log'] = True
@@ -91,6 +95,9 @@ def options_to_dict(options:list):
                 i+=1
             if len(lst) == 0:
                 raise Exception("Parameter missing for option -c")
+            for j in lst:
+                if j not in const.COMPILER:
+                    raise Exception(f"Invalid compiler name '{j}'")
             d['compiler'] = lst
         elif options[i] == '-v':
             d['verbose'] = True

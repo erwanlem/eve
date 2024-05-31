@@ -1,6 +1,6 @@
 {
     "function" : "add",
     "parameters" : [
-        ["real", "real"]
+        ["arithmetic", "arithmetic"]
     ]
 }

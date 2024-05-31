@@ -1,5 +1,5 @@
 {
-    "function" : "average",
+    "function" : "absmax",
     "parameters" : [
         ["arithmetic", "arithmetic"]
     ]
