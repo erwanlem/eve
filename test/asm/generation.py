@@ -1,5 +1,5 @@
 import json
-import extract_assembly
+import instructions as instructions
 import const
 import reader
 import os
@@ -34,7 +34,7 @@ def save_json(destination_path:str, text:str):
 
 
 
-def update(input="all", output_directory=None, deep=False, keep_tmp=False, architecture='all', compiler='all', verbose=False):
+def update(flags=[], input="all", output_directory=None, deep=False, keep_tmp=False, architecture='all', compiler='all', verbose=False, method='objdump'):
     """Function to generate and store assembly code
 
     Args:
@@ -62,7 +62,7 @@ def update(input="all", output_directory=None, deep=False, keep_tmp=False, archi
         for typ in conf[k]:
             functions.append((k, typ))
 
-    functions_assembly = extract_assembly.get_functions_instructions(functions, keep_tmp=keep_tmp, verbose=verbose, architecture=architecture, compiler=compiler)
+    functions_assembly = instructions.get_functions_instructions(functions, flags, keep_tmp=keep_tmp, verbose=verbose, architecture=architecture, compiler=compiler, method=method)
 
     for comp in functions_assembly.keys():
         for arch in functions_assembly[comp].keys():

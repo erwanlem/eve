@@ -1,6 +1,8 @@
 import platform
 
 
+root = "test/asm/"
+
 
 ARCH = {
     'sse' : '-msse', 
@@ -22,6 +24,8 @@ COMPILER = {
 REAL = ['float', 'double']
 INTEGER = ['std::int64_t', 'std::int32_t', 'std::int16_t', 'std::int8_t']
 UNSIGNED_INTEGER = ["std::uint64_t" , "std::uint32_t" , "std::uint16_t" , "std::uint8_t"]
+#INTEGER = SIGNED_INTEGER + UNSIGNED_INTEGER
+#SIGNED = SIGNED_INTEGER + REAL
 
 ARITHMETIC = REAL + INTEGER + UNSIGNED_INTEGER
 

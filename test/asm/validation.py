@@ -88,7 +88,7 @@ def log_undefined_reference(function:str, compiler:str, architecture:str):
     return s + s1
 
 
-def validate(input='all', raise_exception=False, log_file=False, keep_tmp=False, compiler='all', architecture='all', verbose=False, references_path="test/asm/ref"):
+def validate(flags:list, input='all', raise_exception=False, log_file=False, keep_tmp=False, compiler='all', architecture='all', instruction_compare=False, verbose=False, references_path="test/asm/ref", method='objdump'):
     """Validation function. Generates assembly for the current library version and compares it with reference assembly.
 
     Args:
@@ -100,6 +100,7 @@ def validate(input='all', raise_exception=False, log_file=False, keep_tmp=False,
         architecture (list, optional): Architectures used for validation. If `all` it takes all architectures defined in `const.py`. Defaults to 'all'.
         verbose (bool, optional): Command line output (True/False). Defaults to False.
         references_path (str, optional): Path of the reference directory. Defaults to "test/asm/ref".
+        method (str, optional): Defines the disassembling method. Values are `objdump` or `gcc`.
 
     Raises:
         AssemblyMismatch: Raised when raise_exception is True.
@@ -117,7 +118,7 @@ def validate(input='all', raise_exception=False, log_file=False, keep_tmp=False,
         for typ in conf[k]:
             functions.append((k, typ))
 
-    functions_assembly = extract_assembly.get_functions_instructions(functions, keep_tmp=keep_tmp, architecture=architecture, compiler=compiler)
+    functions_assembly = instructions.get_functions_instructions(functions, flags, keep_tmp=keep_tmp, architecture=architecture, compiler=compiler, method=method)
     
     validation_set = reader.read_reference_files(input, path=references_path)
     
@@ -138,12 +139,25 @@ def validate(input='all', raise_exception=False, log_file=False, keep_tmp=False,
                     ret = -1
                 elif not functions_assembly[c][a][f] == validation_set[c][a][f]:
                     for i in range(0, min(len(functions_assembly[c][a][f]), len(validation_set[c][a][f]))):
-                        if functions_assembly[c][a][f][i] != validation_set[c][a][f][i]:
+                        
+                        # Compare only assembly instruction, ignore parameters
+                        if instruction_compare:
+                            for j in range(0, min(len(functions_assembly[c][a][f][i]['instr']), len(validation_set[c][a][f][i]['instr']))):
+                                i1 = functions_assembly[c][a][f][i]['instr'][j].split(' ')[0]
+                                i2 = validation_set[c][a][f][i]['instr'][j].split(' ')[0]
+                                if i1 != i2:
+                                    ret = -1
+                                    errors += 1
+                                    if raise_exception:
+                                        raise AssemblyMismatch(f, c, a, validation_set[c][a][f][i]['type'], validation_set[c][a][f][i]['instr'], functions_assembly[c][a][f][i]['instr'])
+                                    log_txt += log_unmatched_instruction(f, c, a, validation_set[c][a][f][i]['type'], validation_set[c][a][f][i]['instr'], functions_assembly[c][a][f][i]['instr'])
+                            
+                        elif functions_assembly[c][a][f][i] != validation_set[c][a][f][i]:
                             errors += 1
                             if raise_exception:
                                 raise AssemblyMismatch(f, c, a, validation_set[c][a][f][i]['type'], validation_set[c][a][f][i]['instr'], functions_assembly[c][a][f][i]['instr'])
                             log_txt += log_unmatched_instruction(f, c, a, validation_set[c][a][f][i]['type'], validation_set[c][a][f][i]['instr'], functions_assembly[c][a][f][i]['instr'])
-                    ret = -1
+                            ret = -1
 
     # Log file optional
     if log_file and log_txt != "":

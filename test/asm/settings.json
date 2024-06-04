@@ -1,0 +1,25 @@
+{
+    "compilers":
+        {
+            "gcc": "g++",
+            "clang": "clang"
+        },
+
+    "setup":
+        {
+            "sse": "-msse",
+            "sse2": "-msse2",
+            "sse3": "-msse3"
+        },
+
+    "groups": [
+        {
+            "name": "abs",
+            "files": [
+                "abs.json",
+                "absmin.json",
+                "absmax.json"
+            ]
+        }
+    ]
+}

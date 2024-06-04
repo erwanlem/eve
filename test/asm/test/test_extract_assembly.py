@@ -1,7 +1,7 @@
 import unittest
 import sys
 sys.path.append("test/asm/test/..")
-from extract_assembly import *
+from instructions import *
 import const
 
 class TestGenerateFunction(unittest.TestCase):

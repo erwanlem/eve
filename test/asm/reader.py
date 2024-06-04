@@ -2,6 +2,8 @@ import os
 import json
 import const
 import random
+import const
+
 
 ## This file aims to read json files and extract information from them
 
@@ -92,6 +94,8 @@ def keytypes_to_types(types:list):
 
 
 
+
+
 def read_config_file(file_name='all'):
     """Reads config files stored in `config` directory. Files are returned as dictionary.
 
@@ -127,6 +131,8 @@ def read_config_file(file_name='all'):
 
 
 
+
+
 def read_reference_files(file_name:str, path="test/asm/ref"):
     """Reads a reference file and returns a dictionary. The file is read for every compilers and architectures
 
@@ -150,6 +156,17 @@ def read_reference_files(file_name:str, path="test/asm/ref"):
                 d = json.loads(load_json(f"{path}/{i}/{j}/{file_name}"))
                 references[i][j][d['function']] = d['asm']
     return references
+
+
+
+
+
+def get_compilers_names(compiler):
+    if compiler == 'all':
+        return const.COMPILER.keys()
+    else:
+        return [os.path.basename(compiler)]
+
 
 
 if __name__ == '__main__':

@@ -32,7 +32,33 @@ Options are:
     - `-v` verbose
     - `-ref` reference path
     - `-reset` remove reference files
+    - `-disassembler method`
 """
+
+OPTIONS = {
+    "validate" : True,
+    "log" : False,
+    "deep" : False,
+    "input" : 'all',
+    "keep_tmp" : False,
+    "generate" : False,
+    "exception" : False,
+    "verbose" : False,
+    "disassembler" : "objdump",
+    "instruction_comparison" : False,
+    "flags" : [],
+    "setup" : None,
+    "compiler" : None,
+    "output" : f"{const.root}output"
+}
+
+
+
+def flags_to_command_line(flags:list):
+    fl = []
+    for i in flags:
+        fl.append('-' + i)
+    return fl
 
 
 
@@ -50,22 +76,6 @@ def options_to_dict(options:list):
        dict : dictionary with each option value
     """
 
-    # Default values
-    d = {
-        "validate" : True,
-        "log" : False,
-        "arch" : "all",
-        "deep" : False,
-        "input" : 'all',
-        "keep_tmp" : False,
-        "generate" : False,
-        "compiler" : "all",
-        "exception" : False,
-        "verbose" : False,
-        "ref_path" : "test/asm/ref"
-    }
-
-
     i = 1
     while i < len(options):
         if options[i] == '-m':
@@ -78,16 +88,18 @@ def options_to_dict(options:list):
             for j in lst:
                 if j not in const.ARCH:
                     raise Exception(f"Invalid architecture name '{j}'")
-            d['arch'] = lst
+            OPTIONS['arch'] = lst
         elif options[i] == '-l':
-            d['log'] = True
+            OPTIONS['log'] = True
         elif options[i] == "-d":
-            d['deep'] = True
+            OPTIONS['deep'] = True
         elif options[i] == '-t':
-            d['keep_tmp'] = True
+            OPTIONS['keep_tmp'] = True
         elif options[i] == '-g':
-            d['generate'] = True
-            d['validate'] = False
+            OPTIONS['generate'] = True
+            OPTIONS['validate'] = False
+        elif options[i] == '-i':
+            OPTIONS["instruction_comparison"] = True
         elif options[i] == '-c':
             lst = []
             while i+1 < len(options) and options[i+1][0] != '-':
@@ -95,50 +107,66 @@ def options_to_dict(options:list):
                 i+=1
             if len(lst) == 0:
                 raise Exception("Parameter missing for option -c")
-            for j in lst:
-                if j not in const.COMPILER:
-                    raise Exception(f"Invalid compiler name '{j}'")
-            d['compiler'] = lst
+            
+            OPTIONS['compiler'] = lst
         elif options[i] == '-v':
-            d['verbose'] = True
-        elif options[i] == '-r':
-            d['exception'] = True
-        elif options[i] == '-ref':
-            d['ref_path'] = options[i+1]
+            OPTIONS['verbose'] = True
+        elif options[i] == '--fatal':
+            OPTIONS['exception'] = True
+        elif options[i] == '--ref':
+            OPTIONS['ref_path'] = options[i+1]
             i+=1
-        elif options[i] == '-reset':
-            d['validate'] = False
-            e = input("All reference files will be deleted, do you confirm ? (Y/n)")
+        elif options[i] == '--reset':
+            OPTIONS['validate'] = False
+            e = input("All references files will be deleted, do you confirm ? (Y/n)")
             if e == 'Y':
                 files.reset()
-        elif options[i] == '-input':
+        elif options[i] == "--disassembler":
+            if options[i+1] == 'objdump' or options[i+1] == 'standard':
+                OPTIONS['disassembler'] = options[i+1]
+                i+=1
+            else:
+                raise Exception("Invalid parameter with option disassembler. Valid parameters are `standard` or `objdump`")
+        elif options[i] == '--input':
             lst = []
             while i+1 < len(options) and options[i+1][0] != '-':
                 lst.append(options[i+1])
                 i+=1
             if len(lst) == 0:
-                raise Exception("Parameter missing for option -input")
-            d['input'] = lst
+                raise Exception("Parameter missing for option --input")
+            OPTIONS['input'] = lst
+        elif options[i] == '--flags':
+            lst = []
+            while i+1 < len(options) and options[i+1][0] != '-':
+                lst.append('-' + options[i+1])
+                i+=1
+            if len(lst) == 0:
+                raise Exception("Parameter missing for option --output")
+            OPTIONS['flags'] = lst
+        elif options[i] == '--output':
+            OPTIONS['output'] = options[i+1]
+            i+=1
         else:
             raise Exception(f"Invalid option {options[i]}")
         i+=1
 
-    return d
 
 
-
-
-def main(options:dict):
-    if options['generate']:
-        generation.update(deep=options['deep'], keep_tmp=options['keep_tmp'], verbose=options['verbose'],architecture=options['arch'],compiler=options['compiler'], input=options['input'], output_directory=options['ref_path'])
-    elif options['validate']:
-        return validation.validate(log_file=options['log'], input=options['input'], verbose=options['verbose'], raise_exception=options['exception'], keep_tmp=options['keep_tmp'], references_path=options['ref_path'], compiler=options['compiler'], architecture=options['arch'])
+def main():
+    print(OPTIONS)
+    """
+    if OPTIONS['generate']:
+        return generation.update(flags=OPTIONS['flags'], deep=OPTIONS['deep'], keep_tmp=OPTIONS['keep_tmp'], verbose=OPTIONS['verbose'],architecture=OPTIONS['arch'],\
+                                 compiler=OPTIONS['compiler'], input=OPTIONS['input'], output_directory=OPTIONS['output'], method=OPTIONS['disassembler'])
+    elif OPTIONS['validate']:
+        return validation.validate(flags=OPTIONS['flags'],log_file=OPTIONS['log'], input=OPTIONS['input'], verbose=OPTIONS['verbose'], raise_exception=OPTIONS['exception'],\
+                                    keep_tmp=OPTIONS['keep_tmp'], references_path=OPTIONS['output'], compiler=OPTIONS['compiler'], architecture=OPTIONS['arch'],\
+                                          method=OPTIONS['disassembler'], instruction_compare=OPTIONS['instruction_comparison'])
+                                          """
 
 
 if __name__ == '__main__':
     argv = sys.argv
     
-    options = options_to_dict(argv)
-    main(options)
-
-    
+    options_to_dict(argv)
+    main()

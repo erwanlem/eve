@@ -107,7 +107,9 @@ class TestOptionToDict(unittest.TestCase):
             "compiler" : "all",
             "exception" : False,
             "verbose" : False,
-            "ref_path" : "test/asm/ref"
+            "ref_path" : "test/asm/ref",
+            "disassembler" : "objdump",
+            "instruction_comparison" : False
         }
         self.assertEqual(command1, d)
 
@@ -142,7 +144,9 @@ class TestOptionToDict(unittest.TestCase):
         "compiler" : "all",
         "exception" : False,
         "verbose" : False,
-        "ref_path" : "test/asm/ref"
+        "ref_path" : "test/asm/ref",
+        "disassembler" : "objdump",
+        "instruction_comparison" : False
     }
         
         command1 = atp.options_to_dict(["..", '-input', 'abs.json', 'max.json', 'add.json', '-l', '-v'])
@@ -195,10 +199,12 @@ class TestAtp(unittest.TestCase):
             "compiler" : ["gcc"],
             "exception" : False,
             "verbose" : False,
-            "ref_path" : "test/asm/test/atp"
+            "ref_path" : "test/asm/test/atp",
+            "disassembler" : "objdump",
+            "instruction_comparison" : False
         }
 
-        self.assertEqual(atp.main(d), -1)
+        self.assertEqual(atp.main(d), 0)
 
         files.reset(folder='test/asm/test/atp')
 
@@ -222,7 +228,9 @@ class TestAtp(unittest.TestCase):
             "compiler" : ["gcc"],
             "exception" : False,
             "verbose" : False,
-            "ref_path" : "test/asm/test/atp"
+            "ref_path" : "test/asm/test/atp",
+            "disassembler" : "objdump",
+            "instruction_comparison" : False
         }
 
         self.assertEqual(atp.main(d), -1)
@@ -268,7 +276,9 @@ class TestAtp(unittest.TestCase):
             "compiler" : 'all',
             "exception" : False,
             "verbose" : False,
-            "ref_path" : "test/asm/test/atp"
+            "ref_path" : "test/asm/test/atp",
+            "disassembler" : "objdump",
+            "instruction_comparison" : False
         }
         atp.main(d)
 

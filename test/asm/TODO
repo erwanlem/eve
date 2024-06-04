@@ -8,3 +8,25 @@ Il faut un unique fichier de config par fonction.
 [x] check folders are created
 [x] Update validation process
 [x] Add option for all types
+
+-r --fatal
+-c chemin du compilateur
+--input
+
+--option
+--flags
+
+--ref
+--reset
+
+--output
+
+\r
+
+remplacer .LC8 par la constante
+
+option pour faire plusieurs fichiers
+
+afficher constantes objdump
+
+gcc clang
