@@ -1,13 +1,10 @@
 import re
 import os
-import const
-import time
 import assembly_parser
-import subprocess
-from compiler import TMP_ASM_FILE_NAME, TMP_CPP_FILE_NAME, TMP_O_FILE_NAME
+import settings
+import const
+from compiler import TMP_ASM_FILE_NAME, TMP_CPP_FILE_NAME, TMP_O_FILE_NAME, get_assembler
 
-
-# sse/sse2, ssse3/sse3, sse4 | AVX, AVX2
 
 FUNCTION_ID = 0
 
@@ -128,7 +125,7 @@ def extract_instructions(functionName:str, parameters:str, func_code_name:dict, 
 
 
 
-def get_functions_instructions(functions : list, flags:list, keep_tmp=False, architecture:list='all', compiler:list='all', verbose=False, method='objdump'):
+def get_functions_instructions(functions : list, flags:list, keep_tmp=False, verbose=False, method='objdump'):
     """Returns assembly instructions for each architectures, compilers and functions. The result is stored in a dictionary DICT[COMPILER][ARCHITECTURE][FUNCTION]['type' or 'instr']
 
     Args:
@@ -160,8 +157,10 @@ def get_functions_instructions(functions : list, flags:list, keep_tmp=False, arc
     tmp.write(full_code)
     tmp.close()
 
-    compilers = const.COMPILER.keys() if compiler == 'all' else compiler
-    architectures = const.ARCH.keys() if architecture == 'all' else architecture
+    target = settings.get_target()
+
+    compilers = target['compiler'].keys()
+    architectures = target['setup'].keys()
 
     nb_iter = len( compilers ) * len( architectures )
     it = 0
@@ -174,15 +173,14 @@ def get_functions_instructions(functions : list, flags:list, keep_tmp=False, arc
             if verbose:
                 print(f'Generating assembly : {int(100 * it / nb_iter)}% done', end='\r')
 
-            compiler.get_assembler(TMP_CPP_FILE_NAME, TMP_ASM_FILE_NAME, flags, compiler=comp, method=method)
-
+            get_assembler(TMP_CPP_FILE_NAME, TMP_ASM_FILE_NAME, compiler=comp, method=method, setup=target['setup'][a], default_options=flags == [])
+            
             it += 1
             file_asm = open(TMP_ASM_FILE_NAME)
             asm = file_asm.read()
             file_asm.close()
 
             for f, p in functions:
-
                 if f not in res_dict[comp][a].keys():
                     res_dict[comp][a][f] = [{"type" : p, "instr" : extract_instructions(f, p, functions_names, asm, method=method, compiler=comp)}]
                 else:

@@ -4,7 +4,6 @@ import const
 import random
 import const
 
-
 ## This file aims to read json files and extract information from them
 
 def load_json(file_name:str, create_if_not_found=False):
@@ -52,6 +51,8 @@ def keytypes_to_types(types:list):
         list: 2D list with key types replaced by cpp files
     """
 
+    random.seed = 42
+
     valid_types = []
     
     for t in types:
@@ -64,35 +65,69 @@ def keytypes_to_types(types:list):
                     tmp = [a if i == 'arithmetic' else i for i in t]
                     tmp = [const.REAL[random.randint(0, len(const.REAL)-1)] if i == 'real' else i for i in tmp]
                     tmp = [const.INTEGER[random.randint(0, len(const.INTEGER)-1)] if i == 'integer' else i for i in tmp]
-                    tmp = [const.UNSIGNED_INTEGER[random.randint(0, len(const.UNSIGNED_INTEGER)-1)] if i == 'unsigned' else i for i in tmp]
+                    tmp = [const.UNSIGNED_INTEGER[random.randint(0, len(const.UNSIGNED_INTEGER)-1)] if i == 'unsigned_integer' else i for i in tmp]
+                    tmp = [const.SIGNED[random.randint(0, len(const.SIGNED)-1)] if i == 'signed' else i for i in tmp]
+                    tmp = [const.SIGNED_INTEGER[random.randint(0, len(const.SIGNED_INTEGER)-1)] if i == 'signed_integer' else i for i in tmp]
                     valid_types.append(tmp)
             if 'integer' in t:
                 for a in const.INTEGER:
                     tmp = [const.ARITHMETIC[random.randint(0, len(const.ARITHMETIC)-1)] if i == 'arithmetic' else i for i in t]
                     tmp = [const.REAL[random.randint(0, len(const.REAL)-1)] if i == 'real' else i for i in tmp]
                     tmp = [a if i == 'integer' else i for i in tmp]
-                    tmp = [const.UNSIGNED_INTEGER[random.randint(0, len(const.UNSIGNED_INTEGER)-1)] if i == 'unsigned' else i for i in tmp]
+                    tmp = [const.UNSIGNED_INTEGER[random.randint(0, len(const.UNSIGNED_INTEGER)-1)] if i == 'unsigned_integer' else i for i in tmp]
+                    tmp = [const.SIGNED[random.randint(0, len(const.SIGNED)-1)] if i == 'signed' else i for i in tmp]
+                    tmp = [const.SIGNED_INTEGER[random.randint(0, len(const.SIGNED_INTEGER)-1)] if i == 'signed_integer' else i for i in tmp]
                     valid_types.append(tmp)
             if 'real' in t:
                 for a in const.REAL:
                     tmp = [const.ARITHMETIC[random.randint(0, len(const.ARITHMETIC)-1)] if i == 'arithmetic' else i for i in t]
                     tmp = [a if i == 'real' else i for i in tmp]
                     tmp = [const.INTEGER[random.randint(0, len(const.INTEGER)-1)] if i == 'integer' else i for i in tmp]
-                    tmp = [const.UNSIGNED_INTEGER[random.randint(0, len(const.UNSIGNED_INTEGER)-1)] if i == 'unsigned' else i for i in tmp]
+                    tmp = [const.UNSIGNED_INTEGER[random.randint(0, len(const.UNSIGNED_INTEGER)-1)] if i == 'unsigned_integer' else i for i in tmp]
+                    tmp = [const.SIGNED[random.randint(0, len(const.SIGNED)-1)] if i == 'signed' else i for i in tmp]
+                    tmp = [const.SIGNED_INTEGER[random.randint(0, len(const.SIGNED_INTEGER)-1)] if i == 'signed_integer' else i for i in tmp]
                     valid_types.append(tmp)
-            if 'unsigned' in t:
+            if 'unsigned_integer' in t:
                 for a in const.UNSIGNED_INTEGER:
                     tmp = [const.ARITHMETIC[random.randint(0, len(const.ARITHMETIC)-1)] if i == 'arithmetic' else i for i in t]
                     tmp = [const.REAL[random.randint(0, len(const.REAL)-1)] if i == 'real' else i for i in tmp]
                     tmp = [const.INTEGER[random.randint(0, len(const.INTEGER)-1)] if i == 'integer' else i for i in tmp]
-                    tmp = [a if i == 'unsigned' else i for i in tmp]
+                    tmp = [const.SIGNED[random.randint(0, len(const.SIGNED)-1)] if i == 'signed' else i for i in tmp]
+                    tmp = [const.SIGNED_INTEGER[random.randint(0, len(const.SIGNED_INTEGER)-1)] if i == 'signed_integer' else i for i in tmp]
+                    tmp = [a if i == 'unsigned_integer' else i for i in tmp]
                     valid_types.append(tmp)
+            if 'signed_integer' in t:
+                for a in const.SIGNED_INTEGER:
+                    tmp = [const.ARITHMETIC[random.randint(0, len(const.ARITHMETIC)-1)] if i == 'arithmetic' else i for i in t]
+                    tmp = [const.REAL[random.randint(0, len(const.REAL)-1)] if i == 'real' else i for i in tmp]
+                    tmp = [const.INTEGER[random.randint(0, len(const.INTEGER)-1)] if i == 'integer' else i for i in tmp]
+                    tmp = [const.UNSIGNED_INTEGER[random.randint(0, len(const.UNSIGNED_INTEGER)-1)] if i == 'unsigned_integer' else i for i in tmp]
+                    tmp = [const.SIGNED[random.randint(0, len(const.SIGNED)-1)] if i == 'signed' else i for i in tmp]
+                    tmp = [a if i == 'signed_integer' else i for i in tmp]
+                    valid_types.append(tmp)
+            if 'signed' in t:
+                for a in const.SIGNED:
+                    tmp = [const.ARITHMETIC[random.randint(0, len(const.ARITHMETIC)-1)] if i == 'arithmetic' else i for i in t]
+                    tmp = [const.REAL[random.randint(0, len(const.REAL)-1)] if i == 'real' else i for i in tmp]
+                    tmp = [const.INTEGER[random.randint(0, len(const.INTEGER)-1)] if i == 'integer' else i for i in tmp]
+                    tmp = [const.UNSIGNED_INTEGER[random.randint(0, len(const.UNSIGNED_INTEGER)-1)] if i == 'unsigned_integer' else i for i in tmp]
+                    tmp = [const.SIGNED_INTEGER[random.randint(0, len(const.SIGNED_INTEGER)-1)] if i == 'signed_integer' else i for i in tmp]
+                    tmp = [a if i == 'signed' else i for i in tmp]
         else:
             valid_types.append(t)
                 
     return valid_types
 
 
+
+def get_groups(entry:str):
+    settings = load_json("test/asm/settings.json")
+    settings = json.loads(settings)
+    g = [i for i in settings['groups'] if i['name'] == entry]
+    if len(g) > 0 :
+        return g[0]['files']
+    else:
+        return []
 
 
 
@@ -117,7 +152,10 @@ def read_config_file(file_name='all'):
             d[function['function']] = keytypes_to_types(function['parameters'])
         return d
     else:
-        if type(file_name) == str:
+        g = get_groups(file_name)
+        if g != []:
+            file_name = g
+        else:
             file_name = [file_name]
         d = {}
         for n in file_name:
@@ -128,6 +166,7 @@ def read_config_file(file_name='all'):
                 function = json.loads(txt)
                 d[function['function']] = keytypes_to_types(function['parameters'])
         return d
+        
 
 
 

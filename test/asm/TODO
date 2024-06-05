@@ -9,24 +9,22 @@ Il faut un unique fichier de config par fonction.
 [x] Update validation process
 [x] Add option for all types
 
--r --fatal
--c chemin du compilateur
---input
 
---option
---flags
 
+[x] --fatal
+[x] -c chemin du compilateur
+[x] --input
+[x] --flags
 --ref
 --reset
+[x] --output
+[x] \r
 
---output
-
-\r
 
 remplacer .LC8 par la constante
+afficher constantes objdump
 
 option pour faire plusieurs fichiers
 
-afficher constantes objdump
 
-gcc clang
+Do we need to check empty cpp file or file with header

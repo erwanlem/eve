@@ -3,6 +3,7 @@ import generation
 import files
 import const
 import validation
+from const import OPTIONS
 
 """
         Assembly Testing Program
@@ -34,23 +35,6 @@ Options are:
     - `-reset` remove reference files
     - `-disassembler method`
 """
-
-OPTIONS = {
-    "validate" : True,
-    "log" : False,
-    "deep" : False,
-    "input" : 'all',
-    "keep_tmp" : False,
-    "generate" : False,
-    "exception" : False,
-    "verbose" : False,
-    "disassembler" : "objdump",
-    "instruction_comparison" : False,
-    "flags" : [],
-    "setup" : None,
-    "compiler" : None,
-    "output" : f"{const.root}output"
-}
 
 
 
@@ -100,14 +84,6 @@ def options_to_dict(options:list):
             OPTIONS['validate'] = False
         elif options[i] == '-i':
             OPTIONS["instruction_comparison"] = True
-        elif options[i] == '-c':
-            lst = []
-            while i+1 < len(options) and options[i+1][0] != '-':
-                lst.append(options[i+1])
-                i+=1
-            if len(lst) == 0:
-                raise Exception("Parameter missing for option -c")
-            
             OPTIONS['compiler'] = lst
         elif options[i] == '-v':
             OPTIONS['verbose'] = True
@@ -128,13 +104,8 @@ def options_to_dict(options:list):
             else:
                 raise Exception("Invalid parameter with option disassembler. Valid parameters are `standard` or `objdump`")
         elif options[i] == '--input':
-            lst = []
-            while i+1 < len(options) and options[i+1][0] != '-':
-                lst.append(options[i+1])
-                i+=1
-            if len(lst) == 0:
-                raise Exception("Parameter missing for option --input")
-            OPTIONS['input'] = lst
+            OPTIONS['input'] = options[i+1]
+            i+=1
         elif options[i] == '--flags':
             lst = []
             while i+1 < len(options) and options[i+1][0] != '-':
@@ -146,6 +117,12 @@ def options_to_dict(options:list):
         elif options[i] == '--output':
             OPTIONS['output'] = options[i+1]
             i+=1
+        elif options[i] == '--setup':
+            OPTIONS['setup'] = options[i+1]
+            i+=1
+        elif options[i] == '--compiler' or options[i] == '-c':
+            OPTIONS['compiler'] = options[i+1]
+            i+=1
         else:
             raise Exception(f"Invalid option {options[i]}")
         i+=1
@@ -153,16 +130,12 @@ def options_to_dict(options:list):
 
 
 def main():
-    print(OPTIONS)
-    """
     if OPTIONS['generate']:
-        return generation.update(flags=OPTIONS['flags'], deep=OPTIONS['deep'], keep_tmp=OPTIONS['keep_tmp'], verbose=OPTIONS['verbose'],architecture=OPTIONS['arch'],\
-                                 compiler=OPTIONS['compiler'], input=OPTIONS['input'], output_directory=OPTIONS['output'], method=OPTIONS['disassembler'])
+        return generation.update(OPTIONS['flags'], OPTIONS['input'], OPTIONS['output'], OPTIONS['deep'], OPTIONS['keep_tmp'], OPTIONS['verbose'], OPTIONS['disassembler'])
     elif OPTIONS['validate']:
-        return validation.validate(flags=OPTIONS['flags'],log_file=OPTIONS['log'], input=OPTIONS['input'], verbose=OPTIONS['verbose'], raise_exception=OPTIONS['exception'],\
-                                    keep_tmp=OPTIONS['keep_tmp'], references_path=OPTIONS['output'], compiler=OPTIONS['compiler'], architecture=OPTIONS['arch'],\
-                                          method=OPTIONS['disassembler'], instruction_compare=OPTIONS['instruction_comparison'])
-                                          """
+        return validation.validate(OPTIONS['flags'], OPTIONS['input'], OPTIONS['exception'], OPTIONS['log'], OPTIONS['keep_tmp'], OPTIONS['instruction_comparison'], \
+                                   OPTIONS['verbose'], OPTIONS['output'], OPTIONS['disassembler'])
+                                          
 
 
 if __name__ == '__main__':

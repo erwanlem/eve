@@ -1,7 +1,8 @@
 import json
 import os
 import reader
-from atp import OPTIONS
+from reader import get_groups
+from const import OPTIONS
 
 
 
@@ -79,6 +80,7 @@ def get_compiler(entry:str):
             return {entry : settings['compilers'][entry]}
         else:
             return {os.path.basename(entry) : entry}
+
     
 
 def get_target():
@@ -92,8 +94,8 @@ def get_target():
                 d['compiler'] = OPTIONS['compiler']
             else:
                 d['compiler'] = c
+        d['setup'] = { 'custom' : OPTIONS['flags'] }
         
-        d['setup'] = {}
     else:
         if OPTIONS['compiler'] == None or OPTIONS['compiler'] == 'all':
             d['compiler'] = get_compiler('all')
@@ -106,13 +108,14 @@ def get_target():
         if OPTIONS['setup'] == None or OPTIONS['compiler'] == 'all':
             d['setup'] = get_setup('all')
         else:
-            s = get_setup(OPTIONS['setup'])
-            if s == {}:
-                raise Exception('Invalid setup')
-            else:
-                d['setup'] = s
+            d['setup'] = get_setup(OPTIONS['setup'])
 
-    
+    if OPTIONS['input'] == 'all':
+        d['input'] = reader.read_config_file('all')
+    else:
+        d['input'] = reader.read_config_file(OPTIONS['input'])
+        
+
 
     d['output'] = OPTIONS['output']
     return d
@@ -124,7 +127,4 @@ def get_target():
 
 
 if __name__ == '__main__':
-    OPTIONS['flags'] = []
-    OPTIONS['setup'] = 'sse2'
-    OPTIONS['compiler'] = 'gcc'
-    print(get_target())
+    print(get_groups('abs'))

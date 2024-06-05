@@ -22,19 +22,27 @@ def save_json(destination_path:str, text:str):
     Raises:
         Exception: Raised when error occured while writing the file.
     """
-    try:
-        f = open(destination_path, 'w')
-        f.write(text)
-        f.close()
-    except Exception as e:
-        raise Exception(f"Error while writing {destination_path} : {e}")
+    if not os.path.exists(destination_path):
+        try:
+            f = open(destination_path, 'x')
+            f.write(text)
+            f.close()
+        except Exception as e:
+            raise Exception(f"Error while writing {destination_path} : {e}")
+    else:
+        try:
+            f = open(destination_path, 'w')
+            f.write(text)
+            f.close()
+        except Exception as e:
+            raise Exception(f"Error while writing {destination_path} : {e}")
 
 
 
 
 
 
-def update(flags=[], input="all", output_directory=None, deep=False, keep_tmp=False, architecture='all', compiler='all', verbose=False, method='objdump'):
+def update(flags=[], input="all", output_directory=None, deep=False, keep_tmp=False, verbose=False, method='objdump'):
     """Function to generate and store assembly code
 
     Args:
@@ -50,8 +58,6 @@ def update(flags=[], input="all", output_directory=None, deep=False, keep_tmp=Fa
         int: 0 if the process finished successfully, -1 if an error occured.
     """
 
-    files.build_reference_directories(folder=output_directory)
-
     conf = reader.read_config_file(input)
 
     if output_directory == None:
@@ -62,11 +68,16 @@ def update(flags=[], input="all", output_directory=None, deep=False, keep_tmp=Fa
         for typ in conf[k]:
             functions.append((k, typ))
 
-    functions_assembly = instructions.get_functions_instructions(functions, flags, keep_tmp=keep_tmp, verbose=verbose, architecture=architecture, compiler=compiler, method=method)
+    functions_assembly = instructions.get_functions_instructions(functions, flags, keep_tmp=keep_tmp, verbose=verbose, method=method)
 
     for comp in functions_assembly.keys():
         for arch in functions_assembly[comp].keys():
             for f in functions_assembly[comp][arch].keys():
+                try:
+                    os.makedirs(f"{output_directory}/{comp}/{arch}")
+                except FileExistsError:
+                    pass
+
                 if not os.path.exists(f"{output_directory}/{comp}/{arch}/{f}.json"):
                     file = open(f"{output_directory}/{comp}/{arch}/{f}.json", 'x')
                     file.close()

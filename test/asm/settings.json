@@ -9,7 +9,13 @@
         {
             "sse": "-msse",
             "sse2": "-msse2",
-            "sse3": "-msse3"
+            "sse3": "-msse3",
+            "ssse3": "-mssse3",
+            "sse4": "-msse4",
+            "avx" : "-mavx",
+            "avx2" : "-mavx2",
+            "sse4.2" : "-msse4.2",
+            "avx512" : "-mavx512f"
         },
 
     "groups": [

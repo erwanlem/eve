@@ -21,11 +21,29 @@ COMPILER = {
 }
 
 
+OPTIONS = {
+    "validate" : True,
+    "log" : False,
+    "deep" : False,
+    "input" : 'all',
+    "keep_tmp" : False,
+    "generate" : False,
+    "exception" : False,
+    "verbose" : False,
+    "disassembler" : "objdump",
+    "instruction_comparison" : False,
+    "flags" : [],
+    "setup" : None,
+    "compiler" : None,
+    "output" : f"{root}ref"
+}
+
+
 REAL = ['float', 'double']
-INTEGER = ['std::int64_t', 'std::int32_t', 'std::int16_t', 'std::int8_t']
+SIGNED_INTEGER = ['std::int64_t', 'std::int32_t', 'std::int16_t', 'std::int8_t']
 UNSIGNED_INTEGER = ["std::uint64_t" , "std::uint32_t" , "std::uint16_t" , "std::uint8_t"]
-#INTEGER = SIGNED_INTEGER + UNSIGNED_INTEGER
-#SIGNED = SIGNED_INTEGER + REAL
+INTEGER = SIGNED_INTEGER + UNSIGNED_INTEGER
+SIGNED = SIGNED_INTEGER + REAL
 
 ARITHMETIC = REAL + INTEGER + UNSIGNED_INTEGER
 

@@ -88,7 +88,7 @@ def log_undefined_reference(function:str, compiler:str, architecture:str):
     return s + s1
 
 
-def validate(flags:list, input='all', raise_exception=False, log_file=False, keep_tmp=False, compiler='all', architecture='all', instruction_compare=False, verbose=False, references_path="test/asm/ref", method='objdump'):
+def validate(flags:list, input='all', raise_exception=False, log_file=False, keep_tmp=False, instruction_compare=False, verbose=False, references_path="test/asm/ref", method='objdump'):
     """Validation function. Generates assembly for the current library version and compares it with reference assembly.
 
     Args:
@@ -118,7 +118,7 @@ def validate(flags:list, input='all', raise_exception=False, log_file=False, kee
         for typ in conf[k]:
             functions.append((k, typ))
 
-    functions_assembly = instructions.get_functions_instructions(functions, flags, keep_tmp=keep_tmp, architecture=architecture, compiler=compiler, method=method)
+    functions_assembly = instructions.get_functions_instructions(functions, flags, keep_tmp=keep_tmp, method=method)
     
     validation_set = reader.read_reference_files(input, path=references_path)
     
@@ -126,12 +126,9 @@ def validate(flags:list, input='all', raise_exception=False, log_file=False, kee
     errors = 0
     log_txt = ""
 
-    compilers = const.COMPILER.keys() if compiler == 'all' else compiler
-    architectures = const.ARCH.keys() if architecture == 'all' else architecture
-
-    for f in conf.keys():
-        for c in compilers:
-            for a in architectures:
+    for c in functions_assembly.keys():
+        for a in functions_assembly[c].keys():
+            for f in functions_assembly[c][a].keys():
                 if f not in validation_set[c][a].keys():
                     log_txt += log_undefined_reference(f, c, a)
                     if verbose:

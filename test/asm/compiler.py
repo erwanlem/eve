@@ -9,7 +9,8 @@ DEFAULT_COMPILER_OPTIONS = ['-O3', '-DNDEBUG', '-std=c++20', '-I', 'include/']
 
 
 
-def get_assembler(input_path, output_path, flags:list, compiler='g++', method='objdump', arch:str=None):
+
+def get_assembler(input_path, output_path, compiler='g++', method='objdump', setup:str=None, default_options=False):
     """Compile and disassemble cpp file
 
     Args:
@@ -20,27 +21,42 @@ def get_assembler(input_path, output_path, flags:list, compiler='g++', method='o
         method (str, optional): Defines the disassembling method. Values are `objdump` or `gcc`.
     """
 
+    if type(setup) == str:
+        setup = [setup]
+ 
     if method == 'objdump':
-        if flags != []:
-            subprocess.run([compiler, input_path, '-c', '-o', TMP_O_FILE_NAME] + flags)
+        if default_options:
+            p1 = subprocess.Popen([compiler, input_path, '-c', '-o', TMP_O_FILE_NAME] + DEFAULT_COMPILER_OPTIONS + setup, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         else:
-            subprocess.run([compiler, input_path, '-c', '-o', TMP_O_FILE_NAME] + DEFAULT_COMPILER_OPTIONS + arch)
-        #p1 = subprocess.run([compiler, input_path, '-O3', arch, '-DNDEBUG', '-std=c++20', '-I', 'include/', '-c', '-o', TMP_O_FILE_NAME])
-        #os.system(f"{compiler} {input_path} -O3 {arch} -DNDEBUG -std=c++20 -I include/ -c -o {TMP_O_FILE_NAME}")
+            p1 = subprocess.Popen([compiler, input_path, '-c', '-o', TMP_O_FILE_NAME] + setup, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        p1.wait()
+        if p1.returncode != 0:
+            raise Exception("Compilation error : " + p1.stderr.read().decode()) 
+
+
+        # {compiler} {input_path} -O3 {arch} -DNDEBUG -std=c++20 -I include/ -c -o {TMP_O_FILE_NAME} 
         f = open(output_path, 'w')
-        p2 = subprocess.run(['objdump', '-d', '-j', '.text', '-C', TMP_O_FILE_NAME], stdout=f)
+        p2 = subprocess.Popen(['objdump', '-d', '-j', '.text', '-C', TMP_O_FILE_NAME], stdout=f, stderr=subprocess.PIPE)
         f.close()
-        #os.system(f"objdump -d -j .text -C {TMP_O_FILE_NAME} > {output_path}")
+        p2.wait()
+        if p2.returncode != 0:
+            raise Exception("Compilation error : " + p2.stderr.read().decode()) 
+        # objdump -d -j .text -C {TMP_O_FILE_NAME} > {output_path}
     else:
-        if flags != []:
-            subprocess.run([compiler, '-S', input_path, '-o', output_path] + flags)
+        if default_options:
+            p1 = subprocess.Popen([compiler, '-S', input_path, '-o', output_path] + DEFAULT_COMPILER_OPTIONS + setup)
         else:
-            subprocess.run([compiler, '-S', input_path, '-o', output_path] + DEFAULT_COMPILER_OPTIONS + arch)
-        #os.system(f"g++ --std=c++20 -O3 -S -I include/ {input_path} -o {output_path}")
+            p1 = subprocess.Popen([compiler, '-S', input_path, '-o', output_path] + setup)
+        p1.wait()
+        if p1.returncode != 0:
+            raise Exception("Compilation error : " + p1.stderr.read().decode()) 
+            
+
+        # g++ --std=c++20 -O3 -S -I include/ {input_path} -o {output_path}
 
 
 
 
 
 if __name__ == '__main__':
-    pass
+    print(check_compiler_options("test/asm/tmp.cpp", "test/asm/tmp.s", 'g++', 'gcc', "-msse", True))
