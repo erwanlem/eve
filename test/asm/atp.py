@@ -89,6 +89,9 @@ def options_to_dict(options:list):
             OPTIONS['verbose'] = True
         elif options[i] == '--fatal':
             OPTIONS['exception'] = True
+        elif options[i] == '--functionsperfile' or options[i] == '-S':
+            OPTIONS['limit_per_file'] = int(options[i+1])
+            i+=1
         elif options[i] == '--ref':
             OPTIONS['ref_path'] = options[i+1]
             i+=1
@@ -97,7 +100,7 @@ def options_to_dict(options:list):
             e = input("All references files will be deleted, do you confirm ? (Y/n)")
             if e == 'Y':
                 files.reset()
-        elif options[i] == "--disassembler":
+        elif options[i] == "--disassembler" or options[i] == "--D":
             if options[i+1] == 'objdump' or options[i+1] == 'standard':
                 OPTIONS['disassembler'] = options[i+1]
                 i+=1
@@ -117,7 +120,7 @@ def options_to_dict(options:list):
         elif options[i] == '--output':
             OPTIONS['output'] = options[i+1]
             i+=1
-        elif options[i] == '--setup':
+        elif options[i] == '--setup' or options[i] == '-s':
             OPTIONS['setup'] = options[i+1]
             i+=1
         elif options[i] == '--compiler' or options[i] == '-c':
@@ -131,10 +134,11 @@ def options_to_dict(options:list):
 
 def main():
     if OPTIONS['generate']:
-        return generation.update(OPTIONS['flags'], OPTIONS['input'], OPTIONS['output'], OPTIONS['deep'], OPTIONS['keep_tmp'], OPTIONS['verbose'], OPTIONS['disassembler'])
+        return generation.generate(OPTIONS['flags'], OPTIONS['input'], OPTIONS['output'], OPTIONS['deep'], OPTIONS['keep_tmp'], OPTIONS['verbose'],\
+                                    OPTIONS['disassembler'], OPTIONS['limit_per_file'])
     elif OPTIONS['validate']:
         return validation.validate(OPTIONS['flags'], OPTIONS['input'], OPTIONS['exception'], OPTIONS['log'], OPTIONS['keep_tmp'], OPTIONS['instruction_comparison'], \
-                                   OPTIONS['verbose'], OPTIONS['output'], OPTIONS['disassembler'])
+                                   OPTIONS['verbose'], OPTIONS['output'], OPTIONS['disassembler'], OPTIONS['limit_per_file'])
                                           
 
 

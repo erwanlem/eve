@@ -3,7 +3,7 @@ import instructions as instructions
 import const
 import reader
 import os
-import files
+import time
 
 
 CONFIG_FILE = "test/asm/config.json"
@@ -42,7 +42,7 @@ def save_json(destination_path:str, text:str):
 
 
 
-def update(flags=[], input="all", output_directory=None, deep=False, keep_tmp=False, verbose=False, method='objdump'):
+def update(flags=[], conf={}, output_directory=None, deep=False, keep_tmp=False, verbose=False, method='objdump'):
     """Function to generate and store assembly code
 
     Args:
@@ -57,8 +57,6 @@ def update(flags=[], input="all", output_directory=None, deep=False, keep_tmp=Fa
     Returns:
         int: 0 if the process finished successfully, -1 if an error occured.
     """
-
-    conf = reader.read_config_file(input)
 
     if output_directory == None:
         output_directory = f"{const.ref_path}"
@@ -95,6 +93,31 @@ def update(flags=[], input="all", output_directory=None, deep=False, keep_tmp=Fa
 
     return 0
     
+
+
+def generate(flags=[], input="all", output_directory=None, deep=False, keep_tmp=False, verbose=False, method='objdump', max_function_files='inf'):
+    t1 = time.time()
+
+
+    conf = reader.read_config_file(input)
+
+    if max_function_files == 'inf' or len(list(conf.keys())) < max_function_files:
+        update(flags, conf, output_directory, deep, keep_tmp, verbose, method)
+    else:
+        conf2 = {}
+        i = 0
+        for k in conf.keys():
+            if i == max_function_files:
+                print(conf2)
+                update(flags, conf2, output_directory, deep, keep_tmp, verbose, method)
+                conf2 = {}
+                i = 0
+            conf2[k] = conf[k]
+            i+=1
+
+    if verbose:
+        print("Process duration: " + str(round(time.time()-t1, 2)) + "s")
+
 
 if __name__ == '__main__':
     update(input='all', deep=True, keep_tmp=True, compiler=['gcc'], architecture=['sse'], verbose=False)

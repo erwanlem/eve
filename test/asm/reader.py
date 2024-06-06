@@ -191,9 +191,20 @@ def read_reference_files(file_name:str, path="test/asm/ref"):
                 for k in os.listdir(f"{path}/{i}/{j}"):
                     d = json.loads(load_json(f"{path}/{i}/{j}/{k}"))
                     references[i][j][d['function']] = d['asm']
-            elif os.path.exists(f"{path}/{i}/{j}/{file_name}"):
-                d = json.loads(load_json(f"{path}/{i}/{j}/{file_name}"))
-                references[i][j][d['function']] = d['asm']
+            else:
+                g = get_groups(file_name)
+
+                if g != []:
+                    names = g
+                else:
+                    names = [file_name]
+                for k in names:
+                    try:
+                        d = json.loads(load_json(f"{path}/{i}/{j}/{k}"))
+                        references[i][j][d['function']] = d['asm']
+                    except FileNotFoundError:
+                        pass
+                    
     return references
 
 
@@ -209,4 +220,5 @@ def get_compilers_names(compiler):
 
 
 if __name__ == '__main__':
-    print(read_reference_files('all'))
+    pass
+    #print(read_reference_files('abs'))

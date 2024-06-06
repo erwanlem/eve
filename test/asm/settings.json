@@ -14,8 +14,7 @@
             "sse4": "-msse4",
             "avx" : "-mavx",
             "avx2" : "-mavx2",
-            "sse4.2" : "-msse4.2",
-            "avx512" : "-mavx512f"
+            "sse4.2" : "-msse4.2"
         },
 
     "groups": [

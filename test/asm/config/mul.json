@@ -1,0 +1,6 @@
+{
+    "function" : "mul",
+    "parameters" : [
+        ["arithmetic", "arithmetic"]
+    ]
+}

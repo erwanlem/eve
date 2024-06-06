@@ -2,7 +2,7 @@ from generation import *
 import json
 import os
 import reader
-import files
+import time
 
 LOG_PATH = "test/asm/log.txt"
 
@@ -28,9 +28,7 @@ class AssemblyMismatch(Exception):
         return s
 
     def __str__(self) -> str:
-        print(self.actual)
-        print(self.expected)
-        s0 = f'-------------------------------------------------\nAssembly mismatch with function : {self.function}\n\n'
+        s0 = f'\n-------------------------------------------------\nAssembly mismatch with function : {self.function}\n\n'
         s1 = f'Compiler : {self.compiler}\nArchitecture : {self.arch}\n'
         #s2 = 'Expecting :\n' + self.format_instructions(self.expected) + '\n'
         #s3 = 'Got:\n' + self.format_instructions(self.actual) + '\n'
@@ -88,7 +86,7 @@ def log_undefined_reference(function:str, compiler:str, architecture:str):
     return s + s1
 
 
-def validate(flags:list, input='all', raise_exception=False, log_file=False, keep_tmp=False, instruction_compare=False, verbose=False, references_path="test/asm/ref", method='objdump'):
+def validate_bis(input, flags:list, conf={}, raise_exception=False, log_file=False, keep_tmp=False, instruction_compare=False, verbose=False, references_path="test/asm/ref", method='objdump'):
     """Validation function. Generates assembly for the current library version and compares it with reference assembly.
 
     Args:
@@ -109,9 +107,9 @@ def validate(flags:list, input='all', raise_exception=False, log_file=False, kee
         int: 0 if process finished without errors, otherwise -1.
     """
 
-    files.build_reference_directories(folder=references_path)
+    #files.build_reference_directories(folder=references_path)
 
-    conf = reader.read_config_file(input)
+    # conf = reader.read_config_file(input)
 
     functions = []
     for k in conf.keys():
@@ -119,20 +117,21 @@ def validate(flags:list, input='all', raise_exception=False, log_file=False, kee
             functions.append((k, typ))
 
     functions_assembly = instructions.get_functions_instructions(functions, flags, keep_tmp=keep_tmp, method=method)
+
     
     validation_set = reader.read_reference_files(input, path=references_path)
-    
+
     ret = 0
     errors = 0
     log_txt = ""
 
-    for c in functions_assembly.keys():
-        for a in functions_assembly[c].keys():
-            for f in functions_assembly[c][a].keys():
+    for c in functions_assembly.keys(): # compiler
+        for a in functions_assembly[c].keys(): # simd extension
+            for f in functions_assembly[c][a].keys(): # function
                 if f not in validation_set[c][a].keys():
                     log_txt += log_undefined_reference(f, c, a)
                     if verbose:
-                        print(f"**WARNING** - Function {f} not found in references (comp {c}, arch {a}). Try generating using option -g.")
+                        print(f"**WARNING** - Function {f} not found in references (comp {c}, {a}). Try generating using option -g.")
                     ret = -1
                 elif not functions_assembly[c][a][f] == validation_set[c][a][f]:
                     for i in range(0, min(len(functions_assembly[c][a][f]), len(validation_set[c][a][f]))):
@@ -169,6 +168,32 @@ def validate(flags:list, input='all', raise_exception=False, log_file=False, kee
         print(f"Process finished : {errors} mismatching function(s) found")
 
     return ret
+
+
+
+
+
+
+def validate(flags:list, input='all', raise_exception=False, log_file=False, keep_tmp=False, instruction_compare=False, verbose=False, references_path="test/asm/ref", method='objdump', max_function_files='inf'):
+    t1 = time.time()
+    
+    conf = reader.read_config_file(input)
+
+    if max_function_files == 'inf' or len(list(conf.keys())) < max_function_files:
+        validate_bis(input, flags, conf, raise_exception, log_file, keep_tmp, instruction_compare, verbose, references_path, method)
+    else:
+        conf2 = {}
+        i = 0
+        for k in conf.keys():
+            if i == max_function_files:
+                validate_bis(input, flags, conf2, raise_exception, log_file, keep_tmp, instruction_compare, verbose, references_path, method)
+                conf2 = {}
+                i = 0
+            conf2[k] = conf[k]
+            i+=1
+
+    if verbose:
+        print("Process duration: " + str(round(time.time()-t1, 2)) + "s")
 
 
 if __name__ == '__main__':

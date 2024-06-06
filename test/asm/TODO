@@ -24,7 +24,7 @@ Il faut un unique fichier de config par fonction.
 remplacer .LC8 par la constante
 afficher constantes objdump
 
-option pour faire plusieurs fichiers
+[x] option pour faire plusieurs fichiers
 
 
 Do we need to check empty cpp file or file with header

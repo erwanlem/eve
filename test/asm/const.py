@@ -35,7 +35,8 @@ OPTIONS = {
     "flags" : [],
     "setup" : None,
     "compiler" : None,
-    "output" : f"{root}ref"
+    "output" : f"{root}ref",
+    "limit_per_file" : 'inf'
 }
 
 
