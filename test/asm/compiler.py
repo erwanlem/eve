@@ -11,14 +11,18 @@ DEFAULT_COMPILER_OPTIONS = ['-O3', '-DNDEBUG', '-std=c++20', '-I', 'include/']
 
 
 def get_assembler(input_path, output_path, compiler='g++', method='objdump', setup:str=None, default_options=False):
-    """Compile and disassemble cpp file
+    """Compile and disassemble cpp file.
 
     Args:
-        input_path (str): Path of the cpp file
-        output_path (str): Path of the file containing objdump result
-        arch (str): Architecture used for compilation
+        input_path (str): Path of the cpp file.
+        output_path (str): Path of the file containing objdump result.
         compiler (str, optional): Compiler used for compilation. Defaults to 'g++'.
         method (str, optional): Defines the disassembling method. Values are `objdump` or `gcc`.
+        setup (str, optional): Simd extension options. Defaults to None.
+        default_options (bool, optional): If True default options are append for compilation. Defaults to False.
+
+    Raises:
+        Exception: If a compilation error occured (mostly because of the options).
     """
 
     if type(setup) == str:

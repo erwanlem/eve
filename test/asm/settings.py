@@ -6,26 +6,6 @@ from const import OPTIONS
 
 
 
-def list_setup():
-    f = open("test/asm/settings.json", 'r')
-    txt = f.read()
-    f.close()
-    j = json.loads(txt)
-
-    print(' -- Available architectures --')
-    [print(list(i.keys())[0]) for i in j['architectures']]
-
-
-def list_compilers():
-    f = open("test/asm/settings.json", 'r')
-    txt = f.read()
-    f.close()
-    j = json.loads(txt)
-
-    print(' -- Available compilers --')
-    [print(list(i.keys())[0]) for i in j['compilers']]
-
-
 def add_compiler(name:str, flag:str):
     f = open("test/asm/settings.json", 'r')
     txt = f.read()
@@ -59,6 +39,16 @@ def add_setup(name:str, flag:str):
 
 
 def get_setup(entry:str):
+    """Returns simd extensions with their corresponding compiler flag. If `entry` is not found in `settings.json`\
+    it is considered as a custom flag.
+
+    Args:
+        entry (str): Name of the simd extension to search.
+
+    Returns:
+        dict: Dictionary associating entry with its corresponding flag.
+    """
+    
     settings = reader.load_json("test/asm/settings.json")
     settings = json.loads(settings)
     if entry == 'all':
@@ -71,6 +61,17 @@ def get_setup(entry:str):
     
 
 def get_compiler(entry:str):
+    """Returns compilers with there corresponding name in the system. If `entry` is found in `settings.json`\
+    the corresponding path is returned as the value in the dictionary. Otherwise `entry` is defined as the value and\
+    the key is the basename.
+
+    Args:
+        entry (str): Name of the compiler.
+
+    Returns:
+        dict: The compiler's name associated with the path to execute it.
+    """
+
     settings = reader.load_json("test/asm/settings.json")
     settings = json.loads(settings)
     if entry == 'all':
@@ -84,6 +85,17 @@ def get_compiler(entry:str):
     
 
 def get_target():
+    """Returns all necessary information about the target of the process. The returned dictionary contains information about:
+    - compilers
+    - simd extensions
+    - functions
+    - input
+    - output
+
+    Returns:
+        dictionary: Information about the target.
+    """
+
     d = {}
     if OPTIONS['flags'] != []:
         if OPTIONS['compiler'] == None or OPTIONS['compiler'] == 'all':

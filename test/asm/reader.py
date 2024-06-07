@@ -121,6 +121,15 @@ def keytypes_to_types(types:list):
 
 
 def get_groups(entry:str):
+    """Returns list of config file if the group is found. Otherwise it returns an empty list.
+
+    Args:
+        entry (str): The name of the group.
+
+    Returns:
+        list: List of config files.
+    """
+
     settings = load_json("test/asm/settings.json")
     settings = json.loads(settings)
     g = [i for i in settings['groups'] if i['name'] == entry]
@@ -206,16 +215,6 @@ def read_reference_files(file_name:str, path="test/asm/ref"):
                         pass
                     
     return references
-
-
-
-
-
-def get_compilers_names(compiler):
-    if compiler == 'all':
-        return const.COMPILER.keys()
-    else:
-        return [os.path.basename(compiler)]
 
 
 

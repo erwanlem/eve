@@ -38,24 +38,20 @@ def save_json(destination_path:str, text:str):
             raise Exception(f"Error while writing {destination_path} : {e}")
 
 
-
-
-
-
 def update(flags=[], conf={}, output_directory=None, deep=False, keep_tmp=False, verbose=False, method='objdump'):
-    """Function to generate and store assembly code
+    """Generate and store assembly code
 
     Args:
-        input (str | list, optional): List of config file names used for the generation. If `all` it gets all the files in `config`. Defaults to "all".
-        output_directory (str, optional): The path of the directory where we store references. Defaults to None.
-        deep (bool, optional): If True it replaces files even though they already exist. Otherwise it only creates files that doesn't already exist. Defaults to False.
-        keep_tmp (bool, optional): If True it keeps temporary files. Otherwise they are deleted after the process. Defaults to False.
-        architecture (str | list, optional): Architectures used for the generation. If `all` it generates for all architectures stored in `const.py`. Defaults to 'all'.
-        compiler (str | list, optional): Compilers used for the generation. If `all` it generates for all compilers stored in `const.py`. Defaults to 'all'.
-        verbose (bool, optional): Command line output activated (True/False). Defaults to False.
+        flags (list, optional): Compilation flags. Defaults to [].
+        conf (dict, optional): Configuration with all information about compilation targets. Defaults to {}.
+        output_directory (str, optional): Path of the output directory. Defaults to None.
+        deep (bool, optional): If true, it replaces references files even though they already exist. Otherwise they are not changed even though the content is not the same. Defaults to False.
+        keep_tmp (bool, optional): If `True` temporary files are not removed after the process. Defaults to False.
+        verbose (bool, optional): Diplay information in the command line. Defaults to False.
+        method (str, optional): Define how assembly is generated. Values are `objdump` or `standard`. Defaults to 'objdump'.
 
     Returns:
-        int: 0 if the process finished successfully, -1 if an error occured.
+        int: 0
     """
 
     if output_directory == None:
@@ -96,6 +92,21 @@ def update(flags=[], conf={}, output_directory=None, deep=False, keep_tmp=False,
 
 
 def generate(flags=[], input="all", output_directory=None, deep=False, keep_tmp=False, verbose=False, method='objdump', max_function_files='inf'):
+    """Auxiliary function for generation. This function limits the function per file for compilation.
+
+    Args:
+        flags (list, optional): Compilation flags. Defaults to [].
+        conf (dict, optional): Configuration with all information about compilation targets. Defaults to {}.
+        output_directory (str, optional): Path of the output directory. Defaults to None.
+        deep (bool, optional): If true, it replaces references files even though they already exist. Otherwise they are not changed even though the content is not the same. Defaults to False.
+        keep_tmp (bool, optional): If `True` temporary files are not removed after the process. Defaults to False.
+        verbose (bool, optional): Diplay information in the command line. Defaults to False.
+        method (str, optional): Define how assembly is generated. Values are `objdump` or `standard`. Defaults to 'objdump'.
+        max_function_files (str, optional): The maximum number of function in a cpp file. A function is one config file (it can generate more than one if there are several\
+              parameters configuration). Defaults to 'inf'.
+    """
+
+
     t1 = time.time()
 
 

@@ -69,6 +69,8 @@ def log_unmatched_instruction(function:str, compiler:str, arch:str, types:list, 
     return s + '\n\n\n'
 
 
+
+
 def log_undefined_reference(function:str, compiler:str, architecture:str):
     """Format undefined reference error for log file. 
 
@@ -86,22 +88,25 @@ def log_undefined_reference(function:str, compiler:str, architecture:str):
     return s + s1
 
 
-def validate_bis(input, flags:list, conf={}, raise_exception=False, log_file=False, keep_tmp=False, instruction_compare=False, verbose=False, references_path="test/asm/ref", method='objdump'):
+
+
+def validate_bis(input, flags:list=[], conf={}, raise_exception=False, log_file=False, keep_tmp=False, instruction_compare=False, verbose=False, references_path="test/asm/ref", method='objdump'):
     """Validation function. Generates assembly for the current library version and compares it with reference assembly.
 
     Args:
-        input (str, optional): List of config file names used for validation. Names must exist in `config` directory. If `all` it gets all the files in `config`. Defaults to 'all'.
+        input (str, optional): Config file name used for validation. The name must exist in `config` directory. If `all` it gets all the files in `config`.
+        flags (list, optional): Compilation flags. Defaults to [].
+        conf (dict, optional): Configuration with all information about compilation targets. Defaults to {}.
         raise_exception (bool, optional): If True it raises an exception that interrupts the process when assembly mismatch occured. Defaults to False.
         log_file (bool, optional): If True it generates log file at the end of the process if errors occured. Defaults to False.
         keep_tmp (bool, optional): If True it keeps temporary files. Otherwise they are deleted after the process. Defaults to False.
-        compiler (list, optional): Compilers used for validation. If `all` it takes all compilers defined in `const.py`. Defaults to 'all'.
-        architecture (list, optional): Architectures used for validation. If `all` it takes all architectures defined in `const.py`. Defaults to 'all'.
+        instruction_compare (bool, optional): If `True` only assembly instructions are compared, parameters are ignored. Defaults to False.
         verbose (bool, optional): Command line output (True/False). Defaults to False.
         references_path (str, optional): Path of the reference directory. Defaults to "test/asm/ref".
-        method (str, optional): Defines the disassembling method. Values are `objdump` or `gcc`.
+        method (str, optional): Defines the disassembling method. Values are `objdump` or `standard`.
 
     Raises:
-        AssemblyMismatch: Raised when raise_exception is True.
+        AssemblyMismatch: Raised when errors occur and raise_exception is True.
 
     Returns:
         int: 0 if process finished without errors, otherwise -1.
@@ -173,8 +178,25 @@ def validate_bis(input, flags:list, conf={}, raise_exception=False, log_file=Fal
 
 
 
+def validate(flags:list=[], input='all', raise_exception=False, log_file=False, keep_tmp=False, instruction_compare=False, verbose=False, references_path="test/asm/ref", method='objdump', max_function_files='inf'):
+    """Auxiliary function for validation. This function limits the function per file for compilation.
 
-def validate(flags:list, input='all', raise_exception=False, log_file=False, keep_tmp=False, instruction_compare=False, verbose=False, references_path="test/asm/ref", method='objdump', max_function_files='inf'):
+    Args:
+        flags (list, optional): Compilation flags. Defaults to [].
+        input (str, optional): input (str, optional): Config file name used for validation. The name must exist in `config` directory.\
+              If `all` it gets all the files in `config`. Defaults to 'all'.
+        raise_exception (bool, optional): If True it raises an exception that interrupts the process when assembly mismatch occured. Defaults to False.
+        log_file (bool, optional): If True it generates log file at the end of the process if errors occured. Defaults to False.
+        keep_tmp (bool, optional): If True it keeps temporary files. Otherwise they are deleted after the process. Defaults to False.
+        instruction_compare (bool, optional): If `True` only assembly instructions are compared, parameters are ignored. Defaults to False.
+        verbose (bool, optional): Command line output (True/False). Defaults to False.
+        references_path (str, optional): Path of the reference directory. Defaults to "test/asm/ref".
+        method (str, optional): Defines the disassembling method. Values are `objdump` or `standard`.
+        max_function_files (str, optional): The maximum number of function in a cpp file. A function is one config file (it can generate more than one if there are several\
+              parameters configuration). Defaults to 'inf'.
+    """
+    
+    
     t1 = time.time()
     
     conf = reader.read_config_file(input)
