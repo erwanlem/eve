@@ -2,6 +2,50 @@ import os
 import const
 
 
+default_settings = """{
+    "compilers":
+        {
+            // "gcc": "g++" // Example
+        },
+
+    "setup":
+        {
+            // "sse": "-msse" // Example
+        },
+
+    "groups": [
+        /*
+            Example
+        {
+            "name": "myGroup",
+            "files": [
+                "filename.json"
+            ]
+        }
+        */
+    ]
+}"""
+
+
+
+def build_default_files(replace=False):
+    if not os.path.exists(f"{const.root}/ref"):
+        os.mkdir(f"{const.root}/ref")
+    elif replace:
+        os.remove(f"{const.root}/ref")
+        os.mkdir(f"{const.root}/ref")
+
+    if not os.path.exists(f"{const.root}/settings.json"):
+        f = open(f"{const.root}/settings.json", 'x')
+        f.write(default_settings)
+        f.close()
+    elif replace:
+        f = open(f"{const.root}/settings.json", 'w')
+        f.write(default_settings)
+        f.close()
+
+
+
 def build_reference_directories(folder='test/asm/ref'):
     """Builds directories for reference.
 

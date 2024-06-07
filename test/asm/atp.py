@@ -82,9 +82,16 @@ def options_to_dict(options:list):
             i+=1
         elif options[i] == '--reset':
             OPTIONS['validate'] = False
+            OPTIONS['generate'] = False
             e = input("All references files will be deleted, do you confirm ? (Y/n)")
             if e == 'Y':
                 files.reset()
+            break
+        elif options[i] == '--build':
+            OPTIONS['validate'] = False
+            OPTIONS['generate'] = False
+            files.build_default_files()
+            break
         elif options[i] == "--disassembler" or options[i] == "--D":
             if options[i+1] == 'objdump' or options[i+1] == 'standard':
                 OPTIONS['disassembler'] = options[i+1]
@@ -92,6 +99,8 @@ def options_to_dict(options:list):
             else:
                 raise Exception("Invalid parameter with option disassembler. Valid parameters are `standard` or `objdump`")
         elif options[i] == '--input':
+            if options[i+1][0] == '-':
+                raise Exception("Invalid parameter for option --input")
             OPTIONS['input'] = options[i+1]
             i+=1
         elif options[i] == '--flags':
@@ -117,13 +126,18 @@ def options_to_dict(options:list):
 
 
 
-def main():
-    if OPTIONS['generate']:
-        return generation.generate(OPTIONS['flags'], OPTIONS['input'], OPTIONS['output'], OPTIONS['deep'], OPTIONS['keep_tmp'], OPTIONS['verbose'],\
-                                    OPTIONS['disassembler'], OPTIONS['limit_per_file'])
-    elif OPTIONS['validate']:
-        return validation.validate(OPTIONS['flags'], OPTIONS['input'], OPTIONS['exception'], OPTIONS['log'], OPTIONS['keep_tmp'], OPTIONS['instruction_comparison'], \
-                                   OPTIONS['verbose'], OPTIONS['output'], OPTIONS['disassembler'], OPTIONS['limit_per_file'])
+def main(debug=None):
+    if debug != None:
+        opt = debug
+    else:
+        opt = OPTIONS
+
+    if opt['generate']:
+        return generation.generate(opt['flags'], opt['input'], opt['output'], opt['deep'], opt['keep_tmp'], opt['verbose'],\
+                                    opt['disassembler'], opt['limit_per_file'])
+    elif opt['validate']:
+        return validation.validate(opt['flags'], opt['input'], opt['exception'], opt['log'], opt['keep_tmp'], opt['instruction_comparison'], \
+                                   opt['verbose'], opt['output'], opt['disassembler'], opt['limit_per_file'])
                                           
 
 

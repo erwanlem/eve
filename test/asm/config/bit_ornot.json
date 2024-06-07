@@ -1,5 +1,5 @@
 {
-    "function" : "dist",
+    "function" : "bit_ornot",
     "parameters" : [
         ["arithmetic", "arithmetic"]
     ]

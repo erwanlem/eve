@@ -1,0 +1,6 @@
+{
+    "function" : "floor",
+    "parameters" : [
+        ["arithmetic"]
+    ]
+}

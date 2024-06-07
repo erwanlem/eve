@@ -1,0 +1,6 @@
+{
+    "function" : "bit_reverse",
+    "parameters" : [
+        ["int"]
+    ]
+}

@@ -1,5 +1,5 @@
 {
-    "function" : "dist",
+    "function" : "fdim",
     "parameters" : [
         ["arithmetic", "arithmetic"]
     ]

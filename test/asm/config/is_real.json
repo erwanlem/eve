@@ -1,0 +1,6 @@
+{
+    "function" : "is_real",
+    "parameters" : [
+        ["arithmetic"]
+    ]
+}

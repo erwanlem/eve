@@ -1,5 +1,5 @@
 {
-    "function" : "dist",
+    "function" : "min",
     "parameters" : [
         ["arithmetic", "arithmetic"]
     ]
