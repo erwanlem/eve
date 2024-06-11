@@ -38,17 +38,13 @@ def save_json(destination_path:str, text:str):
             raise Exception(f"Error while writing {destination_path} : {e}")
 
 
-def generate_bis(options, conf):
+
+def generate_bis(options:dict, conf:dict) -> int:
     """Generate and store assembly code
 
     Args:
-        flags (list, optional): Compilation flags. Defaults to [].
-        conf (dict, optional): Configuration with all information about compilation targets. Defaults to {}.
-        output_directory (str, optional): Path of the output directory. Defaults to None.
-        deep (bool, optional): If true, it replaces references files even though they already exist. Otherwise they are not changed even though the content is not the same. Defaults to False.
-        keep_tmp (bool, optional): If `True` temporary files are not removed after the process. Defaults to False.
-        verbose (bool, optional): Diplay information in the command line. Defaults to False.
-        method (str, optional): Define how assembly is generated. Values are `objdump` or `standard`. Defaults to 'objdump'.
+        options (dict): Dictionary describing user query. The structure of the dictionary is stored in `const.OPTIONS`
+        conf (dict): Configuration with all information about compilation targets.
 
     Returns:
         int: 0
@@ -100,19 +96,16 @@ def generate_bis(options, conf):
     
 
 
-def generate(options, max_function_files='inf'):
+def generate(options:dict, max_function_files='inf') -> int:
     """Auxiliary function for generation. This function limits the function per file for compilation.
 
     Args:
-        flags (list, optional): Compilation flags. Defaults to [].
-        conf (dict, optional): Configuration with all information about compilation targets. Defaults to {}.
-        output_directory (str, optional): Path of the output directory. Defaults to None.
-        deep (bool, optional): If true, it replaces references files even though they already exist. Otherwise they are not changed even though the content is not the same. Defaults to False.
-        keep_tmp (bool, optional): If `True` temporary files are not removed after the process. Defaults to False.
-        verbose (bool, optional): Diplay information in the command line. Defaults to False.
-        method (str, optional): Define how assembly is generated. Values are `objdump` or `standard`. Defaults to 'objdump'.
+        options (dict): Dictionary describing user query. The structure of the dictionary is stored in `const.OPTIONS`
         max_function_files (str, optional): The maximum number of function in a cpp file. A function is one config file (it can generate more than one if there are several\
               parameters configuration). Defaults to 'inf'.
+
+    Returns:
+        int: 0
     """
 
 

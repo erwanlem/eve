@@ -122,18 +122,12 @@ def extract_instructions(functionName:str, parameters:str, func_code_name:dict, 
 
 
 
-
-
 def get_functions_instructions(options, functions : list):
     """Returns assembly instructions for each architectures, compilers and functions. The result is stored in a dictionary DICT[COMPILER][ARCHITECTURE][FUNCTION]['type' or 'instr']
 
     Args:
+        options (_type_): Options describing user query
         functions (list): List of tuples (function_name, parameters list) for each functions we want assembly.
-        keep_tmp (bool, optional): If True, keeps temporary files after the process. Otherwise they are deleted. Defaults to False.
-        architecture (list, optional): Architectures we want to get assembly program. If all it gets assembly for all architecture described in file `const`. Defaults to 'all'.
-        compiler (list, optional): Compilers we want to get assembly program. If all it gets assembly for all compilers described in file `const`. Defaults to 'all'.
-        verbose (bool, optional): Command line output (True/False). Defaults to False.
-        method (str, optional): Defines the disassembling method. Values are `objdump` or `standard`.
 
     Returns:
         Dict: Dictionary with assembly programs.
