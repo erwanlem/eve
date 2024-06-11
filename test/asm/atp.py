@@ -120,6 +120,8 @@ def options_to_dict(options:list):
         elif options[i] == '--compiler' or options[i] == '-c':
             OPTIONS['compiler'] = options[i+1]
             i+=1
+        elif options[i] == '--performance':
+            OPTIONS['performance'] = True
         else:
             raise Exception(f"Invalid option {options[i]}")
         i+=1

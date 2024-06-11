@@ -21,8 +21,9 @@ Il faut un unique fichier de config par fonction.
 [x] \r
 
 
-remplacer .LC8 par la constante
-afficher constantes objdump
+-j NBprocess
+--header en-tete
+
 
 [x] option pour faire plusieurs fichiers
 

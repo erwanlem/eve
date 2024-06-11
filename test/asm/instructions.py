@@ -1,7 +1,8 @@
 import os
 import assembly_parser
+import const
 import settings
-from compiler import TMP_ASM_FILE_NAME, TMP_CPP_FILE_NAME, TMP_O_FILE_NAME, get_assembler
+from compiler import TMP_ASM_FILE_NAME, TMP_CPP_FILE_NAME, TMP_O_FILE_NAME, get_assembler, objdump_process
 
 
 FUNCTION_ID = 0
@@ -160,31 +161,73 @@ def get_functions_instructions(options, functions : list):
     nb_iter = len( compilers ) * len( architectures )
     it = 0
 
-    for comp in compilers:
-        res_dict[comp] = {}
-        for a in architectures:
-            res_dict[comp][a] = {}
 
-            if options['verbose']:
-                print(f'Generating assembly : {int(100 * it / nb_iter)}% done', end='\r')
+    if not options['performance']:
+        for comp in compilers:
+            res_dict[comp] = {}
+            for a in architectures:
+                res_dict[comp][a] = {}
 
-            get_assembler(TMP_CPP_FILE_NAME, TMP_ASM_FILE_NAME, compiler=comp, method=method, setup=target['setup'][a], default_options=options['flags'] == [])
-            
-            it += 1
-            file_asm = open(TMP_ASM_FILE_NAME)
+                if options['verbose']:
+                    print(f'Generating assembly : {int(100 * it / nb_iter)}% done', end='\r')
+
+                get_assembler(TMP_CPP_FILE_NAME, TMP_ASM_FILE_NAME, compiler=comp, method=method, setup=target['setup'][a], default_options=options['flags'] == [])
+                
+                it += 1
+                file_asm = open(TMP_ASM_FILE_NAME)
+                asm = file_asm.read()
+                file_asm.close()
+
+                for f, p in functions:
+                    if f not in res_dict[comp][a].keys():
+                        res_dict[comp][a][f] = [{"type" : p, "instr" : extract_instructions(f, p, functions_names, asm, method=method, compiler=comp)}]
+                    else:
+                        res_dict[comp][a][f].append({"type" : p, "instr" : extract_instructions(f, p, functions_names, asm, method=method, compiler=comp)})
+    else:
+        # Multiprocess mode
+        files = {}
+        file_id = 0
+        if not os.path.exists(f"{const.root}/tmp"):
+            os.mkdir(f"{const.root}/tmp")
+        for comp in compilers:
+            res_dict[comp] = {}
+            for a in architectures:
+                res_dict[comp][a] = {}
+
+                if options['verbose']:
+                    print(f'Generating assembly', end='\r')
+
+                p = get_assembler(TMP_CPP_FILE_NAME, f"test/asm/tmp/tmp{file_id}.s", compiler=comp, method=method, setup=target['setup'][a], default_options=options['flags'] == [], wait=False)
+                files[p] = (f"test/asm/tmp/tmp{file_id}.s", comp, a)
+                file_id += 1
+
+        
+
+        for i, j in files.items():
+            i.wait()
+            if method == 'objdump':
+                objdump_process(j[0])
+
+            file_asm = open(j[0])
             asm = file_asm.read()
             file_asm.close()
 
             for f, p in functions:
-                if f not in res_dict[comp][a].keys():
-                    res_dict[comp][a][f] = [{"type" : p, "instr" : extract_instructions(f, p, functions_names, asm, method=method, compiler=comp)}]
+                if f not in res_dict[j[1]][j[2]].keys():
+                    res_dict[j[1]][j[2]][f] = [{"type" : p, "instr" : extract_instructions(f, p, functions_names, asm, method=method, compiler=j[1])}]
                 else:
-                    res_dict[comp][a][f].append({"type" : p, "instr" : extract_instructions(f, p, functions_names, asm, method=method, compiler=comp)})
+                    res_dict[j[1]][j[2]][f].append({"type" : p, "instr" : extract_instructions(f, p, functions_names, asm, method=method, compiler=j[1])})
+
 
 
     # Temporary files 
     if not options['keep_tmp']:
-        clear_tmp()
+        if options['performance']:
+            for i in os.listdir(f"{const.root}/tmp"):
+                os.remove(f"{const.root}/tmp/{i}")
+            os.rmdir(f"{const.root}/tmp")
+        else:
+            clear_tmp()
     
     if options['verbose']:
         print(f'Generating assembly : {int(100 * it / nb_iter)}% done')

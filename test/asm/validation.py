@@ -71,6 +71,7 @@ def log_unmatched_instruction(function:str, compiler:str, arch:str, types:list, 
 
 
 
+
 def log_undefined_reference(function:str, compiler:str, architecture:str):
     """Format undefined reference error for log file. 
 
@@ -90,20 +91,13 @@ def log_undefined_reference(function:str, compiler:str, architecture:str):
 
 
 
-def validate_bis(options, conf={}):
+
+def validate_bis(options, conf={}) -> int:
     """Validation function. Generates assembly for the current library version and compares it with reference assembly.
 
     Args:
-        input (str, optional): Config file name used for validation. The name must exist in `config` directory. If `all` it gets all the files in `config`.
-        flags (list, optional): Compilation flags. Defaults to [].
+        options (_type_): Dictionary describing user query. The structure of the dictionary is stored in `const.OPTIONS`.
         conf (dict, optional): Configuration with all information about compilation targets. Defaults to {}.
-        raise_exception (bool, optional): If True it raises an exception that interrupts the process when assembly mismatch occured. Defaults to False.
-        log_file (bool, optional): If True it generates log file at the end of the process if errors occured. Defaults to False.
-        keep_tmp (bool, optional): If True it keeps temporary files. Otherwise they are deleted after the process. Defaults to False.
-        instruction_compare (bool, optional): If `True` only assembly instructions are compared, parameters are ignored. Defaults to False.
-        verbose (bool, optional): Command line output (True/False). Defaults to False.
-        references_path (str, optional): Path of the reference directory. Defaults to "test/asm/ref".
-        method (str, optional): Defines the disassembling method. Values are `objdump` or `standard`.
 
     Raises:
         AssemblyMismatch: Raised when errors occur and raise_exception is True.
@@ -111,10 +105,6 @@ def validate_bis(options, conf={}):
     Returns:
         int: 0 if process finished without errors, otherwise -1.
     """
-
-    #files.build_reference_directories(folder=references_path)
-
-    # conf = reader.read_config_file(input)
 
     functions = []
     for k in conf.keys():
@@ -178,22 +168,16 @@ def validate_bis(options, conf={}):
 
 
 
-def validate(options, max_function_files='inf'):
+def validate(options, max_function_files='inf') -> int:
     """Auxiliary function for validation. This function limits the function per file for compilation.
 
     Args:
-        flags (list, optional): Compilation flags. Defaults to [].
-        input (str, optional): input (str, optional): Config file name used for validation. The name must exist in `config` directory.\
-              If `all` it gets all the files in `config`. Defaults to 'all'.
-        raise_exception (bool, optional): If True it raises an exception that interrupts the process when assembly mismatch occured. Defaults to False.
-        log_file (bool, optional): If True it generates log file at the end of the process if errors occured. Defaults to False.
-        keep_tmp (bool, optional): If True it keeps temporary files. Otherwise they are deleted after the process. Defaults to False.
-        instruction_compare (bool, optional): If `True` only assembly instructions are compared, parameters are ignored. Defaults to False.
-        verbose (bool, optional): Command line output (True/False). Defaults to False.
-        references_path (str, optional): Path of the reference directory. Defaults to "test/asm/ref".
-        method (str, optional): Defines the disassembling method. Values are `objdump` or `standard`.
+        options (_type_): Dictionary describing user query. The structure of the dictionary is stored in `const.OPTIONS`.
         max_function_files (str, optional): The maximum number of function in a cpp file. A function is one config file (it can generate more than one if there are several\
               parameters configuration). Defaults to 'inf'.
+
+    Returns:
+        int: 0 if there is not error, otherwise -1.
     """
     
     
@@ -202,20 +186,24 @@ def validate(options, max_function_files='inf'):
     conf = reader.read_config_file(options['input'])
 
     if max_function_files == 'inf' or len(list(conf.keys())) < max_function_files:
-        return validate_bis(options, conf)
+        result = validate_bis(options, conf)
     else:
         conf2 = {}
         i = 0
+        result = 0
         for k in conf.keys():
             if i == max_function_files:
-                validate_bis(options, conf2)
+                result += validate_bis(options, conf2)
                 conf2 = {}
                 i = 0
             conf2[k] = conf[k]
             i+=1
+        result = -1 if result != 0 else 0
 
     if options['verbose']:
         print("Process duration: " + str(round(time.time()-t1, 2)) + "s")
+
+    return result
 
 
 if __name__ == '__main__':

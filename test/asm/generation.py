@@ -39,11 +39,13 @@ def save_json(destination_path:str, text:str):
 
 
 
+
+
 def generate_bis(options:dict, conf:dict) -> int:
     """Generate and store assembly code
 
     Args:
-        options (dict): Dictionary describing user query. The structure of the dictionary is stored in `const.OPTIONS`
+        options (dict): Dictionary describing user query. The structure of the dictionary is stored in `const.OPTIONS`.
         conf (dict): Configuration with all information about compilation targets.
 
     Returns:
@@ -52,12 +54,7 @@ def generate_bis(options:dict, conf:dict) -> int:
 
     output_directory = options['output']
     deep = options['deep']
-    keep_tmp = options['keep_tmp']
     verbose = options['verbose']
-    method = options['disassembler']
-    flags = options['flags']
-
-
 
     if output_directory == None:
         output_directory = f"{const.ref_path}"
@@ -96,6 +93,8 @@ def generate_bis(options:dict, conf:dict) -> int:
     
 
 
+
+
 def generate(options:dict, max_function_files='inf') -> int:
     """Auxiliary function for generation. This function limits the function per file for compilation.
 
@@ -108,27 +107,30 @@ def generate(options:dict, max_function_files='inf') -> int:
         int: 0
     """
 
-
     t1 = time.time()
 
 
     conf = reader.read_config_file(options['input'])
 
     if max_function_files == 'inf' or len(list(conf.keys())) < max_function_files:
-        return generate_bis(options, conf)
+        result = generate_bis(options, conf)
     else:
         conf2 = {}
         i = 0
+        result = 0
         for k in conf.keys():
             if i == max_function_files:
-                generate_bis(options, conf2)
+                result += generate_bis(options, conf2)
                 conf2 = {}
                 i = 0
             conf2[k] = conf[k]
             i+=1
+        result = -1 if result != 0 else 0
 
     if options['verbose']:
         print("Process duration: " + str(round(time.time()-t1, 2)) + "s")
+
+    return result
 
 
 if __name__ == '__main__':

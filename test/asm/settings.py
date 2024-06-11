@@ -4,37 +4,6 @@ import reader
 from reader import get_groups
 
 
-def add_compiler(name:str, flag:str):
-    f = open("test/asm/settings.json", 'r')
-    txt = f.read()
-    f.close()
-    j = json.loads(txt)
-    if name in [list(i.keys())[0] for i in j['compilers']]:
-        print('This name already exist')
-    else:
-        j['compilers'].append({name:flag})
-        txt = json.dumps(j, indent=4)
-        f = open("test/asm/settings.json", 'w')
-        f.write(txt)
-        f.close()
-
-
-def add_setup(name:str, flag:str):
-    f = open("test/asm/settings.json", 'r')
-    txt = f.read()
-    f.close()
-    j = json.loads(txt)
-    if name in [list(i.keys())[0] for i in j['architectures']]:
-        print('This name already exist')
-    else:
-        j['architectures'].append({name:flag})
-        txt = json.dumps(j, indent=4)
-        f = open("test/asm/settings.json", 'w')
-        f.write(txt)
-        f.close()
-
-
-
 
 def get_setup(entry:str):
     """Returns simd extensions with their corresponding compiler flag. If `entry` is not found in `settings.json`\
@@ -58,6 +27,9 @@ def get_setup(entry:str):
             return {entry : entry}
     
 
+
+
+
 def get_compiler(entry:str):
     """Returns compilers with there corresponding name in the system. If `entry` is found in `settings.json`\
     the corresponding path is returned as the value in the dictionary. Otherwise `entry` is defined as the value and\
@@ -80,18 +52,23 @@ def get_compiler(entry:str):
         else:
             return {os.path.basename(entry) : entry}
 
-    
 
-def get_target(options):
-    """Returns all necessary information about the target of the process. The returned dictionary contains information about:
+
+
+
+def get_target(options:dict):
+    """Returns all necessary information about the target. The returned dictionary contains information about:
     - compilers
     - simd extensions
     - functions
     - input
     - output
 
+    Args:
+        options (dict): Dictionary describing user query. The structure of the dictionary is stored in `const.OPTIONS`.
+
     Returns:
-        dictionary: Information about the target.
+        dict: Information about the target.
     """
 
     d = {}

@@ -166,14 +166,19 @@ def read_config_file(file_name='all'):
             file_name = g
         else:
             file_name = [file_name]
+
         d = {}
         for n in file_name:
-            if not os.path.exists(f"test/asm/config/{n}"):
-                raise Exception(f"In read_config_file : Path test/asm/config/{n} does not exist")
-            else:
+            if os.path.exists(f"test/asm/config/{n}"):
                 txt = load_json(f"test/asm/config/{n}")
                 function = json.loads(txt)
                 d[function['function']] = keytypes_to_types(function['parameters'])
+            elif os.path.exists(n):
+                txt = load_json(n)
+                function = json.loads(txt)
+                d[function['function']] = keytypes_to_types(function['parameters'])
+            else:
+                raise Exception(f"Configuration file {n} not found.")
         return d
         
 
