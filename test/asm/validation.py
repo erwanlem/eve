@@ -90,7 +90,7 @@ def log_undefined_reference(function:str, compiler:str, architecture:str):
 
 
 
-def validate_bis(input, flags:list=[], conf={}, raise_exception=False, log_file=False, keep_tmp=False, instruction_compare=False, verbose=False, references_path="test/asm/ref", method='objdump'):
+def validate_bis(options, conf={}):
     """Validation function. Generates assembly for the current library version and compares it with reference assembly.
 
     Args:
@@ -121,10 +121,10 @@ def validate_bis(input, flags:list=[], conf={}, raise_exception=False, log_file=
         for typ in conf[k]:
             functions.append((k, typ))
 
-    functions_assembly = instructions.get_functions_instructions(functions, flags, keep_tmp=keep_tmp, method=method)
+    functions_assembly = instructions.get_functions_instructions(options, functions)
 
     
-    validation_set = reader.read_reference_files(input, path=references_path)
+    validation_set = reader.read_reference_files(options['input'], path=options['output'])
 
     ret = 0
     errors = 0
@@ -135,33 +135,33 @@ def validate_bis(input, flags:list=[], conf={}, raise_exception=False, log_file=
             for f in functions_assembly[c][a].keys(): # function
                 if f not in validation_set[c][a].keys():
                     log_txt += log_undefined_reference(f, c, a)
-                    if verbose:
+                    if options['verbose']:
                         print(f"**WARNING** - Function {f} not found in references (comp {c}, {a}). Try generating using option -g.")
                     ret = -1
                 elif not functions_assembly[c][a][f] == validation_set[c][a][f]:
                     for i in range(0, min(len(functions_assembly[c][a][f]), len(validation_set[c][a][f]))):
                         
                         # Compare only assembly instruction, ignore parameters
-                        if instruction_compare:
+                        if options['instruction_comparison']:
                             for j in range(0, min(len(functions_assembly[c][a][f][i]['instr']), len(validation_set[c][a][f][i]['instr']))):
                                 i1 = functions_assembly[c][a][f][i]['instr'][j].split(' ')[0]
                                 i2 = validation_set[c][a][f][i]['instr'][j].split(' ')[0]
                                 if i1 != i2:
                                     ret = -1
                                     errors += 1
-                                    if raise_exception:
+                                    if options['exception']:
                                         raise AssemblyMismatch(f, c, a, validation_set[c][a][f][i]['type'], validation_set[c][a][f][i]['instr'], functions_assembly[c][a][f][i]['instr'])
                                     log_txt += log_unmatched_instruction(f, c, a, validation_set[c][a][f][i]['type'], validation_set[c][a][f][i]['instr'], functions_assembly[c][a][f][i]['instr'])
                             
                         elif functions_assembly[c][a][f][i] != validation_set[c][a][f][i]:
                             errors += 1
-                            if raise_exception:
+                            if options['exception']:
                                 raise AssemblyMismatch(f, c, a, validation_set[c][a][f][i]['type'], validation_set[c][a][f][i]['instr'], functions_assembly[c][a][f][i]['instr'])
                             log_txt += log_unmatched_instruction(f, c, a, validation_set[c][a][f][i]['type'], validation_set[c][a][f][i]['instr'], functions_assembly[c][a][f][i]['instr'])
                             ret = -1
 
     # Log file optional
-    if log_file and log_txt != "":
+    if options['log'] and log_txt != "":
         if os.path.exists(LOG_PATH):
             file = open(LOG_PATH, 'w')
         else:
@@ -169,7 +169,7 @@ def validate_bis(input, flags:list=[], conf={}, raise_exception=False, log_file=
         file.write(log_txt)
         file.close()
 
-    if verbose:
+    if options['verbose']:
         print(f"Process finished : {errors} mismatching function(s) found")
 
     return ret
@@ -178,7 +178,7 @@ def validate_bis(input, flags:list=[], conf={}, raise_exception=False, log_file=
 
 
 
-def validate(flags:list=[], input='all', raise_exception=False, log_file=False, keep_tmp=False, instruction_compare=False, verbose=False, references_path="test/asm/ref", method='objdump', max_function_files='inf'):
+def validate(options, max_function_files='inf'):
     """Auxiliary function for validation. This function limits the function per file for compilation.
 
     Args:
@@ -199,22 +199,22 @@ def validate(flags:list=[], input='all', raise_exception=False, log_file=False, 
     
     t1 = time.time()
     
-    conf = reader.read_config_file(input)
+    conf = reader.read_config_file(options['input'])
 
     if max_function_files == 'inf' or len(list(conf.keys())) < max_function_files:
-        validate_bis(input, flags, conf, raise_exception, log_file, keep_tmp, instruction_compare, verbose, references_path, method)
+        return validate_bis(options, conf)
     else:
         conf2 = {}
         i = 0
         for k in conf.keys():
             if i == max_function_files:
-                validate_bis(input, flags, conf2, raise_exception, log_file, keep_tmp, instruction_compare, verbose, references_path, method)
+                validate_bis(options, conf2)
                 conf2 = {}
                 i = 0
             conf2[k] = conf[k]
             i+=1
 
-    if verbose:
+    if options['verbose']:
         print("Process duration: " + str(round(time.time()-t1, 2)) + "s")
 
 

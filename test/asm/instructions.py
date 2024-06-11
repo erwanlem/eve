@@ -1,8 +1,6 @@
-import re
 import os
 import assembly_parser
 import settings
-import const
 from compiler import TMP_ASM_FILE_NAME, TMP_CPP_FILE_NAME, TMP_O_FILE_NAME, get_assembler
 
 
@@ -126,7 +124,7 @@ def extract_instructions(functionName:str, parameters:str, func_code_name:dict, 
 
 
 
-def get_functions_instructions(functions : list, flags:list, keep_tmp=False, verbose=False, method='objdump'):
+def get_functions_instructions(options, functions : list):
     """Returns assembly instructions for each architectures, compilers and functions. The result is stored in a dictionary DICT[COMPILER][ARCHITECTURE][FUNCTION]['type' or 'instr']
 
     Args:
@@ -140,6 +138,8 @@ def get_functions_instructions(functions : list, flags:list, keep_tmp=False, ver
     Returns:
         Dict: Dictionary with assembly programs.
     """
+
+    method = options['disassembler']
 
     clear_tmp()
 
@@ -158,7 +158,7 @@ def get_functions_instructions(functions : list, flags:list, keep_tmp=False, ver
     tmp.write(full_code)
     tmp.close()
 
-    target = settings.get_target()
+    target = settings.get_target(options)
 
     compilers = target['compiler'].keys()
     architectures = target['setup'].keys()
@@ -171,10 +171,10 @@ def get_functions_instructions(functions : list, flags:list, keep_tmp=False, ver
         for a in architectures:
             res_dict[comp][a] = {}
 
-            if verbose:
+            if options['verbose']:
                 print(f'Generating assembly : {int(100 * it / nb_iter)}% done', end='\r')
 
-            get_assembler(TMP_CPP_FILE_NAME, TMP_ASM_FILE_NAME, compiler=comp, method=method, setup=target['setup'][a], default_options=flags == [])
+            get_assembler(TMP_CPP_FILE_NAME, TMP_ASM_FILE_NAME, compiler=comp, method=method, setup=target['setup'][a], default_options=options['flags'] == [])
             
             it += 1
             file_asm = open(TMP_ASM_FILE_NAME)
@@ -189,10 +189,10 @@ def get_functions_instructions(functions : list, flags:list, keep_tmp=False, ver
 
 
     # Temporary files 
-    if not keep_tmp:
+    if not options['keep_tmp']:
         clear_tmp()
     
-    if verbose:
+    if options['verbose']:
         print(f'Generating assembly : {int(100 * it / nb_iter)}% done')
 
     return res_dict

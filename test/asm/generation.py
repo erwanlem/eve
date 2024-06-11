@@ -38,7 +38,7 @@ def save_json(destination_path:str, text:str):
             raise Exception(f"Error while writing {destination_path} : {e}")
 
 
-def update(flags=[], conf={}, output_directory=None, deep=False, keep_tmp=False, verbose=False, method='objdump'):
+def generate_bis(options, conf):
     """Generate and store assembly code
 
     Args:
@@ -54,6 +54,15 @@ def update(flags=[], conf={}, output_directory=None, deep=False, keep_tmp=False,
         int: 0
     """
 
+    output_directory = options['output']
+    deep = options['deep']
+    keep_tmp = options['keep_tmp']
+    verbose = options['verbose']
+    method = options['disassembler']
+    flags = options['flags']
+
+
+
     if output_directory == None:
         output_directory = f"{const.ref_path}"
 
@@ -62,7 +71,7 @@ def update(flags=[], conf={}, output_directory=None, deep=False, keep_tmp=False,
         for typ in conf[k]:
             functions.append((k, typ))
 
-    functions_assembly = instructions.get_functions_instructions(functions, flags, keep_tmp=keep_tmp, verbose=verbose, method=method)
+    functions_assembly = instructions.get_functions_instructions(options, functions)
 
     for comp in functions_assembly.keys():
         for arch in functions_assembly[comp].keys():
@@ -91,7 +100,7 @@ def update(flags=[], conf={}, output_directory=None, deep=False, keep_tmp=False,
     
 
 
-def generate(flags=[], input="all", output_directory=None, deep=False, keep_tmp=False, verbose=False, method='objdump', max_function_files='inf'):
+def generate(options, max_function_files='inf'):
     """Auxiliary function for generation. This function limits the function per file for compilation.
 
     Args:
@@ -110,25 +119,24 @@ def generate(flags=[], input="all", output_directory=None, deep=False, keep_tmp=
     t1 = time.time()
 
 
-    conf = reader.read_config_file(input)
+    conf = reader.read_config_file(options['input'])
 
     if max_function_files == 'inf' or len(list(conf.keys())) < max_function_files:
-        update(flags, conf, output_directory, deep, keep_tmp, verbose, method)
+        return generate_bis(options, conf)
     else:
         conf2 = {}
         i = 0
         for k in conf.keys():
             if i == max_function_files:
-                print(conf2)
-                update(flags, conf2, output_directory, deep, keep_tmp, verbose, method)
+                generate_bis(options, conf2)
                 conf2 = {}
                 i = 0
             conf2[k] = conf[k]
             i+=1
 
-    if verbose:
+    if options['verbose']:
         print("Process duration: " + str(round(time.time()-t1, 2)) + "s")
 
 
 if __name__ == '__main__':
-    update(input='all', deep=True, keep_tmp=True, compiler=['gcc'], architecture=['sse'], verbose=False)
+    pass

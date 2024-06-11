@@ -4,6 +4,7 @@ sys.path.append("test/asm/test/..")
 import generation
 import files
 import os
+import settings
 import const
 
 class TestUpdateGeneration(unittest.TestCase):
@@ -15,16 +16,19 @@ class TestUpdateGeneration(unittest.TestCase):
 
         os.system("rm -rf test/asm/test/generation/*")
         files.build_reference_directories(folder="test/generation")
-        generation.update(output_directory="test/asm/test/generation/")
+        d = const.OPTIONS.copy()
+        d['output'] = "test/asm/test/generation/"
+        generation.generate(d)
 
-        for c in const.COMPILER.keys():
-            for a in const.ARCH.keys():
-                for f in os.listdir("test/asm/config"):
+        sett = settings.get_target(d)
+        for c in sett['compiler'].keys():
+            for a in sett['setup'].keys():
+                for f in os.listdir(f"{const.root}/config"):
                     self.assertTrue( os.path.exists( f"test/asm/test/generation/{c}/{a}/{f}" ) )
         
         files.reset("test/asm/test/generation")
                                         
-
+                                        
 
 if __name__ == '__main__':
     unittest.main()

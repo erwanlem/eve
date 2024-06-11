@@ -3,7 +3,6 @@ import generation
 import files
 import const
 import validation
-from const import OPTIONS
 
 """
         Assembly Testing Program
@@ -44,6 +43,7 @@ def options_to_dict(options:list):
     Returns:
        dict : dictionary with each option value
     """
+    OPTIONS = const.OPTIONS.copy()
 
     i = 1
     while i < len(options):
@@ -124,25 +124,21 @@ def options_to_dict(options:list):
             raise Exception(f"Invalid option {options[i]}")
         i+=1
 
+    return OPTIONS
 
 
-def main(debug=None):
-    if debug != None:
-        opt = debug
-    else:
-        opt = OPTIONS
+
+def main(opt):
 
     if opt['generate']:
-        return generation.generate(opt['flags'], opt['input'], opt['output'], opt['deep'], opt['keep_tmp'], opt['verbose'],\
-                                    opt['disassembler'], opt['limit_per_file'])
+        return generation.generate(opt, opt['limit_per_file'])
     elif opt['validate']:
-        return validation.validate(opt['flags'], opt['input'], opt['exception'], opt['log'], opt['keep_tmp'], opt['instruction_comparison'], \
-                                   opt['verbose'], opt['output'], opt['disassembler'], opt['limit_per_file'])
+        return validation.validate(opt, opt['limit_per_file'])
                                           
 
 
 if __name__ == '__main__':
     argv = sys.argv
     
-    options_to_dict(argv)
-    main()
+    options = options_to_dict(argv)
+    main(options)

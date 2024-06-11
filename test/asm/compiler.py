@@ -1,4 +1,3 @@
-import os
 import subprocess
 
 TMP_CPP_FILE_NAME = "test/asm/tmp.cpp"
@@ -63,4 +62,5 @@ def get_assembler(input_path, output_path, compiler='g++', method='objdump', set
 
 
 if __name__ == '__main__':
-    print(check_compiler_options("test/asm/tmp.cpp", "test/asm/tmp.s", 'g++', 'gcc', "-msse", True))
+    pass
+    #print(check_compiler_options("test/asm/tmp.cpp", "test/asm/tmp.s", 'g++', 'gcc', "-msse", True))

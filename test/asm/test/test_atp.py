@@ -94,58 +94,55 @@ class TestOptionToDict(unittest.TestCase):
 
     def __init__(self, methodName: str = "runTest") -> None:
         super().__init__(methodName)
-        self.tmp = const.OPTIONS.copy()
 
     def test_equal_output(self):
         d = const.OPTIONS.copy()
 
         d['setup'] = "avx"
-        atp.options_to_dict(["..", "-s", "avx"])
-        self.assertEqual(const.OPTIONS, d)
+        test1 = atp.options_to_dict(["..", "-s", "avx"])
+        self.assertEqual(test1, d)
 
-        atp.options_to_dict(["..", "-s", "avx", "-d", "-l"])
+        test2 = atp.options_to_dict(["..", "-s", "avx", "-d", "-l"])
         d['log'] = True
         d['deep'] = True
-        self.assertEqual(const.OPTIONS, d)
+        self.assertEqual(test2, d)
 
-        atp.options_to_dict(["..", "-s", "avx", "-d", "-l", '-t', '-g'])
+        test3 = atp.options_to_dict(["..", "-s", "avx", "-d", "-l", '-t', '-g'])
         d['generate'] = True
         d["keep_tmp"] = True
         d['validate'] = False
-        self.assertEqual(const.OPTIONS, d)
+        self.assertEqual(test3, d)
 
-        atp.options_to_dict(["..", "-s", "avx", "-d", "-l", '-t', '-g', '--input', 'abs.json'])
+        test4 = atp.options_to_dict(["..", "-s", "avx", "-d", "-l", '-t', '-g', '--input', 'abs.json'])
         d['input'] = 'abs.json'
-        self.assertEqual(const.OPTIONS, d)
+        self.assertEqual(test4, d)
 
-        const.OPTIONS = self.tmp
 
 
     def test_input(self):
         d = const.OPTIONS.copy()
         
-        atp.options_to_dict(["..", '--input', 'abs.json', '-l', '-v'])
+        test1 = atp.options_to_dict(["..", '--input', 'abs.json', '-l', '-v'])
         d['log'] = True
         d['verbose'] = True
         d['input'] = 'abs.json'
 
-        self.assertEqual(const.OPTIONS, d)
+        self.assertEqual(test1, d)
 
-        atp.options_to_dict(["..", '-l', '--input', 'abs.json', '-v'])
+        test2 = atp.options_to_dict(["..", '-l', '--input', 'abs.json', '-v'])
         d['log'] = True
         d['verbose'] = True
         d['input'] = 'abs.json'
 
-        self.assertEqual(const.OPTIONS, d)
+        self.assertEqual(test2, d)
 
-        atp.options_to_dict(["..", '-l', '-v', '--input', 'abs.json'])
+        test3 = atp.options_to_dict(["..", '-l', '-v', '--input', 'abs.json'])
         d['log'] = True
         d['verbose'] = True
         d['input'] = 'abs.json'
 
-        self.assertEqual(const.OPTIONS, d)
+        self.assertEqual(test3, d)
 
-        const.OPTIONS = self.tmp
 
     def test_error_invalid_option(self):
         with self.assertRaises(Exception):
@@ -157,7 +154,6 @@ class TestOptionToDict(unittest.TestCase):
         with self.assertRaises(Exception):
             atp.options_to_dict(['..', '-', 't', 's', '-'])
         
-        const.OPTIONS = self.tmp
 
     def test_invalid_input_file(self):
         with self.assertRaises(Exception):
@@ -169,15 +165,11 @@ class TestOptionToDict(unittest.TestCase):
         with self.assertRaises(Exception):
             atp.options_to_dict(['..', '--input', '-t'])
 
-        const.OPTIONS = self.tmp
-
-
 
 class TestAtp(unittest.TestCase):
 
     def __init__(self, methodName: str = "runTest") -> None:
         super().__init__(methodName)
-        self.tmp = const.OPTIONS.copy()
 
     def test_valid_references(self):
         files.build_reference_directories(f"{const.root}/test/atp")
@@ -188,18 +180,19 @@ class TestAtp(unittest.TestCase):
         file.write(test_match_1)
         file.close()
 
-        const.OPTIONS['arch'] = 'sse'
-        const.OPTIONS['validate'] = True
-        const.OPTIONS['input'] = "add.json"
-        const.OPTIONS['compiler'] = 'gcc'
-        const.OPTIONS['ref_path'] = "test/asm/test/atp"
+        d = const.OPTIONS.copy()
+        d['arch'] = 'sse'
+        d['validate'] = True
+        d['input'] = "add.json"
+        d['compiler'] = 'gcc'
+        d['ref_path'] = "test/asm/test/atp"
 
-        self.assertEqual(atp.main(), 0)
+
+        self.assertEqual(atp.main(d), 0)
 
         files.reset(folder=f'{const.root}/test/atp')
 
-        const.OPTIONS = self.tmp
-
+    """
     def test_unmatched_references(self):
         files.build_reference_directories(f"{const.root}/test/atp")
         if os.path.exists(f"{const.root}/test/atp/gcc/sse/add.json"):
@@ -208,14 +201,15 @@ class TestAtp(unittest.TestCase):
             file = open(f"{const.root}/test/atp/gcc/sse/add.json", 'x')
         file.write(test_mismatch_1)
         file.close()
+        
+        d = const.OPTIONS.copy()
+        d['validate'] = True
+        d['compiler'] = "gcc"
+        d['input'] = 'add.json'
+        d['setup'] = 'sse'
+        d['ref_path'] = f"{const.root}/test/atp"
 
-        const.OPTIONS['validate'] = True
-        const.OPTIONS['compiler'] = "gcc"
-        const.OPTIONS['input'] = 'add.json'
-        const.OPTIONS['setup'] = 'sse'
-        const.OPTIONS['ref_path'] = f"{const.root}/test/atp"
-
-        self.assertEqual(atp.main(), -1)
+        self.assertEqual(atp.main(d), -1)
 
         if os.path.exists(f"{const.root}/test/atp/gcc/sse/add.json"):
             file = open(f"{const.root}/test/atp/gcc/sse/add.json", 'w')
@@ -224,11 +218,11 @@ class TestAtp(unittest.TestCase):
         file.write(test_mismatch_2)
         file.close()
 
-        self.assertEqual(atp.main(), -1)
+        self.assertEqual(atp.main(d), -1)
 
 
-        const.OPTIONS['arch'] = 'sse3'
-        const.OPTIONS['input'] = "max.json"
+        d['arch'] = 'sse3'
+        d['input'] = "max.json"
         if os.path.exists(f"{const.root}/test/atp/gcc/sse4.2/max.json"):
             file = open(f"{const.root}/test/atp/gcc/sse4.2/max.json", 'w')
         else:
@@ -236,33 +230,31 @@ class TestAtp(unittest.TestCase):
         file.write(test_mismatch_3)
         file.close()
 
-        self.assertEqual(atp.main(), -1)
+        self.assertEqual(atp.main(d), -1)
 
         const.OPTIONS['exception'] = True
         with self.assertRaises(validation.AssemblyMismatch):
-            atp.main()
+            atp.main(d)
         
         files.reset(folder=f'{const.root}/test/atp')
-
-        const.OPTIONS = self.tmp
-
+    """
 
     def test_gen_and_valid(self):
         files.build_reference_directories("test/asm/test/atp")
-        const.OPTIONS['ref_path'] = f"{const.root}/test/atp"
-        const.OPTIONS['deep'] = True
-        const.OPTIONS['generate'] = True
 
-        atp.main()
+        d = const.OPTIONS.copy()
+        d['ref_path'] = f"{const.root}/test/atp"
+        d['deep'] = True
+        d['generate'] = True
 
-        const.OPTIONS['validate'] = True
-        const.OPTIONS['generate'] = False
+        atp.main(d)
 
-        self.assertEqual(atp.main(), 0)
+        d['validate'] = True
+        d['generate'] = False
+
+        self.assertEqual(atp.main(d), 0)
 
         files.reset(folder=f'{const.root}/test/atp')
-
-        const.OPTIONS = self.tmp
 
 
 

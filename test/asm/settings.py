@@ -2,8 +2,6 @@ import json
 import os
 import reader
 from reader import get_groups
-from const import OPTIONS
-
 
 
 def add_compiler(name:str, flag:str):
@@ -84,7 +82,7 @@ def get_compiler(entry:str):
 
     
 
-def get_target():
+def get_target(options):
     """Returns all necessary information about the target of the process. The returned dictionary contains information about:
     - compilers
     - simd extensions
@@ -97,39 +95,39 @@ def get_target():
     """
 
     d = {}
-    if OPTIONS['flags'] != []:
-        if OPTIONS['compiler'] == None or OPTIONS['compiler'] == 'all':
+    if options['flags'] != []:
+        if options['compiler'] == None or options['compiler'] == 'all':
             d['compiler'] = get_compiler('all')
         else:
-            c = get_compiler(OPTIONS['compiler'])
+            c = get_compiler(options['compiler'])
             if c == {}:
-                d['compiler'] = OPTIONS['compiler']
+                d['compiler'] = options['compiler']
             else:
                 d['compiler'] = c
-        d['setup'] = { 'custom' : OPTIONS['flags'] }
+        d['setup'] = { 'custom' : options['flags'] }
         
     else:
-        if OPTIONS['compiler'] == None or OPTIONS['compiler'] == 'all':
+        if options['compiler'] == None or options['compiler'] == 'all':
             d['compiler'] = get_compiler('all')
         else:
-            c = get_compiler(OPTIONS['compiler'])
+            c = get_compiler(options['compiler'])
             if c == {}:
-                d['compiler'] = OPTIONS['compiler']
+                d['compiler'] = options['compiler']
             else:
                 d['compiler'] = c
-        if OPTIONS['setup'] == None or OPTIONS['compiler'] == 'all':
+        if options['setup'] == None or options['compiler'] == 'all':
             d['setup'] = get_setup('all')
         else:
-            d['setup'] = get_setup(OPTIONS['setup'])
+            d['setup'] = get_setup(options['setup'])
 
-    if OPTIONS['input'] == 'all':
+    if input == 'all':
         d['input'] = reader.read_config_file('all')
     else:
-        d['input'] = reader.read_config_file(OPTIONS['input'])
+        d['input'] = reader.read_config_file(options['input'])
         
 
 
-    d['output'] = OPTIONS['output']
+    d['output'] = options['output']
     return d
         
             

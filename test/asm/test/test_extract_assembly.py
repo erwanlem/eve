@@ -102,21 +102,32 @@ class TestExtractInstructions(unittest.TestCase):
 class TestGetFunctionInstructions(unittest.TestCase):
     def __init__(self, methodName: str = "runTest") -> None:
         super().__init__(methodName)
+        self.opt = {
+            "compiler" : "gcc",
+            "setup" : "sse",
+            "input" : 'all',
+            "output" : "output",
+            "disassembler" : "objdump",
+            "verbose" : False,
+            "flags" : [],
+            "keep_tmp" : False
+        }
 
 
     def test_valid_entry(self):
-        t1 = get_functions_instructions([('add', ['int', 'int']), ('abs', ['float'])])
+        
+        t1 = get_functions_instructions(self.opt, [('add', ['int', 'int']), ('abs', ['float'])])
 
-        self.assertEqual(t1.keys(), const.COMPILER.keys())
-        self.assertEqual(t1['gcc'].keys(), const.ARCH.keys())
+        self.assertEqual(list(t1.keys()), ['gcc'])
+        self.assertEqual(list(t1['gcc'].keys()), ['sse'])
         self.assertEqual(list(t1['gcc']['sse'].keys()), ['add', 'abs'])
 
     
     def test_limit_case(self):
-        t1 = get_functions_instructions([])
+        t1 = get_functions_instructions(self.opt, [])
 
-        self.assertEqual(t1.keys(), const.COMPILER.keys())
-        self.assertEqual(t1['gcc'].keys(), const.ARCH.keys())
+        self.assertEqual(list(t1.keys()), ['gcc'])
+        self.assertEqual(list(t1['gcc'].keys()), ['sse'])
         
         for i in t1.keys():
             for j in t1[i].keys():
