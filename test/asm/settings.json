@@ -26,5 +26,10 @@
                 "absmax.json"
             ]
         }
+    ],
+
+    "headers": [
+        "#include <eve/module/core.hpp>"
     ]
+
 }

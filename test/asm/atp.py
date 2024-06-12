@@ -69,7 +69,6 @@ def options_to_dict(options:list):
             OPTIONS['validate'] = False
         elif options[i] == '-i':
             OPTIONS["instruction_comparison"] = True
-            OPTIONS['compiler'] = lst
         elif options[i] == '-v':
             OPTIONS['verbose'] = True
         elif options[i] == '--fatal':
@@ -92,7 +91,7 @@ def options_to_dict(options:list):
             OPTIONS['generate'] = False
             files.build_default_files()
             break
-        elif options[i] == "--disassembler" or options[i] == "--D":
+        elif options[i] == "--disassembler" or options[i] == "-D":
             if options[i+1] == 'objdump' or options[i+1] == 'standard':
                 OPTIONS['disassembler'] = options[i+1]
                 i+=1
@@ -120,8 +119,19 @@ def options_to_dict(options:list):
         elif options[i] == '--compiler' or options[i] == '-c':
             OPTIONS['compiler'] = options[i+1]
             i+=1
-        elif options[i] == '--performance':
-            OPTIONS['performance'] = True
+        elif options[i] == '-j':
+            OPTIONS['nbprocess'] = int(options[i+1])
+            i+=1
+
+        elif options[i] == '--header':
+            lst = []
+            while i+1 < len(options) and options[i+1][0] != '-':
+                lst.append(options[i+1])
+                i+=1
+            if len(lst) == 0:
+                raise Exception("Parameter missing for option --header")
+            OPTIONS['headers'] = lst
+                
         else:
             raise Exception(f"Invalid option {options[i]}")
         i+=1
@@ -136,7 +146,10 @@ def main(opt):
         return generation.generate(opt, opt['limit_per_file'])
     elif opt['validate']:
         return validation.validate(opt, opt['limit_per_file'])
-                                          
+
+
+
+
 
 
 if __name__ == '__main__':

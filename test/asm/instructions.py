@@ -2,6 +2,7 @@ import os
 import assembly_parser
 import const
 import settings
+import reader
 from compiler import TMP_ASM_FILE_NAME, TMP_CPP_FILE_NAME, TMP_O_FILE_NAME, get_assembler, objdump_process
 
 
@@ -20,6 +21,8 @@ def get_function_id():
     return FUNCTION_ID-1
 
 
+
+
 def function_extended_name(f, p):
     """Returns function extended name with function name and parameters used to identify the function.
 
@@ -32,7 +35,6 @@ def function_extended_name(f, p):
     """
 
     return f + '_' + ''.join(map(str, p))
-
 
 
 
@@ -138,7 +140,15 @@ def get_functions_instructions(options, functions : list):
 
     clear_tmp()
 
-    full_code = "#include <eve/module/core.hpp>\n\n"
+    headers = ""
+    if options['headers'] == []:
+        for i in reader.read_headers():
+            headers += i + '\n'
+    else:
+        for i in options['headers']:
+            headers += f"#include <{i}>\n"
+
+    full_code = headers
     functions_names = {}
     res_dict = {}
 
@@ -147,6 +157,9 @@ def get_functions_instructions(options, functions : list):
         new_name, code = generate_function(f, p)
         full_code += code
         functions_names[function_extended_name(f, p)] = new_name
+
+    if not os.path.isdir(f"{const.root}/tmp"):
+        os.mkdir(f"{const.root}/tmp")
 
     # Write code in tmp.cpp
     tmp = open(TMP_CPP_FILE_NAME, 'x')
@@ -158,57 +171,46 @@ def get_functions_instructions(options, functions : list):
     compilers = target['compiler'].keys()
     architectures = target['setup'].keys()
 
-    nb_iter = len( compilers ) * len( architectures )
-    it = 0
+    queue = []
+    for comp in compilers:
+        for a in architectures:
+            queue.append((comp, a))
 
+    maxproc = options['nbprocess'] if options['nbprocess'] > 0 else os.cpu_count()
 
-    if not options['performance']:
-        for comp in compilers:
-            res_dict[comp] = {}
-            for a in architectures:
-                res_dict[comp][a] = {}
-
-                if options['verbose']:
-                    print(f'Generating assembly : {int(100 * it / nb_iter)}% done', end='\r')
-
-                get_assembler(TMP_CPP_FILE_NAME, TMP_ASM_FILE_NAME, compiler=comp, method=method, setup=target['setup'][a], default_options=options['flags'] == [])
-                
-                it += 1
-                file_asm = open(TMP_ASM_FILE_NAME)
-                asm = file_asm.read()
-                file_asm.close()
-
-                for f, p in functions:
-                    if f not in res_dict[comp][a].keys():
-                        res_dict[comp][a][f] = [{"type" : p, "instr" : extract_instructions(f, p, functions_names, asm, method=method, compiler=comp)}]
-                    else:
-                        res_dict[comp][a][f].append({"type" : p, "instr" : extract_instructions(f, p, functions_names, asm, method=method, compiler=comp)})
-    else:
-        # Multiprocess mode
+    while queue != []:
         files = {}
         file_id = 0
-        if not os.path.exists(f"{const.root}/tmp"):
-            os.mkdir(f"{const.root}/tmp")
-        for comp in compilers:
-            res_dict[comp] = {}
-            for a in architectures:
+
+        if options['verbose']:
+            print(f'Generating assembly...', end='\r')
+
+        # Run compilations
+        for i in range(0, min(maxproc, len(queue))):
+            comp, a = queue.pop()
+
+            if comp not in res_dict.keys():
+                res_dict[comp] = {}
+            if a not in res_dict[comp].keys():
                 res_dict[comp][a] = {}
-
-                if options['verbose']:
-                    print(f'Generating assembly', end='\r')
-
+            
+            if method == 'objdump':
+                p = get_assembler(TMP_CPP_FILE_NAME, f"test/asm/tmp/tmp{file_id}.s", compiler=comp, method=method,\
+                                    setup=target['setup'][a], default_options=options['flags'] == [], wait=False, tmp_o_file=f"test/asm/tmp/tmp{file_id}.o")
+                files[p] = (f"test/asm/tmp/tmp{file_id}", comp, a)
+                file_id += 1
+            else:
                 p = get_assembler(TMP_CPP_FILE_NAME, f"test/asm/tmp/tmp{file_id}.s", compiler=comp, method=method, setup=target['setup'][a], default_options=options['flags'] == [], wait=False)
-                files[p] = (f"test/asm/tmp/tmp{file_id}.s", comp, a)
+                files[p] = (f"test/asm/tmp/tmp{file_id}", comp, a)
                 file_id += 1
 
-        
-
+        # Wait for subprocess
         for i, j in files.items():
             i.wait()
             if method == 'objdump':
-                objdump_process(j[0])
+                objdump_process(j[0] + '.s', tmp_o_file=j[0] + '.o')
 
-            file_asm = open(j[0])
+            file_asm = open(j[0] + '.s')
             asm = file_asm.read()
             file_asm.close()
 
@@ -220,17 +222,16 @@ def get_functions_instructions(options, functions : list):
 
 
 
+
+    if options['verbose']:
+        print(f'Assembly generated successfully')
+
     # Temporary files 
     if not options['keep_tmp']:
-        if options['performance']:
-            for i in os.listdir(f"{const.root}/tmp"):
-                os.remove(f"{const.root}/tmp/{i}")
-            os.rmdir(f"{const.root}/tmp")
-        else:
-            clear_tmp()
-    
-    if options['verbose']:
-        print(f'Generating assembly : {int(100 * it / nb_iter)}% done')
+        for i in os.listdir(f"{const.root}/tmp"):
+            os.remove(f"{const.root}/tmp/{i}")
+        os.rmdir(f"{const.root}/tmp")
+        clear_tmp()
 
     return res_dict
 

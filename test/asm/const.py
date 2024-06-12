@@ -37,7 +37,8 @@ OPTIONS = {
     "compiler" : None,
     "output" : f"{root}ref",
     "limit_per_file" : 'inf',
-    "performance" : False
+    "nbprocess" : 0,
+    "headers" : []
 }
 
 

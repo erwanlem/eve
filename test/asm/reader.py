@@ -139,6 +139,13 @@ def get_groups(entry:str):
         return []
 
 
+def read_headers():
+    settings = load_json("test/asm/settings.json")
+    settings = json.loads(settings)
+    return settings['headers']
+    
+
+
 
 def read_config_file(file_name='all'):
     """Reads config files stored in `config` directory. Files are returned as dictionary.

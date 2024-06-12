@@ -205,6 +205,18 @@ def validate(options, max_function_files='inf') -> int:
 
     return result
 
+"""
+'absmax': [['float', 'float'], ['double', 'double'], ['std::int64_t', 'std::int64_t'], ['std::int32_t', 'std::int32_t'], 
+           ['std::int16_t', 'std::int16_t'], ['std::int8_t', 'std::int8_t'], ['std::uint64_t', 'std::uint64_t'], ['std::uint32_t', 'std::uint32_t'], 
+           ['std::uint16_t', 'std::uint16_t'], ['std::uint8_t', 'std::uint8_t'], ['std::uint64_t', 'std::uint64_t'], 
+           ['std::uint32_t', 'std::uint32_t'], ['std::uint16_t', 'std::uint16_t'], ['std::uint8_t', 'std::uint8_t']]
+
+
+{'absmax': [['float', 'float'], ['double', 'double'], ['std::int64_t', 'std::int64_t'], ['std::int32_t', 'std::int32_t'], ['std::int16_t', 'std::int16_t'], 
+['std::int8_t', 'std::int8_t'], ['std::uint64_t', 'std::uint64_t'], ['std::uint32_t', 'std::uint32_t'], ['std::uint16_t', 'std::uint16_t'], 
+['std::uint8_t', 'std::uint8_t'], ['std::uint64_t', 'std::uint64_t'], ['std::uint32_t', 'std::uint32_t'], ['std::uint16_t', 'std::uint16_t'], 
+['std::uint8_t', 'std::uint8_t']]}
+"""
 
 if __name__ == '__main__':
     print(validate(input='all', log_file=True, raise_exception=True, keep_tmp=True))

@@ -1,4 +1,5 @@
 import subprocess
+import os
 
 TMP_CPP_FILE_NAME = "test/asm/tmp.cpp"
 TMP_O_FILE_NAME = "test/asm/tmp.o"
@@ -8,9 +9,13 @@ DEFAULT_COMPILER_OPTIONS = ['-O3', '-DNDEBUG', '-std=c++20', '-I', 'include/']
 
 
 
-def objdump_process(output_path):
-    f = open(output_path, 'w')
-    p2 = subprocess.Popen(['objdump', '-d', '-j', '.text', '-C', TMP_O_FILE_NAME], stdout=f, stderr=subprocess.PIPE)
+def objdump_process(output_path, tmp_o_file=TMP_O_FILE_NAME):
+    if not os.path.exists(output_path):
+        f = open(output_path, 'x')
+    else:
+        f = open(output_path, 'w')
+    
+    p2 = subprocess.Popen(['objdump', '-d', '-j', '.text', '-C', tmp_o_file], stdout=f, stderr=subprocess.PIPE)
     f.close()
     p2.wait()
     if p2.returncode != 0:
@@ -18,7 +23,7 @@ def objdump_process(output_path):
 
 
 
-def get_assembler(input_path, output_path, compiler='g++', method='objdump', setup:str=None, default_options=False, wait=True):
+def get_assembler(input_path, output_path, compiler='g++', method='objdump', setup:str=None, default_options=False, wait=True, tmp_o_file=TMP_O_FILE_NAME):
     """Compile and disassemble cpp file.
 
     Args:
@@ -38,9 +43,9 @@ def get_assembler(input_path, output_path, compiler='g++', method='objdump', set
  
     if method == 'objdump':
         if default_options:
-            p1 = subprocess.Popen([compiler, input_path, '-c', '-o', TMP_O_FILE_NAME] + DEFAULT_COMPILER_OPTIONS + setup, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            p1 = subprocess.Popen([compiler, input_path, '-c', '-o', tmp_o_file] + DEFAULT_COMPILER_OPTIONS + setup, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         else:
-            p1 = subprocess.Popen([compiler, input_path, '-c', '-o', TMP_O_FILE_NAME] + setup, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            p1 = subprocess.Popen([compiler, input_path, '-c', '-o', tmp_o_file] + setup, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         if wait:
             p1.wait()
