@@ -1,0 +1,6 @@
+{
+    "function" : "fracscale",
+    "parameters" : [
+        ["real", "int"]
+    ]
+}

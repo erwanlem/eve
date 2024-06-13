@@ -1,0 +1,6 @@
+{
+    "function" : "lerp",
+    "parameters" : [
+        ["eve::wide<double>", "eve::wide<double>", "double"]
+    ]
+}

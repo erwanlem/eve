@@ -1,0 +1,6 @@
+{
+    "function" : "inc",
+    "parameters" : [
+        ["arithmetic"]
+    ]
+}

@@ -123,7 +123,7 @@ def options_to_dict(options:list):
             OPTIONS['nbprocess'] = int(options[i+1])
             i+=1
 
-        elif options[i] == '--header':
+        elif options[i] == '--header' or options[i] == '-H':
             lst = []
             while i+1 < len(options) and options[i+1][0] != '-':
                 lst.append(options[i+1])

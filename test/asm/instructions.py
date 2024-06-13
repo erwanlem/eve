@@ -59,10 +59,10 @@ def generate_function(funcName:str, parameters:list, functionId='auto'):
 
     for i in range(0, len(parameters)):
         if i == len(parameters)-1:
-            formal_param += f"eve::wide<{parameters[i]}> a{i}"
+            formal_param += f"{parameters[i]} a{i}"
             real_param += f"a{i}"
         else:
-            formal_param += f"eve::wide<{parameters[i]}> a{i}, "
+            formal_param += f"{parameters[i]} a{i}, "
             real_param += f"a{i}, "
 
     # Code of the temporary function
@@ -208,6 +208,8 @@ def get_functions_instructions(options, functions : list):
         for i, j in files.items():
             i.wait()
             if method == 'objdump':
+                if i.returncode != 0:
+                    raise Exception("Compilation error : " + i.stderr.read().decode())
                 objdump_process(j[0] + '.s', tmp_o_file=j[0] + '.o')
 
             file_asm = open(j[0] + '.s')

@@ -1,0 +1,6 @@
+{
+    "function" : "fmod",
+    "parameters" : [
+        ["real", "real"]
+    ]
+}
