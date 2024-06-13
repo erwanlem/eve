@@ -195,13 +195,13 @@ def get_functions_instructions(options, functions : list):
                 res_dict[comp][a] = {}
             
             if method == 'objdump':
-                p = get_assembler(TMP_CPP_FILE_NAME, f"test/asm/tmp/tmp{file_id}.s", compiler=comp, method=method,\
-                                    setup=target['setup'][a], default_options=options['flags'] == [], wait=False, tmp_o_file=f"test/asm/tmp/tmp{file_id}.o")
-                files[p] = (f"test/asm/tmp/tmp{file_id}", comp, a)
+                p = get_assembler(TMP_CPP_FILE_NAME, f"{const.root}/tmp/tmp{file_id}.s", compiler=comp, method=method,\
+                                    setup=target['setup'][a], default_options=options['flags'] == [], wait=False, tmp_o_file=f"{const.root}/tmp/tmp{file_id}.o")
+                files[p] = (f"{const.root}/tmp/tmp{file_id}", comp, a)
                 file_id += 1
             else:
-                p = get_assembler(TMP_CPP_FILE_NAME, f"test/asm/tmp/tmp{file_id}.s", compiler=comp, method=method, setup=target['setup'][a], default_options=options['flags'] == [], wait=False)
-                files[p] = (f"test/asm/tmp/tmp{file_id}", comp, a)
+                p = get_assembler(TMP_CPP_FILE_NAME, f"{const.root}/tmp/tmp{file_id}.s", compiler=comp, method=method, setup=target['setup'][a], default_options=options['flags'] == [], wait=False)
+                files[p] = (f"{const.root}/tmp/tmp{file_id}", comp, a)
                 file_id += 1
 
         # Wait for subprocess

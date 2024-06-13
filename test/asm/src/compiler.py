@@ -1,9 +1,10 @@
 import subprocess
 import os
+import const
 
-TMP_CPP_FILE_NAME = "test/asm/tmp.cpp"
-TMP_O_FILE_NAME = "test/asm/tmp.o"
-TMP_ASM_FILE_NAME = "test/asm/tmp.s"
+TMP_CPP_FILE_NAME = f"{const.root}/tmp.cpp"
+TMP_O_FILE_NAME = f"{const.root}/tmp/tmp.o"
+TMP_ASM_FILE_NAME = f"{const.root}/tmp/tmp.s"
 
 DEFAULT_COMPILER_OPTIONS = ['-O3', '-DNDEBUG', '-std=c++20', '-I', 'include/']
 

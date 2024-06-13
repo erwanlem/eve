@@ -1,7 +1,7 @@
 import platform
 
 
-root = "test/asm/"
+root = "test/asm/src"
 
 
 ARCH = {

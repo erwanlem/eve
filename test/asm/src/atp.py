@@ -43,7 +43,7 @@ def options_to_dict(options:list):
     Returns:
        dict : dictionary with each option value
     """
-    OPTIONS = const.OPTIONS.copy()
+    opt = const.OPTIONS.copy()
 
     i = 1
     while i < len(options):
@@ -57,50 +57,50 @@ def options_to_dict(options:list):
             for j in lst:
                 if j not in const.ARCH:
                     raise Exception(f"Invalid architecture name '{j}'")
-            OPTIONS['arch'] = lst
+            opt['arch'] = lst
         elif options[i] == '-l':
-            OPTIONS['log'] = True
+            opt['log'] = True
         elif options[i] == "-d":
-            OPTIONS['deep'] = True
+            opt['deep'] = True
         elif options[i] == '-t':
-            OPTIONS['keep_tmp'] = True
+            opt['keep_tmp'] = True
         elif options[i] == '-g':
-            OPTIONS['generate'] = True
-            OPTIONS['validate'] = False
+            opt['generate'] = True
+            opt['validate'] = False
         elif options[i] == '-i':
-            OPTIONS["instruction_comparison"] = True
+            opt["instruction_comparison"] = True
         elif options[i] == '-v':
-            OPTIONS['verbose'] = True
+            opt['verbose'] = True
         elif options[i] == '--fatal':
-            OPTIONS['exception'] = True
+            opt['exception'] = True
         elif options[i] == '--functionsperfile' or options[i] == '-S':
-            OPTIONS['limit_per_file'] = int(options[i+1])
+            opt['limit_per_file'] = int(options[i+1])
             i+=1
         elif options[i] == '--ref':
-            OPTIONS['ref_path'] = options[i+1]
+            opt['ref_path'] = options[i+1]
             i+=1
         elif options[i] == '--reset':
-            OPTIONS['validate'] = False
-            OPTIONS['generate'] = False
+            opt['validate'] = False
+            opt['generate'] = False
             e = input("All references files will be deleted, do you confirm ? (Y/n)")
             if e == 'Y':
                 files.reset()
             break
         elif options[i] == '--build':
-            OPTIONS['validate'] = False
-            OPTIONS['generate'] = False
+            opt['validate'] = False
+            opt['generate'] = False
             files.build_default_files()
             break
         elif options[i] == "--disassembler" or options[i] == "-D":
             if options[i+1] == 'objdump' or options[i+1] == 'standard':
-                OPTIONS['disassembler'] = options[i+1]
+                opt['disassembler'] = options[i+1]
                 i+=1
             else:
                 raise Exception("Invalid parameter with option disassembler. Valid parameters are `standard` or `objdump`")
         elif options[i] == '--input':
             if options[i+1][0] == '-':
                 raise Exception("Invalid parameter for option --input")
-            OPTIONS['input'] = options[i+1]
+            opt['input'] = options[i+1]
             i+=1
         elif options[i] == '--flags':
             lst = []
@@ -109,18 +109,18 @@ def options_to_dict(options:list):
                 i+=1
             if len(lst) == 0:
                 raise Exception("Parameter missing for option --output")
-            OPTIONS['flags'] = lst
+            opt['flags'] = lst
         elif options[i] == '--output':
-            OPTIONS['output'] = options[i+1]
+            opt['output'] = options[i+1]
             i+=1
         elif options[i] == '--setup' or options[i] == '-s':
-            OPTIONS['setup'] = options[i+1]
+            opt['setup'] = options[i+1]
             i+=1
         elif options[i] == '--compiler' or options[i] == '-c':
-            OPTIONS['compiler'] = options[i+1]
+            opt['compiler'] = options[i+1]
             i+=1
         elif options[i] == '-j':
-            OPTIONS['nbprocess'] = int(options[i+1])
+            opt['nbprocess'] = int(options[i+1])
             i+=1
 
         elif options[i] == '--header' or options[i] == '-H':
@@ -130,13 +130,13 @@ def options_to_dict(options:list):
                 i+=1
             if len(lst) == 0:
                 raise Exception("Parameter missing for option --header")
-            OPTIONS['headers'] = lst
+            opt['headers'] = lst
                 
         else:
             raise Exception(f"Invalid option {options[i]}")
         i+=1
 
-    return OPTIONS
+    return opt
 
 
 
@@ -149,7 +149,9 @@ def main(opt):
 
 
 
-
+def run(argv):
+    o = options_to_dict(argv)
+    main(o)
 
 
 if __name__ == '__main__':

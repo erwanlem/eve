@@ -65,7 +65,7 @@ def build_reference_directories(folder='test/asm/ref'):
                 os.mkdir(f"{folder}/{c}/{a}")
 
 
-def reset(folder='test/asm/ref'):
+def reset(folder=f'{const.root}/ref'):
     """Clear directory
 
     Args:

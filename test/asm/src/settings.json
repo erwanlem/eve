@@ -11,10 +11,16 @@
             "sse2": "-msse2",
             "sse3": "-msse3",
             "ssse3": "-mssse3",
-            "sse4": "-msse4",
+            "sse4.1": "-msse4.1",
+            "sse4.2": "-msse4.2",
             "avx" : "-mavx",
             "avx2" : "-mavx2",
-            "sse4.2" : "-msse4.2"
+            "avx512f" : "-mavx512f",
+            "avx512cd" : "-mavx512cd",
+            "avx512vl" : "-mavx512vl",
+            "avx512dq" : "-mavx512dq",
+            "avx512bw" : "-mavx512bw",
+            "fma" : "-mfma"
         },
 
     "groups": [

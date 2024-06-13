@@ -1,6 +1,7 @@
 import json
 import os
 import reader
+import const
 from reader import get_groups
 
 
@@ -16,7 +17,7 @@ def get_setup(entry:str):
         dict: Dictionary associating entry with its corresponding flag.
     """
     
-    settings = reader.load_json("test/asm/settings.json")
+    settings = reader.load_json(f"{const.root}/settings.json")
     settings = json.loads(settings)
     if entry == 'all':
         return settings['setup']
@@ -42,7 +43,7 @@ def get_compiler(entry:str):
         dict: The compiler's name associated with the path to execute it.
     """
 
-    settings = reader.load_json("test/asm/settings.json")
+    settings = reader.load_json(f"{const.root}/settings.json")
     settings = json.loads(settings)
     if entry == 'all':
         return settings['compilers']

@@ -29,6 +29,7 @@ def load_json(file_name:str, create_if_not_found=False):
         f.close()
         return t
     except FileNotFoundError:
+        print(f"File {file_name} not found")
         if create_if_not_found:
             f = open(file_name, 'x')
             f.write("{}")
@@ -130,7 +131,7 @@ def get_groups(entry:str):
         list: List of config files.
     """
 
-    settings = load_json("test/asm/settings.json")
+    settings = load_json(f"{const.root}/settings.json")
     settings = json.loads(settings)
     g = [i for i in settings['groups'] if i['name'] == entry]
     if len(g) > 0 :
@@ -140,7 +141,7 @@ def get_groups(entry:str):
 
 
 def read_headers():
-    settings = load_json("test/asm/settings.json")
+    settings = load_json(f"{const.root}/settings.json")
     settings = json.loads(settings)
     return settings['headers']
     
@@ -162,8 +163,8 @@ def read_config_file(file_name='all'):
 
     if file_name == 'all':
         d = {}
-        for f in os.listdir("test/asm/config"):
-            txt = load_json(f"test/asm/config/{f}")
+        for f in os.listdir(f"{const.root}/config"):
+            txt = load_json(f"{const.root}/config/{f}")
             function = json.loads(txt)
             d[function['function']] = keytypes_to_types(function['parameters'])
         return d
@@ -176,8 +177,8 @@ def read_config_file(file_name='all'):
 
         d = {}
         for n in file_name:
-            if os.path.exists(f"test/asm/config/{n}"):
-                txt = load_json(f"test/asm/config/{n}")
+            if os.path.exists(f"{const.root}/config/{n}"):
+                txt = load_json(f"{const.root}/config/{n}")
                 function = json.loads(txt)
                 d[function['function']] = keytypes_to_types(function['parameters'])
             elif os.path.exists(n):
@@ -224,8 +225,8 @@ def read_reference_files(file_name:str, path="test/asm/ref"):
                         d = json.loads(load_json(f"{path}/{i}/{j}/{k}"))
                         references[i][j][d['function']] = d['asm']
                     except FileNotFoundError:
-                        pass
-                    
+                        print(f"File {path}/{i}/{j}/{k} not found")
+
     return references
 
 
