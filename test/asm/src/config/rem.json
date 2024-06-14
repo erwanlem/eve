@@ -1,5 +1,6 @@
 {
     "function" : "rem",
+    "call" : "eve::rem",
     "parameters" : [
         ["integer", "integer"]
     ]

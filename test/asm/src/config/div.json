@@ -1,5 +1,6 @@
 {
     "function" : "div",
+    "call" : "eve::div",
     "parameters" : [
         ["arithmetic", "arithmetic"]
     ]

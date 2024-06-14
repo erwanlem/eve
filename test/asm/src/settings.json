@@ -15,13 +15,8 @@
             "sse4.2": "-msse4.2",
             "avx" : "-mavx",
             "avx2" : "-mavx2",
-            "avx512f" : "-mavx512f",
-            "avx512cd" : "-mavx512cd",
-            "avx512vl" : "-mavx512vl",
-            "avx512dq" : "-mavx512dq",
-            "avx512bw" : "-mavx512bw",
-            "fma" : "-mfma"
-        },
+            "avx512" : "-march=skylake-avx512" 
+        }, 
 
     "groups": [
         {
@@ -35,7 +30,7 @@
     ],
 
     "headers": [
-        "#include <eve/module/core.hpp>"
+        "<eve/module/core.hpp>"
     ]
 
 }

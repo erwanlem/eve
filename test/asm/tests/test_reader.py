@@ -1,9 +1,13 @@
 import unittest
 import sys
-sys.path.append("test/asm/test/..")
+import os
+sys.path.append(f"{os.path.dirname(__file__)}/../src")
 import reader
 import const
 import numpy
+
+
+path = f"{os.path.dirname(__file__)}"
 
 
 class TestReader(unittest.TestCase):
@@ -11,14 +15,14 @@ class TestReader(unittest.TestCase):
         super().__init__(methodName)
 
     def test_reader_reference_file(self):
-        self.assertEqual(reader.load_json("test/asm/test/reader/test1.json"), '{}')
+        self.assertEqual(reader.load_json(f"{path}/reader/test1.json"), '{}')
 
         with self.assertRaises(Exception):
             reader.load_json('.')
         with self.assertRaises(FileNotFoundError):
-            reader.load_json('test/asm/test/reader/test.json')
+            reader.load_json(f'{path}/reader/test.json')
 
-        self.assertNotEqual(reader.load_json("test/asm/test/reader/test2.json"), "{}")
+        self.assertNotEqual(reader.load_json(f"{path}/reader/test2.json"), "{}")
 
 
     def test_keytypes_to_types(self):

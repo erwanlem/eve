@@ -1,5 +1,6 @@
 {
     "function" : "conj",
+    "call" : "eve::conj",
     "parameters" : [
         ["float"],
         ["double"]

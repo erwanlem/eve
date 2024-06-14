@@ -46,7 +46,7 @@ def build_default_files(replace=False):
 
 
 
-def build_reference_directories(folder='test/asm/ref'):
+def build_reference_directories(folder=f'{const.root}/ref'):
     """Builds directories for reference.
 
     Args:

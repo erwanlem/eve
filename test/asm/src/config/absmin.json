@@ -1,5 +1,6 @@
 {
     "function" : "absmin",
+    "call" : "eve::absmin",
     "parameters" : [
         ["arithmetic", "arithmetic"]
     ]

@@ -1,5 +1,6 @@
 {
     "function" : "lerp",
+    "call" : "eve::lerp",
     "parameters" : [
         ["eve::wide<double>", "eve::wide<double>", "double"]
     ]

@@ -1,5 +1,6 @@
 {
     "function" : "inc",
+    "call" : "eve::inc",
     "parameters" : [
         ["arithmetic"]
     ]

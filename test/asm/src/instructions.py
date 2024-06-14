@@ -143,10 +143,10 @@ def get_functions_instructions(options, functions : list):
     headers = ""
     if options['headers'] == []:
         for i in reader.read_headers():
-            headers += i + '\n'
+            headers += f"#include {i}\n"
     else:
         for i in options['headers']:
-            headers += f"#include <{i}>\n"
+            headers += f'#include {i}\n'
 
     full_code = headers
     functions_names = {}

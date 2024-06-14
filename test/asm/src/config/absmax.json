@@ -1,5 +1,6 @@
 {
     "function" : "absmax",
+    "call" : "eve::absmax",
     "parameters" : [
         ["arithmetic", "arithmetic"]
     ]

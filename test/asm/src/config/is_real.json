@@ -1,5 +1,6 @@
 {
     "function" : "is_real",
+    "call" : "eve::is_real",
     "parameters" : [
         ["arithmetic"]
     ]

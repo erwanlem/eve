@@ -1,5 +1,6 @@
 {
     "function" : "average",
+    "call" : "eve::average",
     "parameters" : [
         ["arithmetic", "arithmetic"]
     ]

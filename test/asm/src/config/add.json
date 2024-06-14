@@ -1,5 +1,6 @@
 {
     "function" : "add",
+    "call" : "eve::add",
     "parameters" : [
         ["arithmetic", "arithmetic"]
     ]

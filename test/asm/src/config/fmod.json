@@ -1,5 +1,6 @@
 {
     "function" : "fmod",
+    "call" : "eve::fmod",
     "parameters" : [
         ["real", "real"]
     ]

@@ -1,5 +1,6 @@
 {
     "function" : "fracscale",
+    "call" : "eve::fracscale",
     "parameters" : [
         ["real", "int"]
     ]

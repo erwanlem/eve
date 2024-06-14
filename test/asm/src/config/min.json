@@ -1,5 +1,6 @@
 {
     "function" : "min",
+    "call" : "eve::min",
     "parameters" : [
         ["arithmetic", "arithmetic"]
     ]

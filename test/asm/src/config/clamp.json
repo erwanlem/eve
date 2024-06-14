@@ -1,5 +1,6 @@
 {
     "function" : "clamp",
+    "call" : "eve::clamp",
     "parameters" : [
         ["float", "float", "float"],
         ["double", "double", "double"],

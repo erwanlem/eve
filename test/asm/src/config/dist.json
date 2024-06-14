@@ -1,5 +1,6 @@
 {
     "function" : "dist",
+    "call" : "eve::dist",
     "parameters" : [
         ["arithmetic", "arithmetic"]
     ]
