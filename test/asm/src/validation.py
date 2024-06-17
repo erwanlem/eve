@@ -3,8 +3,10 @@ import json
 import os
 import reader
 import time
+import const
 
-LOG_PATH = "test/asm/log.txt"
+
+LOG_PATH = f"{const.root}/log.txt"
 
 
 class AssemblyMismatch(Exception):

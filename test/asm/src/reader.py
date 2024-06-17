@@ -29,14 +29,13 @@ def load_json(file_name:str, create_if_not_found=False):
         f.close()
         return t
     except FileNotFoundError:
-        print(f"File {file_name} not found")
         if create_if_not_found:
             f = open(file_name, 'x')
             f.write("{}")
             f.close()
             return "{}"
         else:
-            raise FileNotFoundError
+            raise FileNotFoundError(f"File {file_name} not found")
     except Exception as e:
         raise Exception(f"Error while loading {file_name} : {e}")
 
@@ -131,7 +130,7 @@ def get_groups(entry:str):
         list: List of config files.
     """
 
-    settings = load_json(f"{const.root}/settings.json")
+    settings = load_json(const.settings)
     settings = json.loads(settings)
     g = [i for i in settings['groups'] if i['name'] == entry]
     if len(g) > 0 :
@@ -141,7 +140,7 @@ def get_groups(entry:str):
 
 
 def read_headers():
-    settings = load_json(f"{const.root}/settings.json")
+    settings = load_json(const.settings)
     settings = json.loads(settings)
     return settings['headers']
     

@@ -1,14 +1,9 @@
 import json
-import instructions as instructions
+import instructions
 import const
 import reader
 import os
 import time
-
-
-CONFIG_FILE = "test/asm/config.json"
-STORE_FILE = "test/asm/functions.json"
-
 
 
 

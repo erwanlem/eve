@@ -1,8 +1,12 @@
 import unittest
 import sys
-sys.path.append("test/asm/test/..")
+from test_utils import ignore_warnings
+import os
+sys.path.append(f"{os.path.dirname(__file__)}/../src")
 from instructions import *
 import const
+
+path = f"{os.path.dirname(__file__)}"
 
 class TestGenerateFunction(unittest.TestCase):
 
@@ -20,18 +24,18 @@ class TestGenerateFunction(unittest.TestCase):
 }
 """)
 
-        c2 = generate_function("test2", ['float'], functionId=1)
+        c2 = generate_function("test2", ['eve::wide<float>'], functionId=1)
         t2 = ("test2_1", """auto func_test2_1(eve::wide<float> a0) {
     return eve::test2(a0);
 }
 """)
-        c3 = generate_function("test3", ['float', 'int', 'double'], functionId=2)
+        c3 = generate_function("test3", ['eve::wide<float>', 'eve::wide<int>', 'eve::wide<double>'], functionId=2)
         t3 = ("test3_2", """auto func_test3_2(eve::wide<float> a0, eve::wide<int> a1, eve::wide<double> a2) {
     return eve::test3(a0, a1, a2);
 }
 """)
 
-        c4 = generate_function("test4", ['int', 'int'], functionId=3)
+        c4 = generate_function("test4", ['eve::wide<int>', 'eve::wide<int>'], functionId=3)
         t4 = ("test4_3", """auto func_test4_3(eve::wide<int> a0, eve::wide<int> a1) {
     return eve::test4(a0, a1);
 }
@@ -76,7 +80,7 @@ class TestExtractInstructions(unittest.TestCase):
  13b:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
 """
 
-
+    @ignore_warnings
     def test_valid_call(self):        
         t1 = extract_instructions('dist', ["float", "float"], {function_extended_name('dist', ["float", "float"]) : "dist_8"}, self.asm)
         t2 = extract_instructions('add', ["signed char", "signed char"], {function_extended_name('add', ["signed char", "signed char"]) : "add_10"}, self.asm)
@@ -92,7 +96,7 @@ class TestExtractInstructions(unittest.TestCase):
             extract_instructions('add', ["signed char", "signed char", "signed char"], {function_extended_name('add', ["signed char", "signed char"]) : "add_10"}, self.asm)
         
         
-        
+    @ignore_warnings
     def test_func_not_found_exception(self):
         with self.assertRaises(Exception):
             extract_instructions('00', self.asm)
@@ -102,18 +106,14 @@ class TestExtractInstructions(unittest.TestCase):
 class TestGetFunctionInstructions(unittest.TestCase):
     def __init__(self, methodName: str = "runTest") -> None:
         super().__init__(methodName)
-        self.opt = {
-            "compiler" : "gcc",
-            "setup" : "sse",
-            "input" : 'all',
-            "output" : "output",
-            "disassembler" : "objdump",
-            "verbose" : False,
-            "flags" : [],
-            "keep_tmp" : False
-        }
+        self.opt = const.OPTIONS.copy()
+        self.opt['compiler'] = "gcc"
+        self.opt['setup'] = "sse"
+        self.opt['input'] = "all"
+        self.opt["output"] = f"{path}/output"
 
 
+    @ignore_warnings
     def test_valid_entry(self):
         
         t1 = get_functions_instructions(self.opt, [('add', ['int', 'int']), ('abs', ['float'])])
@@ -122,7 +122,7 @@ class TestGetFunctionInstructions(unittest.TestCase):
         self.assertEqual(list(t1['gcc'].keys()), ['sse'])
         self.assertEqual(list(t1['gcc']['sse'].keys()), ['add', 'abs'])
 
-    
+    @ignore_warnings
     def test_limit_case(self):
         t1 = get_functions_instructions(self.opt, [])
 

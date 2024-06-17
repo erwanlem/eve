@@ -1,12 +1,14 @@
 import subprocess
 import os
 import const
+import settings
 
 TMP_CPP_FILE_NAME = f"{const.root}/tmp.cpp"
 TMP_O_FILE_NAME = f"{const.root}/tmp/tmp.o"
 TMP_ASM_FILE_NAME = f"{const.root}/tmp/tmp.s"
 
-DEFAULT_COMPILER_OPTIONS = ['-O3', '-DNDEBUG', '-std=c++20', '-I', 'include/']
+DEFAULT_COMPILER_OPTIONS = settings.get_flags()
+
 
 
 
@@ -16,9 +18,10 @@ def objdump_process(output_path, tmp_o_file=TMP_O_FILE_NAME):
     else:
         f = open(output_path, 'w')
     
-    p2 = subprocess.Popen(['objdump', '-d', '-j', '.text', '-C', tmp_o_file], stdout=f, stderr=subprocess.PIPE)
-    f.close()
-    p2.wait()
+    with subprocess.Popen(['objdump', '-d', '-j', '.text', '-C', tmp_o_file], stdout=f, stderr=subprocess.PIPE) as p2:
+        p2.wait()
+        f.close()
+        
     if p2.returncode != 0:
         raise Exception("Compilation error : " + p2.stderr.read().decode()) 
 

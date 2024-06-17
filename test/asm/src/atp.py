@@ -2,6 +2,7 @@ import sys
 import generation
 import files
 import const
+import os
 import validation
 
 """
@@ -116,6 +117,16 @@ def options_to_dict(options:list):
         elif options[i] == '--setup' or options[i] == '-s':
             opt['setup'] = options[i+1]
             i+=1
+        elif options[i] == '--settings':
+            s = options[i+1]
+            if os.path.exists(f"{const.root}/{s}"):
+                const.settings = f"{const.root}/{s}"
+            elif os.path.exists(s):
+                const.settings = s
+            else:
+                raise Exception("Invalid settings path")
+            i += 1
+            
         elif options[i] == '--compiler' or options[i] == '-c':
             opt['compiler'] = options[i+1]
             i+=1

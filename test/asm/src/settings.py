@@ -7,7 +7,7 @@ from reader import get_groups
 
 
 def get_setup(entry:str):
-    """Returns simd extensions with their corresponding compiler flag. If `entry` is not found in `settings.json`\
+    """Returns simd extensions with their corresponding compiler flag. If `entry` is not found in the settings file\
     it is considered as a custom flag.
 
     Args:
@@ -17,7 +17,7 @@ def get_setup(entry:str):
         dict: Dictionary associating entry with its corresponding flag.
     """
     
-    settings = reader.load_json(f"{const.root}/settings.json")
+    settings = reader.load_json(const.settings)
     settings = json.loads(settings)
     if entry == 'all':
         return settings['setup']
@@ -28,11 +28,14 @@ def get_setup(entry:str):
             return {entry : entry}
     
 
-
+def get_flags():
+    settings = reader.load_json(const.settings)
+    settings = json.loads(settings)
+    return settings['flags']
 
 
 def get_compiler(entry:str):
-    """Returns compilers with there corresponding name in the system. If `entry` is found in `settings.json`\
+    """Returns compilers with there corresponding name in the system. If `entry` is found in settings file\
     the corresponding path is returned as the value in the dictionary. Otherwise `entry` is defined as the value and\
     the key is the basename.
 
@@ -43,7 +46,7 @@ def get_compiler(entry:str):
         dict: The compiler's name associated with the path to execute it.
     """
 
-    settings = reader.load_json(f"{const.root}/settings.json")
+    settings = reader.load_json(const.settings)
     settings = json.loads(settings)
     if entry == 'all':
         return settings['compilers']

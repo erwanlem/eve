@@ -60,6 +60,8 @@ $\,\,\,\,\,\,\,\,\,$ The code is only generated and validated for the given simd
 **-S** *limit*, **--functionsperfile** *limit*
 $\,\,\,\,\,\,\,\,\,$ Limit the number of functions in *cpp* files. If the number of functions is greater than the limit it creates several *cpp* files that are compiled seperately.
 
+**--settings** *path*
+$\,\,\,\,\,\,\,\,\,$ Defines the path to access the settings file. If not given it takes `settings.json` in the *src* directory. If given, it first searches the path in the *src* directory. If not found it searches *path*.
 
 **-t** $\,\,\,\,$ Keeps temporary files after the process. Temporary files are files used to produce assembly code:
 - tmp.cpp : Contains generated cpp functions

@@ -1,12 +1,14 @@
 import unittest
+from test_utils import ignore_warnings
 import sys
-sys.path.append("test/asm/test/..")
+import os
+sys.path.append(f"{os.path.dirname(__file__)}/../src")
 import atp
 import files
 import validation
-import os
 import const
 
+path = f"{os.path.dirname(__file__)}"
 
 test_mismatch_1 = """{
     "function": "add",
@@ -85,8 +87,6 @@ test_match_1 = """{
         }
     ]
 }"""
-
-
 
 
 
@@ -171,12 +171,13 @@ class TestAtp(unittest.TestCase):
     def __init__(self, methodName: str = "runTest") -> None:
         super().__init__(methodName)
 
+    @ignore_warnings
     def test_valid_references(self):
-        files.build_reference_directories(f"{const.root}/test/atp")
-        if os.path.exists(f"{const.root}/test/atp/gcc/sse/add.json"):
-            file = open(f"{const.root}/test/atp/gcc/sse/add.json", 'w')
+        files.build_reference_directories(f"{path}/atp")
+        if os.path.exists(f"{path}/atp/gcc/sse/add.json"):
+            file = open(f"{path}/atp/gcc/sse/add.json", 'w')
         else:
-            file = open(f"{const.root}/test/atp/gcc/sse/add.json", 'x')
+            file = open(f"{path}/atp/gcc/sse/add.json", 'x')
         file.write(test_match_1)
         file.close()
 
@@ -185,12 +186,12 @@ class TestAtp(unittest.TestCase):
         d['validate'] = True
         d['input'] = "add.json"
         d['compiler'] = 'gcc'
-        d['ref_path'] = "test/asm/test/atp"
+        d['ref_path'] = f"{path}/atp"
 
 
         self.assertEqual(atp.main(d), 0)
 
-        files.reset(folder=f'{const.root}/test/atp')
+        files.reset(folder=f'{path}/atp')
 
     """
     def test_unmatched_references(self):
@@ -239,11 +240,12 @@ class TestAtp(unittest.TestCase):
         files.reset(folder=f'{const.root}/test/atp')
     """
 
+    @ignore_warnings
     def test_gen_and_valid(self):
-        files.build_reference_directories("test/asm/test/atp")
+        files.build_reference_directories(f"{path}/atp")
 
         d = const.OPTIONS.copy()
-        d['ref_path'] = f"{const.root}/test/atp"
+        d['ref_path'] = f"{path}/atp"
         d['deep'] = True
         d['generate'] = True
 
@@ -254,7 +256,7 @@ class TestAtp(unittest.TestCase):
 
         self.assertEqual(atp.main(d), 0)
 
-        files.reset(folder=f'{const.root}/test/atp')
+        files.reset(folder=f'{path}/atp')
 
 
 

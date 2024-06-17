@@ -3,6 +3,8 @@ import platform
 
 root = "test/asm/src"
 
+settings = f"{root}/settings.json"
+
 
 ARCH = {
     'sse' : '-msse', 
@@ -49,10 +51,3 @@ INTEGER = SIGNED_INTEGER + UNSIGNED_INTEGER
 SIGNED = SIGNED_INTEGER + REAL
 
 ARITHMETIC = REAL + INTEGER + UNSIGNED_INTEGER
-
-
-
-
-clear_command = 'cls' if platform.system() == 'Windows' else 'clear'
-
-ref_path = "test/asm/ref/"

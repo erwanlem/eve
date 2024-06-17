@@ -31,6 +31,14 @@
 
     "headers": [
         "<eve/module/core.hpp>"
+    ],
+
+    "flags": [
+        "-O3",
+        "-msse",
+        "-I",
+        "include/",
+        "-std=c++20"
     ]
 
 }
