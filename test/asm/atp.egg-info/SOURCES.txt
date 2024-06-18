@@ -1,7 +1,0 @@
-LICENSE.md
-pyproject.toml
-setup.py
-atp.egg-info/PKG-INFO
-atp.egg-info/SOURCES.txt
-atp.egg-info/dependency_links.txt
-atp.egg-info/top_level.txt
