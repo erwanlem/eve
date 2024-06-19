@@ -8,7 +8,7 @@ setup(
   author = 'Erwan LEMATTRE',                   # Type in your name
   author_email = 'erwan.lemattre@',      # Type in your E-Mail
   url = 'https://github.com/erwanlem/atp',   # Provide either the link to your github or to your website
-  download_url = 'https://github.com/user/reponame/archive/v_01.tar.gz',    # I explain this later on
+  download_url = 'https://github.com/erwanlem/atp/archive/refs/tags/v1.0.tar.gz',    # I explain this later on
   keywords = ['ASSEMBLER', 'TEST', 'ANALYSIS'],   # Keywords that define your package best
   install_requires=[            # I get to this in a second
           're',

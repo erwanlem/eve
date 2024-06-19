@@ -71,18 +71,23 @@ def read_objdump_assembler(function_name:str, assembler:str):
     instr = []
 
     for i in x:
-        # extract only the instruction name (without parameters)
+        # extract instructions
         s = i.split('\t')
         s[2] = re.sub(' +', ' ', s[2])
         s = s[2].split(' ')
-        if s[0] == 'ret':
-            break
         
         if s[0] != "endbr64" and s[0] != "endbr32":
             if len(s) > 1 and s[1] != "":
                 instr.append(s[0] + ' ' + s[1])
             else:
                 instr.append(s[0])
+    
+    for i in range(len(instr)-1, 0, -1):
+        if instr[i] == 'ret':
+            instr.pop()
+            break
+        else:
+            instr.pop()
 
     return instr
 
