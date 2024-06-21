@@ -1,7 +1,7 @@
 from parse_html import is_extension_instruction
 import os
 import sys
-import re
+import analysis_output
 sys.path.append(f"{os.path.dirname(__file__)}/..")
 import instructions
 import const
@@ -26,31 +26,36 @@ def analyze_assembly(options:dict, function, compiler:str, cpu_ext:str, param):
         for typ in conf[k]:
             functions.append((k, typ))
 
-    instr = [i['instr'] for i in instructions.get_functions_instructions(options, functions)[compiler][cpu_ext][function] if i['type'] == param][0]
+    instr = instructions.get_functions_instructions(options, functions)[compiler][cpu_ext]
 
-    print(instr)
+    index = []
 
-    ext = []
-    mem = []
-    for i in instr:
-        #print(f"'{i.split(' ')[0]}'")
-        if is_extension_instruction(i.split(' ')[0].upper()):
-            ext.append(i)
-        if re.match(".*0x[0-9a-f]+\(.*\).*", i):
-            mem.append(i)
+    functions = sorted( list(instr.keys()) )
+    for i in functions:
+        for j in instr[i]:
+            param = ""
+            for p in range(0, len(j['type'])):
+                if p == len(j['type'])-1 or len(j['type']) == 0:
+                    param += j['type'][p]
+                else:
+                    param += j['type'][p] + ', '
 
+            index.append((f"{i}({param})", j['instr']))
 
-    print(ext)
-    print(f"{len(ext)} extensions in {len(instr)} instructions", end='\n\n')
-    print(mem)
-    print(f"{len(mem)} memory access in {len(instr)} instructions")
+    if not os.path.exists(f"{const.root}/output"):
+        os.mkdir(f"{const.root}/output")
+    if not os.path.exists(f"{const.root}/output/pages"):
+        os.mkdir(f"{const.root}/output/pages")
+    
+    analysis_output.generate_index(index)
+
 
 
 
 if __name__ == '__main__':
     opt = const.OPTIONS.copy()
-    opt['input'] = 'fracscale.json'
+    opt['input'] = 'all'
     opt['compiler'] = 'g++'
     opt['setup'] = 'sse2'
-    analyze_assembly(opt, 'fracscale', 'g++', 'sse2', ['float', 'int'])
+    analyze_assembly(opt, 'all', 'g++', 'sse2', ['float', 'int'])
 

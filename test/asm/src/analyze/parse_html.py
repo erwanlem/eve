@@ -40,10 +40,10 @@ def load():
     con.commit()
 
 
-    res = cur.execute("SELECT instr_name FROM instructions WHERE extension != '' ORDER BY length(instr_name) DESC")
+    res = cur.execute("SELECT DISTINCT instr_name FROM instructions WHERE extension != '' ORDER BY length(instr_name) DESC")
     print(len(res.fetchall()))
 
-    res = cur.execute("SELECT instr_name FROM instructions ORDER BY length(instr_name) DESC")
+    res = cur.execute("SELECT DISTINCT instr_name FROM instructions ORDER BY length(instr_name) DESC")
     print(len(res.fetchall()))
 
 
@@ -51,19 +51,34 @@ def load():
     con.close()
 
 
-
-if __name__ == '__main__':
-    load()
-    pass
-
-
-
 def is_extension_instruction(instr):
     con = sqlite3.connect("test/asm/src/analyze/data.db")
     cur = con.cursor()
-    res = cur.execute("SELECT instr_name FROM instructions WHERE extension != '' ORDER BY length(instr_name) DESC")
+    res = cur.execute("SELECT instr_name, extension FROM instructions WHERE extension != '' ORDER BY length(instr_name) DESC")
 
-    return (instr,) in res
+    for i in res:
+        if i[0] == instr:
+            return i[1]
+    return None
 
 
-#print(len(assembly_instructions))
+def instruction_categories(instr):
+    con = sqlite3.connect("test/asm/src/analyze/data.db")
+    cur = con.cursor()
+    res = cur.execute(f"SELECT ctrl_flow, arith_logic, data_move FROM instructions WHERE instr_name='{instr}'")
+
+    res = res.fetchone()
+    if res is None:
+        return (0, 0, 0, 1)
+    if res[0] + res[1] + res[2] == 0:
+        return (0, 0, 0, 1)
+    else:
+        return (res[0], res[1], res[2], 0)
+
+
+if __name__ == '__main__':
+    #load()
+    #print(is_extension_instruction("movaps".upper()))
+    print(instruction_categories("AAA"))
+    pass
+

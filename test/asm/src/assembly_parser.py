@@ -84,7 +84,6 @@ def read_objdump_assembler(function_name:str, assembler:str):
     
     for i in range(len(instr)-1, 0, -1):
         if instr[i] == 'ret':
-            instr.pop()
             break
         else:
             instr.pop()
