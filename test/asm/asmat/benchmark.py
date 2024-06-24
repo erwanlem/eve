@@ -1,11 +1,11 @@
-import atp
+import test.asm.asmat as asmat
 
 options = [ "", "-g", "-v", "-d"]
 
 
 
 for i in [1, 2, 4, 8, 16, 24, 32]:
-    atp.run(options + ["-j", f"{i}"])
+    asmat.run(options + ["-j", f"{i}"])
 
 
 # Generation

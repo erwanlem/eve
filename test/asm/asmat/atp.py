@@ -160,10 +160,11 @@ def main(opt):
 
 
 
-def run(argv:list):
-    o = options_to_dict(argv)
-    main(o)
-
+def run():
+    argv = sys.argv
+    
+    options = options_to_dict(argv)
+    main(options)
 
 if __name__ == '__main__':
     argv = sys.argv
