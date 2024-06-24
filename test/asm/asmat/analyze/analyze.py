@@ -13,7 +13,7 @@ import reader
 
 
 
-def analyze_assembly(options:dict, function, compiler:str, cpu_ext:str, param):
+def analyze_assembly(options:dict, compiler:str, cpu_ext:str):
 
     output_directory = options['output']
     conf = reader.read_config_file(options['input'])
@@ -56,6 +56,6 @@ if __name__ == '__main__':
     opt = const.OPTIONS.copy()
     opt['input'] = 'all'
     opt['compiler'] = 'g++'
-    opt['setup'] = 'sse2'
-    analyze_assembly(opt, 'all', 'g++', 'sse2', ['float', 'int'])
+    opt['setup'] = 'avx'
+    analyze_assembly(opt, 'g++', 'avx')
 

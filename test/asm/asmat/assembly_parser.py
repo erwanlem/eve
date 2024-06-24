@@ -43,7 +43,6 @@ def read_compiler_assembler(function_name:str, assembler:str, compiler:str):
         return y
 
 
-
 def read_objdump_assembler(function_name:str, assembler:str):
     """Get instructions for a given function. Assembler must be objdump generated string.
 

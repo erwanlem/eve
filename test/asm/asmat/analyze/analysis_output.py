@@ -35,8 +35,8 @@ DOCUMENT_STYLE = """
 
 def gen_pie_chart(path, proportion:list):
     fig, ax = plt.subplots()
-    ax.pie(proportion, labels=['Control flow', 'Arithmetic/Logic', 'Memory access', 'Undefined'], autopct='%1.1f%%', shadow=True, startangle=90)
-    plt.savefig(f'{const.root}/output/pages/{path}')
+    ax.pie(proportion, labels=['Control flow', 'Arithmetic/Logic', 'Data movement', 'Undefined'], autopct='%1.1f%%', shadow=True, startangle=90)
+    plt.savefig(f'{const.root}/output/pages/{path}.jpg')
     plt.close(fig)
 
 
@@ -100,10 +100,10 @@ def generate_function_page(page_name:str, function:str, instructions:list, dataI
     doc += f'<table style="border-collapse: collapse;border: 2px solid #eee; margin-top: 30px;max-width: 80%;min-width: 50%;">\
     <tr><th>Data movement</th><td>{dataInstr["cat2"]}</td></tr><tr><th>Logic/Arithmetic</th><td>{dataInstr["cat1"]}</td></tr><tr><th>Control flow</th><td>{dataInstr["cat0"]}</td>\
         </tr><tr><th>Undefined</th><td>{dataInstr["cat3"]}</td></tr></table></div>'
-    doc += f'<div class="column"><img src="{page_name}.png" alt="" style="max-width: 100%;margin-top: 50px;"></div></div>'
+    doc += f'<div class="column"><img src="{page_name}.jpg" alt="" style="max-width: 100%;margin-top: 50px;"></div></div>'
 
     asm_code = "\n".join(instructions)
-    doc += f'<div><h2>Assembly instructions</h2><pre><code style="max-height: 300px;overflow: scroll;">{asm_code}</code></pre></div></body></html>'
+    doc += f'<div><h2>Instructions</h2><pre><code style="max-height: 300px;overflow: scroll;">{asm_code}</code></pre></div></body></html>'
 
     f.write(doc)
     f.close()
@@ -122,7 +122,7 @@ def generate_index(functions):
     else:
         f = open(f"{const.root}/output/index.html", 'w')
     
-    doc = "<html><body><table><h1>Assembly analysis</h1><h3>Select your function</h3><tr id=\"head\"><th>Function</th>\
+    doc = "<html><body><table><h1>Assembly analysis</h1><tr id=\"head\"><th>Function</th>\
         <th>Instructions</th><th>Extensions</th></tr>"
 
     page_index = 0

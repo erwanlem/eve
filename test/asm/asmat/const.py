@@ -1,7 +1,7 @@
 import platform
 
 
-root = "test/asm/src"
+root = "test/asm/asmat"
 
 settings = f"{root}/settings.json"
 
@@ -51,3 +51,6 @@ INTEGER = SIGNED_INTEGER + UNSIGNED_INTEGER
 SIGNED = SIGNED_INTEGER + REAL
 
 ARITHMETIC = REAL + INTEGER + UNSIGNED_INTEGER
+
+
+# Densité arithmétique memory access / instructions

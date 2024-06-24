@@ -160,7 +160,7 @@ def main(opt):
 
 
 
-def run(argv):
+def run(argv:list):
     o = options_to_dict(argv)
     main(o)
 
