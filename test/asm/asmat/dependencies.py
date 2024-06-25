@@ -1,5 +1,5 @@
 import os
-import const
+import asmat.const as const
 
 
 default_settings = """{
@@ -7,12 +7,10 @@ default_settings = """{
         {
             // "gcc": "g++" // Example
         },
-
     "setup":
         {
             // "sse": "-msse" // Example
-        },
-
+        }, 
     "groups": [
         /*
             Example
@@ -23,12 +21,20 @@ default_settings = """{
             ]
         }
         */
-    ]
+    ],
+    "headers": [
+        // C++ headers
+    ],
+    "flags": [
+        // "-std=c++20" // Example
+    ],
+    "type_wrapper": ""
 }"""
 
 
 
-def build_default_files(replace=False):
+
+def build_dependencies(replace=False):
     if not os.path.exists(f"{const.root}/ref"):
         os.mkdir(f"{const.root}/ref")
     elif replace:
@@ -39,10 +45,14 @@ def build_default_files(replace=False):
         f = open(f"{const.root}/settings.json", 'x')
         f.write(default_settings)
         f.close()
+        
     elif replace:
         f = open(f"{const.root}/settings.json", 'w')
         f.write(default_settings)
         f.close()
+
+    if not os.path.exists(f"{const.root}/config"):
+        os.mkdir(f"{const.root}/config")
 
 
 
@@ -76,4 +86,5 @@ def reset(folder=f'{const.root}/ref'):
 
 
 if __name__ == '__main__':
-    build_reference_directories()
+    pass
+    #build_reference_directories()

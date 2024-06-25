@@ -1,9 +1,9 @@
 import os
-import assembly_parser
-import const
-import settings
-import reader
-from compiler import TMP_ASM_FILE_NAME, TMP_CPP_FILE_NAME, TMP_O_FILE_NAME, get_assembler, objdump_process
+import asmat.assembly_parser as assembly_parser
+import asmat.const as const
+import asmat.settings as settings
+import asmat.reader as reader
+from asmat.compiler import TMP_ASM_FILE_NAME, TMP_CPP_FILE_NAME, TMP_O_FILE_NAME, get_assembler, objdump_process
 
 
 FUNCTION_ID = 0

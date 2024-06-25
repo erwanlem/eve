@@ -1,8 +1,7 @@
 import os
 import json
-import const
+import asmat.const as const
 import random
-import const
 
 ## This file aims to read json files and extract information from them
 

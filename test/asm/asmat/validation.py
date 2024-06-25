@@ -1,9 +1,8 @@
-from generation import *
-import json
+from asmat.generation import *
 import os
-import reader
+import asmat.reader as reader
 import time
-import const
+import asmat.const as const
 
 
 LOG_PATH = f"{const.root}/log.txt"

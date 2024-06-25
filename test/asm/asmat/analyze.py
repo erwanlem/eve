@@ -1,8 +1,6 @@
-import instructions
-import const
-import reader
-
-
+import asmat.instructions as instructions
+import asmat.const as const
+import asmat.reader as reader
 
 
 

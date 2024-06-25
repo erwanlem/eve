@@ -1,14 +1,11 @@
 import subprocess
 import os
-import const
-import settings
+import asmat.const as const
+import asmat.settings as settings
 
 TMP_CPP_FILE_NAME = f"{const.root}/tmp.cpp"
 TMP_O_FILE_NAME = f"{const.root}/tmp/tmp.o"
 TMP_ASM_FILE_NAME = f"{const.root}/tmp/tmp.s"
-
-DEFAULT_COMPILER_OPTIONS = settings.get_flags()
-
 
 
 
@@ -47,7 +44,7 @@ def get_assembler(input_path, output_path, compiler='g++', method='objdump', set
  
     if method == 'objdump':
         if default_options:
-            p1 = subprocess.Popen([compiler, input_path, '-c', '-o', tmp_o_file] + DEFAULT_COMPILER_OPTIONS + setup, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            p1 = subprocess.Popen([compiler, input_path, '-c', '-o', tmp_o_file] + settings.get_flags() + setup, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         else:
             p1 = subprocess.Popen([compiler, input_path, '-c', '-o', tmp_o_file] + setup, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
@@ -61,7 +58,7 @@ def get_assembler(input_path, output_path, compiler='g++', method='objdump', set
 
     else:
         if default_options:
-            p1 = subprocess.Popen([compiler, '-S', input_path, '-o', output_path] + DEFAULT_COMPILER_OPTIONS + setup)
+            p1 = subprocess.Popen([compiler, '-S', input_path, '-o', output_path] + settings.get_flags() + setup)
         else:
             p1 = subprocess.Popen([compiler, '-S', input_path, '-o', output_path] + setup)
 

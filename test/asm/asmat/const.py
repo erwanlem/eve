@@ -1,7 +1,6 @@
-import platform
+import os
 
-
-root = "test/asm/asmat"
+root = os.getcwd()
 
 settings = f"{root}/settings.json"
 

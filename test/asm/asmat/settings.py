@@ -1,8 +1,8 @@
 import json
 import os
-import reader
-import const
-from reader import get_groups
+import asmat.reader as reader
+import asmat.const as const
+from asmat.reader import get_groups
 
 
 

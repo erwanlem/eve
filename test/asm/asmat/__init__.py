@@ -1,7 +1,6 @@
-from generation import generate
-from validation import validate
+from asmat.generation import generate
+from asmat.validation import validate
+from asmat.dependencies import build_dependencies
 
 
-if __name__ == '__main__':
-    from atp import run
-    run()
+from asmat.const import OPTIONS as setup

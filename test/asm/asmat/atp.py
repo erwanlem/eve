@@ -1,9 +1,9 @@
 import sys
-import generation
-import files
-import const
+import asmat.generation as generation
+import asmat.dependencies as files
+import asmat.const as const
 import os
-import validation
+import asmat.validation as validation
 
 """
         Assembly Testing Program
