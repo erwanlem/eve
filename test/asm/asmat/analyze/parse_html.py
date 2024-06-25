@@ -28,7 +28,7 @@ def load():
         
             assembly_instructions.append(l)
 
-    con = sqlite3.connect("test/asm/src/analyze/data.db")
+    con = sqlite3.connect(f"{os.path.dirname(__file__)}/data.db")
     cur = con.cursor()
     res = cur.execute("DELETE FROM instructions")
     assert res.fetchone() == None
@@ -52,7 +52,7 @@ def load():
 
 
 def is_extension_instruction(instr):
-    con = sqlite3.connect("test/asm/src/analyze/data.db")
+    con = sqlite3.connect(f"{os.path.dirname(__file__)}/data.db")
     cur = con.cursor()
     res = cur.execute("SELECT instr_name, extension FROM instructions WHERE extension != '' ORDER BY length(instr_name) DESC")
 
@@ -63,7 +63,7 @@ def is_extension_instruction(instr):
 
 
 def instruction_categories(instr):
-    con = sqlite3.connect("test/asm/src/analyze/data.db")
+    con = sqlite3.connect(f"{os.path.dirname(__file__)}/data.db")
     cur = con.cursor()
     res = cur.execute(f"SELECT ctrl_flow, arith_logic, data_move FROM instructions WHERE instr_name='{instr}'")
 

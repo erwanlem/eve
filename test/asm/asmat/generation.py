@@ -4,6 +4,7 @@ import asmat.const as const
 import asmat.reader as reader
 import os
 import time
+from asmat.option import setup
 
 
 
@@ -90,7 +91,7 @@ def generate_bis(options:dict, conf:dict) -> int:
 
 
 
-def generate(options:dict, max_function_files='inf') -> int:
+def generate(options: dict | setup, max_function_files='inf') -> int:
     """Auxiliary function for generation. This function limits the function per file for compilation.
 
     Args:
@@ -101,6 +102,9 @@ def generate(options:dict, max_function_files='inf') -> int:
     Returns:
         int: 0
     """
+
+    if type(options) == setup:
+        options = options.__get_dictionary()
 
     t1 = time.time()
 

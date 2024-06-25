@@ -167,7 +167,9 @@ def run():
     main(options)
 
 if __name__ == '__main__':
-    argv = sys.argv
-    
-    options = options_to_dict(argv)
-    main(options)
+    from option import setup
+
+    s = setup()
+    s.verbose = True
+
+    generation.generate(s)

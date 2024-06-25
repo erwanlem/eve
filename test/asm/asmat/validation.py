@@ -3,6 +3,7 @@ import os
 import asmat.reader as reader
 import time
 import asmat.const as const
+from asmat.option import setup
 
 
 LOG_PATH = f"{const.root}/log.txt"
@@ -169,7 +170,7 @@ def validate_bis(options, conf={}) -> int:
 
 
 
-def validate(options, max_function_files='inf') -> int:
+def validate(options : dict | setup, max_function_files='inf') -> int:
     """Auxiliary function for validation. This function limits the function per file for compilation.
 
     Args:
@@ -180,6 +181,8 @@ def validate(options, max_function_files='inf') -> int:
     Returns:
         int: 0 if there is not error, otherwise -1.
     """
+    if type(options) == setup:
+        options = options.__get_dictionary()
     
     
     t1 = time.time()

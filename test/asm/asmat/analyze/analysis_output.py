@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 
 FUNCTION_PAGE_STYLE = """
 <style>
+    span:hover { cursor: default; opacity: 0.5; }
     body {margin: auto;max-width: 60%;padding-top: 1%;}
     h3 {margin: 4px;}
     .row {display: flex;}
@@ -41,6 +42,7 @@ def gen_pie_chart(path, proportion:list):
 
 
 def data_assembly(instructions):
+    colors = []
     ext = []
     nbExt = 0
     mem = 0
@@ -58,6 +60,15 @@ def data_assembly(instructions):
         cat1 += cat[1]
         cat2 += cat[2]
         cat3 += cat[3]
+
+        if cat[0] == 1:
+            colors.append((i, "Control flow", "blue"))
+        elif cat[1] == 1:
+            colors.append((i, "Arithmetic/Logic", " #e67e22"))
+        elif cat[2] == 1:
+            colors.append((i, "Data movement", "green"))
+        else:
+            colors.append((i, "Undefined", "red"))
 
         if e != None:
             if e not in ext:
@@ -78,11 +89,12 @@ def data_assembly(instructions):
     result['ext'] = ext
     result['nbExt'] = nbExt
     result['mem'] = mem
+    result['instr'] = colors
 
     return result
 
 
-def generate_function_page(page_name:str, function:str, instructions:list, dataInstr:dict):
+def generate_function_page(page_name:str, function:str, dataInstr:dict):
 
     if not os.path.exists(f"{const.root}/output/pages/{page_name}.html"):
         f = open(f"{const.root}/output/pages/{page_name}.html", 'x')
@@ -91,7 +103,7 @@ def generate_function_page(page_name:str, function:str, instructions:list, dataI
 
     doc = FUNCTION_PAGE_STYLE
     doc += f"<h1>{function}</h1>"                        # Function name
-    doc += f"<h3>Instructions: {len(instructions)}</h3>" # Number of instructions
+    doc += f"<h3>Instructions: {len(dataInstr['instr'])}</h3>" # Number of instructions
     doc += f"<h3>Extension(s): {', '.join(dataInstr['ext'])}</h3>"               # List of extensions
     doc += f"<h3>Memory access: {dataInstr['mem']}</h3>"                # Number of memory access
 
@@ -102,8 +114,12 @@ def generate_function_page(page_name:str, function:str, instructions:list, dataI
         </tr><tr><th>Undefined</th><td>{dataInstr["cat3"]}</td></tr></table></div>'
     doc += f'<div class="column"><img src="{page_name}.jpg" alt="" style="max-width: 100%;margin-top: 50px;"></div></div>'
 
-    asm_code = "\n".join(instructions)
-    doc += f'<div><h2>Instructions</h2><pre><code style="max-height: 300px;overflow: scroll;">{asm_code}</code></pre></div></body></html>'
+    doc += f'<div><h2>Instructions</h2><pre><code style="max-height: 300px;overflow: scroll;">'
+
+    for i in dataInstr['instr']:
+        doc += f'<span style="background-color: {i[2]};" title="{i[1]}"> </span> {i[0]}\n'
+    
+    doc += "</code></pre></div></body></html>"
 
     f.write(doc)
     f.close()
@@ -130,7 +146,7 @@ def generate_index(functions):
         dataInstr = data_assembly(i[1])
 
         doc += f'<tr><td><a href="pages/fun{page_index}.html">{i[0]}</a></td><td>{len(i[1])}</td><td>{", ".join(dataInstr["ext"])}</td></tr>'
-        generate_function_page(f"fun{page_index}", i[0], i[1], dataInstr)
+        generate_function_page(f"fun{page_index}", i[0], dataInstr)
         page_index += 1
 
     doc += "</table></body></html>"
