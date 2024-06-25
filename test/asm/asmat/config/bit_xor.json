@@ -1,6 +1,5 @@
 {
     "function" : "bit_xor",
-    "call" : "eve::bit_xor",
     "parameters" : [
         ["arithmetic", "arithmetic"]
     ]

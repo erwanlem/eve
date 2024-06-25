@@ -40,7 +40,7 @@ def function_extended_name(f, p):
 
 
 
-def generate_function(funcName:str, parameters:list, wrapper="{}", functionId='auto'):
+def generate_function(funcName:str, parameters:list, wrapper="{}", namespace="", functionId='auto'):
     """Generates cpp function code. The function id generated with a uniq id in its name.
 
     Args:
@@ -67,7 +67,7 @@ def generate_function(funcName:str, parameters:list, wrapper="{}", functionId='a
 
     # Code of the temporary function
     code = f"auto func_{func_id}(" + formal_param + """) {
-    return eve::""" + funcName + "(" + real_param + """);
+    return """ + namespace + funcName + "(" + real_param + """);
 }\n"""
     
 
@@ -157,7 +157,7 @@ def get_functions_instructions(options, functions : list):
 
     # Generating .cpp code
     for f, p in functions:
-        new_name, code = generate_function(f, p, wrapper=target['twrapper'])
+        new_name, code = generate_function(f, p, wrapper=target['twrapper'], namespace=target['namespace'])
         full_code += code
         functions_names[function_extended_name(f, p)] = new_name
 

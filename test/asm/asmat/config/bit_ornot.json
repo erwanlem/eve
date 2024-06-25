@@ -1,6 +1,5 @@
 {
     "function" : "bit_ornot",
-    "call" : "eve::bit_ornot",
     "parameters" : [
         ["arithmetic", "arithmetic"]
     ]

@@ -1,6 +1,5 @@
 {
     "function" : "agm",
-    "call" : "eve::agm",
     "parameters" : [
         ["real", "real"]
     ]

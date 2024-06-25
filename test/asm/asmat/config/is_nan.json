@@ -1,6 +1,5 @@
 {
     "function" : "is_nan",
-    "call" : "eve::is_nan",
     "parameters" : [
         ["arithmetic"]
     ]

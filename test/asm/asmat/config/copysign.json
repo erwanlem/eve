@@ -1,6 +1,5 @@
 {
     "function" : "copysign",
-    "call" : "eve::copysign",
     "parameters" : [
         ["float", "float"]
     ]

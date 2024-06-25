@@ -1,6 +1,5 @@
 {
     "function" : "bit_reverse",
-    "call" : "eve::bit_reverse",
     "parameters" : [
         ["int"]
     ]

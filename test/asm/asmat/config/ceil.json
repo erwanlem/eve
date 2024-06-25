@@ -1,6 +1,5 @@
 {
     "function" : "ceil",
-    "call" : "eve::ceil",
     "parameters" : [
         ["float"],
         ["char"],

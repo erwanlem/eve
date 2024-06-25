@@ -1,6 +1,5 @@
 {
     "function" : "frac",
-    "call" : "eve::frac",
     "parameters" : [
         ["arithmetic"]
     ]

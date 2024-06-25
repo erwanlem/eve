@@ -1,6 +1,5 @@
 {
     "function" : "max",
-    "call" : "eve::max",
     "parameters" : [
         ["float", "float"],
         ["double", "double"],

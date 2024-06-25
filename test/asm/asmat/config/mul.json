@@ -1,6 +1,5 @@
 {
     "function" : "mul",
-    "call" : "eve::mul",
     "parameters" : [
         ["arithmetic", "arithmetic"]
     ]

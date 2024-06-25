@@ -1,6 +1,5 @@
 {
     "function" : "fdim",
-    "call" : "eve::fdim",
     "parameters" : [
         ["arithmetic", "arithmetic"]
     ]

@@ -1,6 +1,5 @@
 {
     "function" : "dec",
-    "call" : "eve::dec",
     "parameters" : [
         ["arithmetic"]
     ]

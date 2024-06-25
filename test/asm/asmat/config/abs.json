@@ -1,6 +1,5 @@
 {
     "function" : "abs",
-    "call" : "eve::abs",
     "parameters" : [
         ["arithmetic"]
     ]

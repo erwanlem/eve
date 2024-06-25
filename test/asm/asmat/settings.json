@@ -36,5 +36,6 @@
         "../../../include/",
         "-std=c++20"
     ],
-    "type_wrapper": "eve::wide<{}>"
+    "type_wrapper": "eve::wide<{}>",
+    "function_namespace": "eve::"
 }

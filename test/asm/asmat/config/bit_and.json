@@ -1,6 +1,5 @@
 {
     "function" : "bit_and",
-    "call" : "eve::bit_and",
     "parameters" : [
         ["arithmetic", "arithmetic"]
     ]

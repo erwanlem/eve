@@ -1,6 +1,5 @@
 {
     "function" : "dot",
-    "call" : "eve::dot",
     "parameters" : [
         ["arithmetic", "arithmetic"]
     ]
