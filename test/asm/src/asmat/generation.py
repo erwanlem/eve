@@ -38,7 +38,7 @@ def save_json(destination_path:str, text:str):
 
 
 def generate_bis(options:dict, conf:dict) -> int:
-    """Generate and store assembly code
+    """Generate and store assembly code.
 
     Args:
         options (dict): Dictionary describing user query. The structure of the dictionary is stored in `const.OPTIONS`.
@@ -92,7 +92,7 @@ def generate_bis(options:dict, conf:dict) -> int:
 
 
 def generate(options: dict | setup, max_function_files='inf') -> int:
-    """Auxiliary function for generation. This function limits the function per file for compilation.
+    """Generate and store assembly code.
 
     Args:
         options (dict): Dictionary describing user query. The structure of the dictionary is stored in `const.OPTIONS`
@@ -100,7 +100,7 @@ def generate(options: dict | setup, max_function_files='inf') -> int:
               parameters configuration). Defaults to 'inf'.
 
     Returns:
-        int: 0
+        int: 0 if there is no error, otherwise -1.
     """
 
     if type(options) == setup:

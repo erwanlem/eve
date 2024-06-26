@@ -33,7 +33,7 @@
         "-O3",
         "-msse",
         "-I",
-        "../../../include/",
+        "../../../../include/",
         "-std=c++20"
     ],
     "type_wrapper": "eve::wide<{}>",

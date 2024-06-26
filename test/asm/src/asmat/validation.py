@@ -171,7 +171,7 @@ def validate_bis(options, conf={}) -> int:
 
 
 def validate(options : dict | setup, max_function_files='inf') -> int:
-    """Auxiliary function for validation. This function limits the function per file for compilation.
+    """Validation function. Generates assembly for the current library version and compares it with reference assembly.
 
     Args:
         options (_type_): Dictionary describing user query. The structure of the dictionary is stored in `const.OPTIONS`.
@@ -179,7 +179,7 @@ def validate(options : dict | setup, max_function_files='inf') -> int:
               parameters configuration). Defaults to 'inf'.
 
     Returns:
-        int: 0 if there is not error, otherwise -1.
+        int: 0 if there is no error, otherwise -1.
     """
     if type(options) == setup:
         options = options.__get_dictionary()

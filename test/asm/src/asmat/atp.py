@@ -167,9 +167,4 @@ def run():
     main(options)
 
 if __name__ == '__main__':
-    from option import setup
-
-    s = setup()
-    s.verbose = True
-
-    generation.generate(s)
+    run()

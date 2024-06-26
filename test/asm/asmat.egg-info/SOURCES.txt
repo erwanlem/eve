@@ -4,7 +4,6 @@ setup.cfg
 setup.py
 asmat/__init__.py
 asmat/__main__.py
-asmat/analyze.py
 asmat/assembly_parser.py
 asmat/atp.py
 asmat/compiler.py

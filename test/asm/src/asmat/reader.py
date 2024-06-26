@@ -114,7 +114,6 @@ def keytypes_to_types(types:list):
                     tmp = [a if i == 'signed' else i for i in tmp]
         else:
             valid_types.append(t)
-                
     return valid_types
 
 
@@ -165,6 +164,7 @@ def read_config_file(file_name='all'):
             txt = load_json(f"{const.root}/config/{f}")
             function = json.loads(txt)
             d[function['function']] = keytypes_to_types(function['parameters'])
+        print
         return d
     else:
         g = get_groups(file_name)
@@ -185,6 +185,7 @@ def read_config_file(file_name='all'):
                 d[function['function']] = keytypes_to_types(function['parameters'])
             else:
                 raise Exception(f"Configuration file {n} not found.")
+        print(d)
         return d
         
 
@@ -231,4 +232,5 @@ def read_reference_files(file_name:str, path="test/asm/ref"):
 
 if __name__ == '__main__':
     pass
+    #read_config_file()
     #print(read_reference_files('abs'))

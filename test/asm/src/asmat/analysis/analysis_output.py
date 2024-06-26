@@ -1,9 +1,9 @@
 import os
 import sys
 import re
-from parse_html import is_extension_instruction, instruction_categories
-sys.path.append(f"{os.path.dirname(__file__)}/..")
-import const
+from .parse_html import is_extension_instruction, instruction_categories
+#sys.path.append(f"{os.path.dirname(__file__)}/..")
+import asmat.const as const
 import matplotlib.pyplot as plt
 
 

@@ -20,7 +20,7 @@ class setup:
         self.nbprocess = 0
         self.headers = []
 
-    def __get_dictionary(self):
+    def get_dictionary(self):
         d = {
             "validate" : False,
             "log" : self.log,

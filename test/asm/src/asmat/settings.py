@@ -39,6 +39,11 @@ def get_type_wrapper():
     settings = json.loads(settings)
     return settings['type_wrapper']
 
+def get_namespace():
+    settings = reader.load_json(const.settings)
+    settings = json.loads(settings)
+    return settings['function_namespace']
+
 
 def get_compiler(entry:str):
     """Returns compilers with there corresponding name in the system. If `entry` is found in settings file\
@@ -114,6 +119,7 @@ def get_target(options:dict):
         d['input'] = reader.read_config_file(options['input'])
     
     d['twrapper'] = get_type_wrapper()
+    d['namespace'] = get_namespace()
 
     d['output'] = options['output']
     return d

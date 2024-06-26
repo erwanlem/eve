@@ -1,19 +1,14 @@
-from parse_html import is_extension_instruction
 import os
-import sys
-import analysis_output
-sys.path.append(f"{os.path.dirname(__file__)}/..")
-import instructions
-import const
-import reader
+#import sys
+import  asmat.analysis.analysis_output as analysis_output
+#sys.path.append(f"{os.path.dirname(__file__)}/..")
+import asmat.instructions as instructions
+import asmat.const as const
+import asmat.reader as reader
 
 
 
-
-
-
-
-def analyze_assembly(options:dict, compiler:str, cpu_ext:str):
+def analyze(options:dict, compiler:str, cpu_ext:str):
 
     output_directory = options['output']
     conf = reader.read_config_file(options['input'])
@@ -57,5 +52,5 @@ if __name__ == '__main__':
     opt['input'] = 'all'
     opt['compiler'] = 'g++'
     opt['setup'] = 'avx'
-    analyze_assembly(opt, 'g++', 'avx')
+    analyze(opt, 'g++', 'avx')
 
