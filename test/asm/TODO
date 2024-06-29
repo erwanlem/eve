@@ -1,4 +1,14 @@
-[ ] Rename jpg images
-[ ] Bug type wrapper
-[ ] Bug namespace
-[ ] Bug function with no parameters
+[x] Rename jpg images
+[x] Bug type wrapper
+[x] Bug namespace
+[x] Bug function with no parameters
+[ ] Densité arithmétique memory access / instructions
+[x] Bug caractère spéciaux nom fichier html
+
+[x] --version
+[ ] --help
+[x] x functions saved
+[x] 1 quand il y a erreur
+[x] afficher erreur avec -v
+[x] path log.txt
+[x] --settings

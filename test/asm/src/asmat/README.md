@@ -58,6 +58,8 @@ The code is only generated and validated for the given simd extension. The given
 **-S** *limit*, **--functionsperfile** *limit*
 Limit the number of functions in *cpp* files. If the number of functions is greater than the limit it creates several *cpp* files that are compiled seperately.
 
+**--settings** *path*  
+Defines a custom path to access settings file(s). If the path is a directory it executes the command for every file in the directory. If this option is not set by the user it searches `settings.json` in the current directory.
 
 **-t** 
 Keeps temporary files after the process. Temporary files are files used to produce assembly code:
@@ -67,6 +69,9 @@ Keeps temporary files after the process. Temporary files are files used to produ
 
 **-v** 
 Verbose. Displays information in the command line. At the end of the process it gives the time elapsed since the beginning of the process.
+
+**--version**  
+Current version of the module.
 
 
 ## Examples

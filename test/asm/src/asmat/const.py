@@ -4,6 +4,7 @@ root = os.getcwd()
 
 settings = f"{root}/settings.json"
 
+VERSION = "1.1.3"
 
 ARCH = {
     'sse' : '-msse', 
@@ -24,11 +25,12 @@ COMPILER = {
 
 OPTIONS = {
     "validate" : True,
+    "analyze" : False,
+    "generate" : False,
     "log" : False,
     "deep" : False,
     "input" : 'all',
     "keep_tmp" : False,
-    "generate" : False,
     "exception" : False,
     "verbose" : False,
     "disassembler" : "objdump",
@@ -39,7 +41,8 @@ OPTIONS = {
     "output" : f"{root}/ref",
     "limit_per_file" : 'inf',
     "nbprocess" : 0,
-    "headers" : []
+    "headers" : [],
+    "settings" : [f"{root}/settings.json"]
 }
 
 
@@ -50,6 +53,3 @@ INTEGER = SIGNED_INTEGER + UNSIGNED_INTEGER
 SIGNED = SIGNED_INTEGER + REAL
 
 ARITHMETIC = REAL + INTEGER + UNSIGNED_INTEGER
-
-
-# Densité arithmétique memory access / instructions

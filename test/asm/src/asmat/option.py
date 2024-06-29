@@ -2,6 +2,9 @@ import asmat.const as const
 
 
 class setup:
+    """Class that represents options to input. Call method `help()` for details.
+    """
+
 
     def __init__(self) -> None:
         self.log = False
@@ -19,8 +22,15 @@ class setup:
         self.limit_file = 'inf'
         self.nbprocess = 0
         self.headers = []
+        self.settings = [f"{const.root}/settings.json"]
 
     def get_dictionary(self):
+        """Returns dictionary with all options for generation, validation and analysis
+
+        Returns:
+            dict: Dictionary with user options
+        """
+
         d = {
             "validate" : False,
             "log" : self.log,
@@ -38,11 +48,14 @@ class setup:
             "output" : self.output,
             "limit_per_file" : self.limit_file,
             "nbprocess" : self.nbprocess,
-            "headers" : self.headers
+            "headers" : self.headers,
+            "settings" : self.settings
         }
         return d
     
     def help(self):
+        """Gives details about options
+        """
         print("Options:")
         print("\t**log** : Boolean. True to generate log file if an error occurs. Defaults to False.")
         print("\t**deep** : Boolean. True to replace files previously referenced. Defaults to False.")

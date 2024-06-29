@@ -242,4 +242,7 @@ def get_functions_instructions(options, functions : list):
 
 
 if __name__ == '__main__':
-    pass
+    c = const.OPTIONS.copy()
+    c['input'] = 'abs.json'
+
+    get_functions_instructions(c, [("abs", [],)])

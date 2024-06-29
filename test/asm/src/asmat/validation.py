@@ -92,8 +92,6 @@ def log_undefined_reference(function:str, compiler:str, architecture:str):
 
 
 
-
-
 def validate_bis(options, conf={}) -> int:
     """Validation function. Generates assembly for the current library version and compares it with reference assembly.
 
@@ -139,7 +137,7 @@ def validate_bis(options, conf={}) -> int:
                                 i1 = functions_assembly[c][a][f][i]['instr'][j].split(' ')[0]
                                 i2 = validation_set[c][a][f][i]['instr'][j].split(' ')[0]
                                 if i1 != i2:
-                                    ret = -1
+                                    ret += 1
                                     errors += 1
                                     if options['exception']:
                                         raise AssemblyMismatch(f, c, a, validation_set[c][a][f][i]['type'], validation_set[c][a][f][i]['instr'], functions_assembly[c][a][f][i]['instr'])
@@ -150,7 +148,7 @@ def validate_bis(options, conf={}) -> int:
                             if options['exception']:
                                 raise AssemblyMismatch(f, c, a, validation_set[c][a][f][i]['type'], validation_set[c][a][f][i]['instr'], functions_assembly[c][a][f][i]['instr'])
                             log_txt += log_unmatched_instruction(f, c, a, validation_set[c][a][f][i]['type'], validation_set[c][a][f][i]['instr'], functions_assembly[c][a][f][i]['instr'])
-                            ret = -1
+                            ret += 1
 
     # Log file optional
     if options['log'] and log_txt != "":
@@ -162,6 +160,7 @@ def validate_bis(options, conf={}) -> int:
         file.close()
 
     if options['verbose']:
+        print(log_txt)
         print(f"Process finished : {errors} mismatching function(s) found")
 
     return ret
@@ -181,33 +180,44 @@ def validate(options : dict | setup, max_function_files='inf') -> int:
     Returns:
         int: 0 if there is no error, otherwise -1.
     """
+
     if type(options) == setup:
-        options = options.__get_dictionary()
-    
-    
-    t1 = time.time()
-    
-    conf = reader.read_config_file(options['input'])
+            options = options.get_dictionary()
 
-    if max_function_files == 'inf' or len(list(conf.keys())) < max_function_files:
-        result = validate_bis(options, conf)
-    else:
-        conf2 = {}
-        i = 0
-        result = 0
-        for k in conf.keys():
-            if i == max_function_files:
-                result += validate_bis(options, conf2)
-                conf2 = {}
-                i = 0
-            conf2[k] = conf[k]
-            i+=1
-        result = -1 if result != 0 else 0
+    acc_settings_output = 0
 
-    if options['verbose']:
-        print("Process duration: " + str(round(time.time()-t1, 2)) + "s")
+    for i in options['settings']:
+        const.settings = i
 
-    return result
+        if options['verbose']:
+            print(f"Running {i}")
+        
+        
+        t1 = time.time()
+        
+        conf = reader.read_config_file(options['input'])
+
+        if max_function_files == 'inf' or len(list(conf.keys())) < max_function_files:
+            result = validate_bis(options, conf)
+        else:
+            conf2 = {}
+            i = 0
+            result = 0
+            for k in conf.keys():
+                if i == max_function_files:
+                    result += validate_bis(options, conf2)
+                    conf2 = {}
+                    i = 0
+                conf2[k] = conf[k]
+                i+=1
+            result = 1 if result != 0 else 0
+
+        if options['verbose']:
+            print("Process duration: " + str(round(time.time()-t1, 2)) + "s")
+
+        acc_settings_output += result
+
+    return not (acc_settings_output == 0)
 
 """
 'absmax': [['float', 'float'], ['double', 'double'], ['std::int64_t', 'std::int64_t'], ['std::int32_t', 'std::int32_t'], 

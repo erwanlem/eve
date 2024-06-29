@@ -62,6 +62,8 @@ def generate_bis(options:dict, conf:dict) -> int:
 
     functions_assembly = instructions.get_functions_instructions(options, functions)
 
+    replaced_files = 0
+
     for comp in functions_assembly.keys():
         for arch in functions_assembly[comp].keys():
             for f in functions_assembly[comp][arch].keys():
@@ -76,14 +78,17 @@ def generate_bis(options:dict, conf:dict) -> int:
                     dict_json = { "function" : f, "asm" : functions_assembly[comp][arch][f] }
                     update_json = json.dumps(dict_json, indent=4)
                     save_json(f"{output_directory}/{comp}/{arch}/{f}.json", update_json)
+                    replaced_files += 1
+
                 elif reader.load_json(f"{output_directory}/{comp}/{arch}/{f}.json") == '' or reader.load_json(f"{output_directory}/{comp}/{arch}/{f}.json") == '{}' or deep:
                     dict_json = { "function" : f, "asm" : functions_assembly[comp][arch][f] }
                     
                     update_json = json.dumps(dict_json, indent=4)
                     save_json(f"{output_directory}/{comp}/{arch}/{f}.json", update_json)
+                    replaced_files += 1
 
     if verbose:
-        print(f"Operation finished : functions saved")
+        print(f"Operation finished : {replaced_files} functions saved")
 
     return 0
     
@@ -104,32 +109,41 @@ def generate(options: dict | setup, max_function_files='inf') -> int:
     """
 
     if type(options) == setup:
-        options = options.__get_dictionary()
+            options = options.get_dictionary()
 
-    t1 = time.time()
+    acc_settings_output = 0
+
+    for i in options['settings']:
+        const.settings = i
+        if options['verbose']:
+            print(f"Running {i}")
+
+        t1 = time.time()
 
 
-    conf = reader.read_config_file(options['input'])
+        conf = reader.read_config_file(options['input'])
 
-    if max_function_files == 'inf' or len(list(conf.keys())) < max_function_files:
-        result = generate_bis(options, conf)
-    else:
-        conf2 = {}
-        i = 0
-        result = 0
-        for k in conf.keys():
-            if i == max_function_files:
-                result += generate_bis(options, conf2)
-                conf2 = {}
-                i = 0
-            conf2[k] = conf[k]
-            i+=1
-        result = -1 if result != 0 else 0
+        if max_function_files == 'inf' or len(list(conf.keys())) < max_function_files:
+            result = generate_bis(options, conf)
+        else:
+            conf2 = {}
+            i = 0
+            result = 0
+            for k in conf.keys():
+                if i == max_function_files:
+                    result += generate_bis(options, conf2)
+                    conf2 = {}
+                    i = 0
+                conf2[k] = conf[k]
+                i+=1
+            result = -1 if result != 0 else 0
 
-    if options['verbose']:
-        print("Process duration: " + str(round(time.time()-t1, 2)) + "s")
+        if options['verbose']:
+            print("Process duration: " + str(round(time.time()-t1, 2)) + "s")
 
-    return result
+        acc_settings_output += result
+
+    return not (acc_settings_output == 0)
 
 
 if __name__ == '__main__':

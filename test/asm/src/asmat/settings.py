@@ -37,7 +37,11 @@ def get_flags():
 def get_type_wrapper():
     settings = reader.load_json(const.settings)
     settings = json.loads(settings)
-    return settings['type_wrapper']
+    if settings['type_wrapper'].strip() == "":
+        return "{}"
+    else:
+        return settings['type_wrapper']
+
 
 def get_namespace():
     settings = reader.load_json(const.settings)

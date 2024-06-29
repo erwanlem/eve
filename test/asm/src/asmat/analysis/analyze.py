@@ -1,14 +1,34 @@
 import os
-#import sys
+if __name__ == "__main__":
+    import sys
+    sys.path.append("/home/erwan/eve/test/asm/src")
+
 import  asmat.analysis.analysis_output as analysis_output
-#sys.path.append(f"{os.path.dirname(__file__)}/..")
+
 import asmat.instructions as instructions
 import asmat.const as const
 import asmat.reader as reader
+from asmat.option import setup
 
 
 
-def analyze(options:dict, compiler:str, cpu_ext:str):
+def analyze(options:dict | setup, compiler:str=None, cpu_ext:str=None):
+    """Analyzes assembly code of c++ functions. Gives a report in html format (in `/output` directory).
+
+    Args:
+        options (dict | setup): Setup object or dictionary containing user options.
+        compiler (str, optional): The compiler to analyze. Defaults to None.
+        cpu_ext (str, optional): The cpu extension to analyze. Defaults to None.
+
+    Raises:
+        Exception: If compiler or cpu_ext are not valid.
+    """
+
+    if compiler == None or cpu_ext == None:
+        raise Exception("Missing compiler and cpu options for analysis.")
+
+    if type(options) == setup:
+        options = options.get_dictionary()
 
     output_directory = options['output']
     conf = reader.read_config_file(options['input'])
@@ -28,14 +48,7 @@ def analyze(options:dict, compiler:str, cpu_ext:str):
     functions = sorted( list(instr.keys()) )
     for i in functions:
         for j in instr[i]:
-            param = ""
-            for p in range(0, len(j['type'])):
-                if p == len(j['type'])-1 or len(j['type']) == 0:
-                    param += j['type'][p]
-                else:
-                    param += j['type'][p] + ', '
-
-            index.append((f"{i}({param})", j['instr']))
+            index.append((i, j['type'], j['instr']))
 
     if not os.path.exists(f"{const.root}/output"):
         os.mkdir(f"{const.root}/output")
@@ -43,6 +56,8 @@ def analyze(options:dict, compiler:str, cpu_ext:str):
         os.mkdir(f"{const.root}/output/pages")
     
     analysis_output.generate_index(index)
+
+    return 0
 
 
 

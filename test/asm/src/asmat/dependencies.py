@@ -35,6 +35,11 @@ default_settings = """{
 
 
 def build_dependencies(replace=False):
+    """Build setting and configuration files.
+
+    Args:
+        replace (bool, optional): True to replace files if they already exist. Defaults to False.
+    """
     if not os.path.exists(f"{const.root}/ref"):
         os.mkdir(f"{const.root}/ref")
     elif replace:

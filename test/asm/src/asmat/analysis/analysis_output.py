@@ -1,8 +1,10 @@
 import os
-import sys
+if __name__ == "__main__":
+    import sys
+    sys.path.append("/home/erwan/eve/test/asm/src")
 import re
-from .parse_html import is_extension_instruction, instruction_categories
-#sys.path.append(f"{os.path.dirname(__file__)}/..")
+
+from asmat.analysis.parse_html import is_extension_instruction, instruction_categories
 import asmat.const as const
 import matplotlib.pyplot as plt
 
@@ -130,9 +132,8 @@ def generate_function_page(page_name:str, function:str, dataInstr:dict):
 
 
 
-
-
 def generate_index(functions):
+
     if not os.path.exists(f"{const.root}/output/index.html"):
         f = open(f"{const.root}/output/index.html", 'x')
     else:
@@ -141,23 +142,23 @@ def generate_index(functions):
     doc = "<html><body><table><h1>Assembly analysis</h1><tr id=\"head\"><th>Function</th>\
         <th>Instructions</th><th>Extensions</th></tr>"
 
-    page_index = 0
     for i in functions:
-        dataInstr = data_assembly(i[1])
+        function_name = f"{i[0]}({', '.join(i[1])})"
+        page_name = ''.join( map(lambda i : i if i.isalnum() else '_' , function_name) )
 
-        doc += f'<tr><td><a href="pages/fun{page_index}.html">{i[0]}</a></td><td>{len(i[1])}</td><td>{", ".join(dataInstr["ext"])}</td></tr>'
-        generate_function_page(f"fun{page_index}", i[0], dataInstr)
-        page_index += 1
+        dataInstr = data_assembly(i[2])
+
+        doc += f'<tr><td><a href="pages/{page_name}.html">{function_name.replace("<", "&lt;").replace(">", "&gt;")}</a></td><td>{len(i[2])}</td><td>{", ".join(dataInstr["ext"])}</td></tr>'
+        generate_function_page(page_name, function_name, dataInstr)
 
     doc += "</table></body></html>"
 
     f.write(DOCUMENT_STYLE + doc)
     f.close()
 
-    
 
 
 
 
 if __name__ == '__main__':
-    pass
+    print(''.join( map(lambda i : i if i.isalnum() else '_' , "res_defined_array(int*)")) )
