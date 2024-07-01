@@ -1,21 +1,14 @@
 {
+    "instruction_set": "arm",
     "compilers":
         {
-            "gcc": "g++",
-            "clang": "clang"
+            "gcc" : "g++"
         },
     "setup":
         {
-            "sse": "-msse",
-            "sse2": "-msse2",
-            "sse3": "-msse3",
-            "ssse3": "-mssse3",
-            "sse4.1": "-msse4.1",
-            "sse4.2": "-msse4.2",
-            "avx" : "-mavx",
-            "avx2" : "-mavx2",
-            "avx512" : "-march=skylake-avx512" 
-        }, 
+            "sse" : "-msse",
+            "sse2" : "-msse2"
+        },
     "groups": [
         {
             "name": "abs",
@@ -38,10 +31,10 @@
     ],
     "flags": [
         "-O3",
-        "-msse",
         "-I",
         "../../../../include/",
-        "-std=c++20"
+        "-std=c++20",
+        "-Wno-psabi"
     ],
     "type_wrapper": "eve::wide<{}>",
     "function_namespace": "eve::"

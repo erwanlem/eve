@@ -92,7 +92,7 @@ def clear_tmp():
 
 
 
-def extract_instructions(functionName:str, parameters:str, func_code_name:dict, asm:str, method='objdump', compiler:str='gcc'):
+def extract_instructions(functionName:str, parameters:str, func_code_name:dict, asm:str, opt:dict, compiler:str='gcc', instr_set:str="X86"):
     """Extracts assembly instructions from objdump files.
 
     Args:
@@ -117,8 +117,13 @@ def extract_instructions(functionName:str, parameters:str, func_code_name:dict, 
 
     function_name = func_code_name[new_name]
 
-    if method == 'objdump':
-        return assembly_parser.read_objdump_assembler(function_name, asm)
+    if opt['disassembler'] == 'objdump':
+        if instr_set.upper() == 'X86':
+            return assembly_parser.read_objdump_x86_assembler(function_name, asm)
+        elif instr_set.upper() == 'ARM':
+            return assembly_parser.read_objdump_arm_assembler(function_name, asm)
+        else:
+            raise Exception("Invalid instruction set. Possible values are 'X86' and 'ARM'")
     else:
         return assembly_parser.read_compiler_assembler(function_name, asm, compiler=compiler)
 
@@ -198,12 +203,12 @@ def get_functions_instructions(options, functions : list):
                 res_dict[comp][a] = {}
             
             if method == 'objdump':
-                p = get_assembler(TMP_CPP_FILE_NAME, f"{const.root}/tmp/tmp{file_id}.s", compiler=comp, method=method,\
+                p = get_assembler(TMP_CPP_FILE_NAME, f"{const.root}/tmp/tmp{file_id}.s", compiler=target['compiler'][comp], method=method,\
                                     setup=target['setup'][a], default_options=options['flags'] == [], wait=False, tmp_o_file=f"{const.root}/tmp/tmp{file_id}.o")
                 files[p] = (f"{const.root}/tmp/tmp{file_id}", comp, a)
                 file_id += 1
             else:
-                p = get_assembler(TMP_CPP_FILE_NAME, f"{const.root}/tmp/tmp{file_id}.s", compiler=comp, method=method, setup=target['setup'][a], default_options=options['flags'] == [], wait=False)
+                p = get_assembler(TMP_CPP_FILE_NAME, f"{const.root}/tmp/tmp{file_id}.s", compiler=target['compiler'][comp], method=method, setup=target['setup'][a], default_options=options['flags'] == [], wait=False)
                 files[p] = (f"{const.root}/tmp/tmp{file_id}", comp, a)
                 file_id += 1
 
@@ -212,8 +217,8 @@ def get_functions_instructions(options, functions : list):
             i.wait()
             if method == 'objdump':
                 if i.returncode != 0:
-                    raise Exception("Compilation error : " + i.stderr.read().decode())
-                objdump_process(j[0] + '.s', tmp_o_file=j[0] + '.o')
+                    raise Exception(f"Compilation error {j} : " + i.stderr.read().decode())
+                objdump_process(j[0] + '.s', tmp_o_file=j[0] + '.o', instr_set=target['instr_set'])
 
             file_asm = open(j[0] + '.s')
             asm = file_asm.read()
@@ -221,9 +226,9 @@ def get_functions_instructions(options, functions : list):
 
             for f, p in functions:
                 if f not in res_dict[j[1]][j[2]].keys():
-                    res_dict[j[1]][j[2]][f] = [{"type" : p, "instr" : extract_instructions(f, p, functions_names, asm, method=method, compiler=j[1])}]
+                    res_dict[j[1]][j[2]][f] = [{"type" : p, "instr" : extract_instructions(f, p, functions_names, asm, options, compiler=j[1], instr_set=target['instr_set'])}]
                 else:
-                    res_dict[j[1]][j[2]][f].append({"type" : p, "instr" : extract_instructions(f, p, functions_names, asm, method=method, compiler=j[1])})
+                    res_dict[j[1]][j[2]][f].append({"type" : p, "instr" : extract_instructions(f, p, functions_names, asm, options, compiler=j[1], instr_set=target['instr_set'])})
 
 
 

@@ -3,6 +3,7 @@ import asmat.const as const
 
 
 default_settings = """{
+    "instruction_set": "X86",
     "compilers":
         {
             // "gcc": "g++" // Example
@@ -28,7 +29,8 @@ default_settings = """{
     "flags": [
         // "-std=c++20" // Example
     ],
-    "type_wrapper": ""
+    "type_wrapper": "",
+    "function_namespace": ""
 }"""
 
 

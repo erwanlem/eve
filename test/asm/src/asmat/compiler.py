@@ -9,13 +9,18 @@ TMP_ASM_FILE_NAME = f"{const.root}/tmp/tmp.s"
 
 
 
-def objdump_process(output_path, tmp_o_file=TMP_O_FILE_NAME):
+def objdump_process(output_path, tmp_o_file=TMP_O_FILE_NAME, instr_set:str='X86'):
+    if instr_set.upper() == 'X86':
+        objdump = 'objdump'
+    else:
+        objdump = 'aarch64-linux-gnu-objdump'
+
     if not os.path.exists(output_path):
         f = open(output_path, 'x')
     else:
         f = open(output_path, 'w')
     
-    with subprocess.Popen(['objdump', '-d', '-j', '.text', '-C', tmp_o_file], stdout=f, stderr=subprocess.PIPE) as p2:
+    with subprocess.Popen([objdump, '-d', '-j', '.text', '-C', tmp_o_file], stdout=f, stderr=subprocess.PIPE) as p2:
         p2.wait()
         f.close()
         
@@ -44,9 +49,15 @@ def get_assembler(input_path, output_path, compiler='g++', method='objdump', set
  
     if method == 'objdump':
         if default_options:
-            p1 = subprocess.Popen([compiler, input_path, '-c', '-o', tmp_o_file] + settings.get_flags() + setup, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            command:list = [compiler, input_path, '-c', '-o', tmp_o_file] + settings.get_flags() + setup
+            while '' in command:
+                command.remove('')
+            p1 = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         else:
-            p1 = subprocess.Popen([compiler, input_path, '-c', '-o', tmp_o_file] + setup, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            command:list =[compiler, input_path, '-c', '-o', tmp_o_file] + setup
+            while '' in command:
+                command.remove('')
+            p1 = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         if wait:
             p1.wait()
@@ -57,6 +68,7 @@ def get_assembler(input_path, output_path, compiler='g++', method='objdump', set
             return p1
 
     else:
+        print([compiler, input_path, '-c', '-o', tmp_o_file] + settings.get_flags() + setup)
         if default_options:
             p1 = subprocess.Popen([compiler, '-S', input_path, '-o', output_path] + settings.get_flags() + setup)
         else:

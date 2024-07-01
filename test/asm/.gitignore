@@ -1,2 +1,5 @@
-ref/*
-tmp/*
+ref/
+tmp/
+src/asmat/__pycache__
+asmat.egg-info/
+src/asmat.egg-info/

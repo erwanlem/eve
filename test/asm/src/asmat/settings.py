@@ -34,21 +34,6 @@ def get_flags():
     return settings['flags']
 
 
-def get_type_wrapper():
-    settings = reader.load_json(const.settings)
-    settings = json.loads(settings)
-    if settings['type_wrapper'].strip() == "":
-        return "{}"
-    else:
-        return settings['type_wrapper']
-
-
-def get_namespace():
-    settings = reader.load_json(const.settings)
-    settings = json.loads(settings)
-    return settings['function_namespace']
-
-
 def get_compiler(entry:str):
     """Returns compilers with there corresponding name in the system. If `entry` is found in settings file\
     the corresponding path is returned as the value in the dictionary. Otherwise `entry` is defined as the value and\
@@ -122,10 +107,16 @@ def get_target(options:dict):
     else:
         d['input'] = reader.read_config_file(options['input'])
     
-    d['twrapper'] = get_type_wrapper()
-    d['namespace'] = get_namespace()
+    
+    settings = reader.load_json(const.settings)
+    settings = json.loads(settings)
+    d['twrapper'] = settings['type_wrapper']
+    d['namespace'] = settings['function_namespace']
+    d['instr_set'] = settings['instruction_set']
 
     d['output'] = options['output']
+
+
     return d
         
             
