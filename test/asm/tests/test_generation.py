@@ -2,9 +2,9 @@ import unittest
 import os
 import sys
 from test_utils import ignore_warnings
-sys.path.append(f"{os.path.dirname(__file__)}/../src")
+sys.path.append(f"{os.path.dirname(__file__)}/../src/asmat")
 import generation
-import files
+import dependencies
 import settings
 import const
 
@@ -32,7 +32,7 @@ class TestUpdateGeneration(unittest.TestCase):
                 for f in os.listdir(f"{const.root}/config"):
                     self.assertTrue( os.path.exists( f"{path}/generation/{c}/{a}/{f}" ) )
         
-        files.reset(f"{path}/generation")
+        dependencies.reset(f"{path}/generation")
                                         
                                         
 

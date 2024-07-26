@@ -1,7 +1,7 @@
 import os
 if __name__ == "__main__":
     import sys
-    sys.path.append("/home/erwan/eve/test/asm/src")
+    # sys.path.append("mypath/src")
 import re
 
 from asmat.analysis.parse_html import is_extension_instruction, instruction_categories

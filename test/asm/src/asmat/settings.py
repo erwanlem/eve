@@ -2,8 +2,6 @@ import json
 import os
 import asmat.reader as reader
 import asmat.const as const
-from asmat.reader import get_groups
-
 
 
 def get_setup(entry:str):
@@ -126,4 +124,4 @@ def get_target(options:dict):
 
 
 if __name__ == '__main__':
-    print(get_groups('abs'))
+    pass

@@ -10,7 +10,7 @@ FUNCTION_ID = 0
 
 
 def get_function_id():
-    """Returns a uniq id
+    """Returns a unique id
 
     Returns:
         int: ID
@@ -247,7 +247,4 @@ def get_functions_instructions(options, functions : list):
 
 
 if __name__ == '__main__':
-    c = const.OPTIONS.copy()
-    c['input'] = 'abs.json'
-
-    get_functions_instructions(c, [("abs", [],)])
+    pass

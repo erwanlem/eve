@@ -233,4 +233,5 @@ def validate(options : dict | setup, max_function_files='inf') -> int:
 """
 
 if __name__ == '__main__':
-    print(validate(input='all', log_file=True, raise_exception=True, keep_tmp=True))
+    pass
+    #print(validate(input='all', log_file=True, raise_exception=True, keep_tmp=True))

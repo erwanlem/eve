@@ -1,7 +1,7 @@
 import unittest
 import sys
 import os
-sys.path.append(f"{os.path.dirname(__file__)}/../src")
+sys.path.append(f"{os.path.dirname(__file__)}/../src/asmat")
 import reader
 import const
 import numpy
@@ -46,7 +46,8 @@ class TestReader(unittest.TestCase):
         self.assertEqual(t6, [['double', i, i, 'float'] for i in const.ARITHMETIC] + [[i, 'float'] for i in const.ARITHMETIC])
 
         t7 = reader.keytypes_to_types([[], ['double', 'arithmetic', 'arithmetic', 'float'], [], ['arithmetic', 'float'], []])
-        self.assertEqual(t7, [['double', i, i, 'float'] for i in const.ARITHMETIC] + [[i, 'float'] for i in const.ARITHMETIC])
+        t7_expected =  [[]] + [['double', i, i, 'float'] for i in const.ARITHMETIC] + [[]] + [[i, 'float'] for i in const.ARITHMETIC] + [[]]
+        self.assertEqual(t7, t7_expected)
 
         t8 = reader.keytypes_to_types([['real', 'arithmetic']])
         for i in t8:

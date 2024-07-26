@@ -86,7 +86,7 @@ def reset(folder=f'{const.root}/ref'):
     """Clear directory
 
     Args:
-        folder (str, optional): Path of the directory. Defaults to 'test/asm/ref'.
+        folder (str, optional): Path of the directory. Defaults to 'root/ref'.
     """
     os.system(f"rm -rf {folder}/*")
 

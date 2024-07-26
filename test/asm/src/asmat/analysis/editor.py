@@ -1,8 +1,10 @@
 import sqlite3
 import datetime
 
+DATABASE = ""
+
 def get_id():
-    con = sqlite3.connect("test/asm/src/analyze/data.db")
+    con = sqlite3.connect(DATABASE)
     cur = con.cursor()
     res = cur.execute(f"SELECT id FROM instructions WHERE edited='Never'")
     res = res.fetchone()
@@ -22,7 +24,7 @@ while True:
     if id == -1:
         print("No row selected")
     else:
-        con = sqlite3.connect("test/asm/src/analyze/data.db")
+        con = sqlite3.connect(DATABASE)
         cur = con.cursor()
         res = cur.execute(f"SELECT instr_name, id, description, extension FROM instructions WHERE id = {id}").fetchone()
         if res == None:
@@ -42,7 +44,7 @@ while True:
         continue
     
     if i == 'pass':
-        con = sqlite3.connect("test/asm/src/analyze/data.db")
+        con = sqlite3.connect(DATABASE)
         cur = con.cursor()
         cur.execute(f"UPDATE instructions SET edited='Pass' WHERE id={id} OR instr_name='{iname}';")
         con.commit()
@@ -58,7 +60,7 @@ while True:
             if len(s) != 3 or s[0] != '0' and s[0] != '1' or s[1] != '0' and s[1] != '1' or s[2] != '0' and s[2] != '1':         
                 print("Invalid set")
                 continue
-            con = sqlite3.connect("test/asm/src/analyze/data.db")
+            con = sqlite3.connect(DATABASE)
             cur = con.cursor()
             cur.execute(f"UPDATE instructions SET ctrl_flow = {s[0]}, arith_logic={s[1]}, data_move={s[2]}, edited='{str(datetime.datetime.now())}' WHERE id={id} OR instr_name='{iname}';")
             con.commit()
